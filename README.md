@@ -39,39 +39,61 @@ Google Sheets / CSV
 - まずは5社で検証する
 - 1サイトあたりの人間修正時間を10分以内にする
 
-## ManusリサーチJSON仕様（`data/inputs/sample.json`）
+## 入力JSONフォーマット（実データ投入用）
 
-### 必須項目
-以下が**1つでも欠けるとエラー終了**します。
+### 基本方針
+- `companyName` と `website` は最低限の入力推奨（未入力でも生成は継続）
+- **不足項目があってもエラー終了せず**、`記載なし` として補完して仕様書を生成
+- 可能なら配列で入力（1要素=1論点）すると品質が安定
 
-- `companyName` (string): 会社名
-- `website` (string): 既存サイトURL
-- `companyOverview` (string[] | string): 会社概要
-- `currentSiteIssues` (string[] | string): 既存サイトの課題
-- `targetCustomers` (string[] | string): 想定ターゲット
-- `siteConcept` (string[] | string): 新サイトのコンセプト
-- `recommendedPages` (string[] | string): 推奨ページ構成
-- `firstViewIdeas` (string[] | string): ファーストビュー訴求案
-- `ctaIdeas` (string[] | string): CTA案
-- `designTone` (string[] | string): デザイントーン
-- `buildInstruction` (string[] | string): 生成AI向け制作指示
+### 推奨スキーマ
 
-### 任意項目
-- `companySlug` (string): 出力ファイル名に使うslug。未指定時は `companyName` または入力ファイル名から自動生成。
-- `avoidExpressions` (string[] | string): 避ける表現や法務・表現上の注意。
+| 項目 | 型 | 説明 |
+|---|---|---|
+| `companyName` | string | 会社名 |
+| `companySlug` | string | 出力ファイル名に使うslug（任意） |
+| `website` | string | 既存サイトURL |
+| `companyOverview` | string / string[] | 会社概要 |
+| `currentSiteIssues` | string / string[] | 既存サイト課題 |
+| `targetCustomers` | string / string[] | 想定顧客 |
+| `siteConcept` | string / string[] | 新サイトのコンセプト |
+| `recommendedPages` | string / string[] | 推奨ページ構成 |
+| `firstViewIdeas` | string / string[] | FV訴求案 |
+| `ctaIdeas` | string / string[] | CTA案 |
+| `designTone` | string / string[] | デザイントーン |
+| `buildInstruction` | string / string[] | 実装AI向け追加指示 |
+| `avoidExpressions` | string / string[] | 避ける表現・法務注意 |
 
-### 最小サンプル
-`data/inputs/sample.json` を参照。
+> 別名キーも対応: `overview`, `issues`, `targetAudience`, `proposedConcept`, `siteMap`, `heroIdeas`, `cta`, `designStyle`, `claudeInstruction`, `cautions`
 
-## MVP実行方法（Manus JSON -> サイト制作仕様書）
+### 実データサンプル
+- `data/inputs/real-example.json`
+- 既存MVPサンプル: `data/inputs/sample.json`
 
-1. `data/inputs/*.json` にManusのリサーチ結果JSONを配置
-2. 以下コマンドで1件分の仕様書Markdownを生成
+## 実行コマンド
 
+### 1件実行
+```bash
+npm run run:one -- data/inputs/real-example.json
+```
+
+### 生成物
+- `data/outputs/{slug}-site-spec.md`
+- `slug` は `companySlug` → `companyName` → 入力ファイル名 の順で自動決定
+
+### 欠損項目があるJSONの確認
 ```bash
 npm run run:one -- data/inputs/sample.json
 ```
+- 欠損推奨項目がある場合は `[WARN]` を表示
+- ただし生成は継続され、Markdown内 `0. 入力メタ情報` に未入力項目が記録される
 
-生成物:
-- `data/outputs/{slug}-site-spec.md`
-- `slug` は `companySlug` があればそれを優先、なければ会社名またはファイル名から生成
+## 確認方法（Markdown品質チェック）
+
+1. `data/outputs/*.md` を開く
+2. 以下の順で確認
+   - `1. プロジェクト要約` がAI実装者向けに明確か
+   - `4. 情報設計（IA）` にページ別要件があるか
+   - `6. 実装仕様` が Claude / Cursor / Codex にそのまま渡せる粒度か
+   - `7. 納品物チェックリスト` で実装完了条件を判定できるか
+

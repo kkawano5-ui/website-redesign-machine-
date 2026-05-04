@@ -7,8 +7,13 @@ import {
   writeMarkdownFile
 } from './utils.js';
 
+function hasContent(value) {
+  if (Array.isArray(value)) return value.some((item) => String(item ?? '').trim());
+  return typeof value === 'string' ? value.trim().length > 0 : Boolean(value);
+}
+
 function validateInputJson(input) {
-  const requiredFields = [
+  const recommendedFields = [
     'companyName',
     'website',
     'companyOverview',
@@ -22,15 +27,8 @@ function validateInputJson(input) {
     'buildInstruction'
   ];
 
-  const missing = requiredFields.filter((field) => {
-    const value = input?.[field];
-    if (Array.isArray(value)) return value.length === 0;
-    return typeof value !== 'string' || value.trim() === '';
-  });
-
-  if (missing.length > 0) {
-    throw new Error(`入力JSONの必須項目が不足しています: ${missing.join(', ')}`);
-  }
+  const missing = recommendedFields.filter((field) => !hasContent(input?.[field]));
+  return { missing };
 }
 
 async function main() {
@@ -43,12 +41,18 @@ async function main() {
 
   const absInputPath = path.resolve(inputPath);
   const manusJson = await readJsonFile(absInputPath);
-  validateInputJson(manusJson);
+  const { missing } = validateInputJson(manusJson);
+
+  if (missing.length > 0) {
+    console.warn(
+      `[WARN] 入力JSONに未入力の推奨項目があります（可能な範囲で生成を続行）: ${missing.join(', ')}`
+    );
+  }
 
   const slugBase = manusJson.companySlug || manusJson.companyName || fileNameWithoutExt(inputPath);
   const slug = createSafeSlug(slugBase, 'site');
 
-  const markdown = createSiteSpecMarkdown(manusJson, { inputPath });
+  const markdown = createSiteSpecMarkdown(manusJson, { inputPath, missingFields: missing });
   const outputPath = path.resolve('data/outputs', `${slug}-site-spec.md`);
 
   await writeMarkdownFile(outputPath, markdown);
