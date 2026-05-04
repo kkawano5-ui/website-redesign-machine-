@@ -1,0 +1,14 @@
+{
+  "name": "website-redesign-machine",
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "run:one": "node scripts/run-one.js"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.39.0",
+    "openai": "^4.0.0",
+    "dotenv": "^16.4.5"
+  },
+  "devDependencies": {}
+}
