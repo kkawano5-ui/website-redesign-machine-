@@ -7,6 +7,32 @@ import {
   writeMarkdownFile
 } from './utils.js';
 
+function validateInputJson(input) {
+  const requiredFields = [
+    'companyName',
+    'website',
+    'companyOverview',
+    'currentSiteIssues',
+    'targetCustomers',
+    'siteConcept',
+    'recommendedPages',
+    'firstViewIdeas',
+    'ctaIdeas',
+    'designTone',
+    'buildInstruction'
+  ];
+
+  const missing = requiredFields.filter((field) => {
+    const value = input?.[field];
+    if (Array.isArray(value)) return value.length === 0;
+    return typeof value !== 'string' || value.trim() === '';
+  });
+
+  if (missing.length > 0) {
+    throw new Error(`入力JSONの必須項目が不足しています: ${missing.join(', ')}`);
+  }
+}
+
 async function main() {
   const inputPath = process.argv[2];
 
@@ -17,6 +43,7 @@ async function main() {
 
   const absInputPath = path.resolve(inputPath);
   const manusJson = await readJsonFile(absInputPath);
+  validateInputJson(manusJson);
 
   const slugBase = manusJson.companySlug || manusJson.companyName || fileNameWithoutExt(inputPath);
   const slug = createSafeSlug(slugBase, 'site');
