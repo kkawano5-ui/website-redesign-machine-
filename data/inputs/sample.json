@@ -1,0 +1,48 @@
+{
+  "companySlug": "sample",
+  "companyName": "サンプル工務店",
+  "website": "https://example.com",
+  "companyOverview": [
+    "地域密着で新築・リフォームを提供",
+    "施工実績は年間120件以上"
+  ],
+  "currentSiteIssues": [
+    "スマホで見づらい",
+    "施工事例が探しにくい"
+  ],
+  "targetCustomers": [
+    "30〜50代の持ち家世帯",
+    "初めてリフォームを検討する家族"
+  ],
+  "siteConcept": [
+    "安心して相談できる地域No.1の工務店サイト",
+    "施工事例から問い合わせまでの導線を短縮"
+  ],
+  "recommendedPages": [
+    "トップページ",
+    "施工事例",
+    "サービス紹介",
+    "会社案内",
+    "お問い合わせ"
+  ],
+  "firstViewIdeas": [
+    "地域密着30年の実績を伝えるキャッチコピー",
+    "代表的な施工写真と無料相談CTA"
+  ],
+  "ctaIdeas": [
+    "無料相談はこちら",
+    "施工事例集をダウンロード"
+  ],
+  "designTone": [
+    "温かみのある配色",
+    "読みやすい余白設計"
+  ],
+  "avoidExpressions": [
+    "過度な最安値訴求",
+    "根拠のないNo.1表現"
+  ],
+  "buildInstruction": [
+    "Astro + Tailwindで構築",
+    "アクセシビリティを意識したHTML構造"
+  ]
+}

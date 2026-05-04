@@ -38,3 +38,16 @@ Google Sheets / CSV
 - 最初から完全自動化しない
 - まずは5社で検証する
 - 1サイトあたりの人間修正時間を10分以内にする
+
+## MVP実行方法（Manus JSON -> サイト制作仕様書）
+
+1. `data/inputs/*.json` にManusのリサーチ結果JSONを配置
+2. 以下コマンドで1件分の仕様書Markdownを生成
+
+```bash
+npm run run:one -- data/inputs/sample.json
+```
+
+生成物:
+- `data/outputs/{slug}-site-spec.md`
+- `slug` は `companySlug` があればそれを優先、なければ会社名またはファイル名から生成
