@@ -75,3 +75,21 @@ npm run run:one -- data/inputs/sample.json
 生成物:
 - `data/outputs/{slug}-site-spec.md`
 - `slug` は `companySlug` があればそれを優先、なければ会社名またはファイル名から生成
+
+
+## 実運用のコツ（業種汎用化）
+
+- `industry`（例: 墓石・霊園 / 病院 / 士業 / 製造業 / 介護）を入力すると、仕様書内の信頼要素・画像方針・注意表現が業種寄りになります。
+- `recommendedPages` と `ctaIdeas` は業種に合わせて具体名で記述してください（例: 見学予約、診療予約、資料請求、面談申込）。
+- 誇大表現・断定表現を避けるため、`avoidExpressions` に業界特有のNG表現を必ず追加してください。
+
+## サンプル入力
+
+- 標準サンプル: `data/inputs/sample.json`
+- 旧来業界サンプル（霊園・墓石）: `data/inputs/memorial-sample.json`
+
+## 実行例
+
+```bash
+npm run run:one -- data/inputs/memorial-sample.json
+```
