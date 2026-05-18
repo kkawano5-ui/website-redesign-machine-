@@ -33,7 +33,7 @@ def enrich(
 ) -> dict:
     """
     URL一覧をサイト解析してGoogle Sheetsに保存する。
-    url_items が None の場合は logs/pending_urls.json を読み込む。
+    送信不可・除外対象は「対象外ログ」シートに記録し、最終リストには含めない。
     戻り値: {"added": int, "excluded": int, "errors": int}
     """
     config = load_config(config_path)
@@ -51,15 +51,14 @@ def enrich(
         spreadsheet_id=sheets_cfg["spreadsheet_id"],
         credentials_dir="credentials",
     )
-    sales_sheet = sheets_cfg.get("sales_sheet_name", "営業リスト")
+    sales_sheet    = sheets_cfg.get("sales_sheet_name", "営業リスト")
     excluded_sheet = sheets_cfg.get("excluded_sheet_name", "対象外ログ")
 
-    # 既存データ取得
     existing = sheets.get_existing_data(sales_sheet)
-    ex_urls = existing["urls"]
-    ex_names = existing["names"]
+    ex_urls   = existing["urls"]
+    ex_names  = existing["names"]
     ex_emails = existing["emails"]
-    ex_forms = existing["forms"]
+    ex_forms  = existing["forms"]
 
     stats = {"added": 0, "excluded": 0, "errors": 0}
 
@@ -84,6 +83,7 @@ def enrich(
             stats["errors"] += 1
             continue
 
+        contact_method, can_send, ng_reason = decide_contact_method(data)
         ok, reason = is_eligible(data, ex_urls, ex_names, ex_emails, ex_forms)
         today = date.today().isoformat()
 
@@ -91,54 +91,60 @@ def enrich(
             logger.info(f"  対象外: {reason} [{data.company_name}]")
             stats["excluded"] += 1
             sheets.append_excluded_entry({
-                "取得日": today,
-                "対象カテゴリ": item.get("category_name", data.category),
-                "検索キーワード": data.keyword,
-                "会社名": data.company_name,
-                "法人格": data.corp_type,
-                "公式サイトURL": data.official_url,
-                "会社概要URL": data.about_url,
+                "取得日":            today,
+                "対象カテゴリ":      item.get("category_name", data.category),
+                "検索キーワード":    data.keyword,
+                "会社名":            data.company_name,
+                "法人格":            data.corp_type,
+                "公式サイトURL":    data.official_url,
+                "会社概要URL":      data.about_url,
                 "公開メールアドレス": data.email,
                 "問い合わせフォームURL": data.contact_url,
-                "除外理由": reason,
-                "エラー詳細": data.error,
+                "フォーム種別":      data.form_type,
+                "推奨連絡手段":      contact_method,
+                "除外理由":          reason,
+                "エラー詳細":        data.error,
             }, excluded_sheet)
             continue
 
-        # 既存セットに追加（同一バッチ内での重複防止）
+        # 既存セットに追加（バッチ内重複防止）
         ex_urls.add(data.official_url)
-        name_key = data.company_name.replace(" ", "").replace("　", "")
-        if name_key:
-            ex_names.add(name_key)
-        if data.email != "不明" and "@" in data.email:
+        norm = data.company_name.replace(" ", "").replace("　", "")
+        if norm and norm != "不明": ex_names.add(norm)
+        if data.email not in ("不明", "") and "@" in data.email:
             ex_emails.add(data.email.split("@")[-1])
-        if data.contact_url != "不明":
-            ex_forms.add(data.contact_url)
+        if data.contact_url not in ("不明", ""): ex_forms.add(data.contact_url)
 
-        contact_method = decide_contact_method(data)
-        logger.info(f"  追加: {data.company_name} ({contact_method})")
+        logger.info(f"  追加: {data.company_name} / {contact_method}")
         stats["added"] += 1
 
         sheets.append_sales_entry({
-            "取得日": today,
-            "対象カテゴリ": item.get("category_name", data.category),
-            "検索キーワード": data.keyword,
-            "会社名": data.company_name,
-            "法人格": data.corp_type,
-            "公式サイトURL": data.official_url,
-            "会社概要URL": data.about_url,
-            "業種": data.industry,
-            "所在地": data.location,
+            "取得日":            today,
+            "対象カテゴリ":      item.get("category_name", data.category),
+            "検索キーワード":    data.keyword,
+            "会社名":            data.company_name,
+            "現在の正式社名":    data.official_name,
+            "法人格":            data.corp_type,
+            "公式サイトURL":    data.official_url,
+            "会社概要URL":      data.about_url,
+            "業種":              data.industry,
+            "所在地":            data.location,
             "公開メールアドレス": data.email,
             "問い合わせフォームURL": data.contact_url,
-            "Instagram URL": data.instagram_url,
-            "TikTok URL": data.tiktok_url,
-            "YouTube URL": data.youtube_url,
-            "推奨連絡手段": contact_method,
-            "ステータス": "収集済み",
+            "フォーム種別":      data.form_type,
+            "Instagram URL":    data.instagram_url,
+            "TikTok URL":       data.tiktok_url,
+            "YouTube URL":      data.youtube_url,
+            "最新投稿日":        data.latest_sns_date,
+            "推奨連絡手段":      contact_method,
+            "送信可否":          can_send,
+            "NG理由":            ng_reason,
+            "送信ステータス":    "収集済み",
         }, sales_sheet)
 
         time.sleep(scraper_cfg.get("request_delay_seconds", 2))
 
-    logger.info(f"enrich完了: 追加={stats['added']}, 対象外={stats['excluded']}, エラー={stats['errors']}")
+    logger.info(
+        f"enrich完了: 追加={stats['added']}, 対象外={stats['excluded']}, エラー={stats['errors']}"
+    )
     return stats

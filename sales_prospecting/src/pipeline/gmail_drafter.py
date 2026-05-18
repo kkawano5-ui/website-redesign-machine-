@@ -11,14 +11,20 @@ TARGET_STATUS = "文面生成済み"
 DRAFT_STATUS  = "Gmail下書き作成済み"
 
 
+def _col_letter(col_idx: int) -> str:
+    if col_idx < 26:
+        return chr(ord("A") + col_idx)
+    return chr(ord("A") + col_idx // 26 - 1) + chr(ord("A") + col_idx % 26)
+
+
 def create_gmail_drafts(config_path: str | None = None) -> dict:
     """
-    Google Sheetsの「文面生成済み」かつメールアドレスあり、
-    推奨連絡手段がEmailの行にGmail下書きを作成する。
+    「文面生成済み」かつ推奨連絡手段=Email の行にGmail下書きを作成する。
+    自動送信は行わない。
     戻り値: {"created": int, "skipped": int, "errors": int}
     """
     config = load_config(config_path)
-    sheets_cfg = config.get("google_sheets", {})
+    sheets_cfg  = config.get("google_sheets", {})
     gmail_cfg   = config.get("gmail", {})
     sales_sheet = sheets_cfg.get("sales_sheet_name", "営業リスト")
 
@@ -50,16 +56,14 @@ def create_gmail_drafts(config_path: str | None = None) -> dict:
     stats = {"created": 0, "skipped": 0, "errors": 0}
 
     for row_num, row in enumerate(rows[1:], start=2):
-        status  = cell(row, "ステータス")
+        status  = cell(row, "送信ステータス")
         email   = cell(row, "公開メールアドレス")
         contact = cell(row, "推奨連絡手段")
+        can_send = cell(row, "送信可否")
 
-        if status != TARGET_STATUS:
+        if status != TARGET_STATUS or contact != "Email" or can_send != "可":
             continue
         if not email or email == "不明":
-            stats["skipped"] += 1
-            continue
-        if contact != "Email":
             stats["skipped"] += 1
             continue
 
@@ -79,20 +83,19 @@ def create_gmail_drafts(config_path: str | None = None) -> dict:
             stats["errors"] += 1
             continue
 
-        # ステータスとメモを更新
         now_str = datetime.now().strftime("%Y-%m-%d %H:%M")
-        memo = f"Gmail下書き作成: {now_str} (ID: {draft_id})"
+        memo    = f"Gmail下書き作成: {now_str} (ID: {draft_id})"
 
-        status_idx = col_map.get("ステータス", -1)
-        memo_idx   = col_map.get("メモ", -1)
-
-        if status_idx >= 0:
-            sheets.update_cell(sales_sheet, row_num, chr(ord("A") + status_idx), DRAFT_STATUS)
-        if memo_idx >= 0:
-            sheets.update_cell(sales_sheet, row_num, chr(ord("A") + memo_idx), memo)
+        for col_name, value in [("送信ステータス", DRAFT_STATUS), ("メモ", memo)]:
+            col_idx = col_map.get(col_name, -1)
+            if col_idx >= 0:
+                sheets.update_cell(sales_sheet, row_num, _col_letter(col_idx), value)
 
         stats["created"] += 1
         logger.info(f"  完了: {company}")
 
-    logger.info(f"Gmail下書き作成完了: 作成={stats['created']}, スキップ={stats['skipped']}, エラー={stats['errors']}")
+    logger.info(
+        f"Gmail下書き作成完了: 作成={stats['created']}, "
+        f"スキップ={stats['skipped']}, エラー={stats['errors']}"
+    )
     return stats

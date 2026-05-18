@@ -9,6 +9,8 @@ from ..config import get_env
 
 logger = logging.getLogger(__name__)
 
+_FIELDS = list(GeneratedCopy.__dataclass_fields__.keys())
+
 
 class AnthropicClient(BaseAIClient):
     def __init__(self, api_key_env: str = "ANTHROPIC_API_KEY", model: str = "claude-opus-4-7"):
@@ -25,13 +27,12 @@ class AnthropicClient(BaseAIClient):
                 messages=[{"role": "user", "content": prompt}],
             )
             raw = message.content[0].text.strip()
-            # コードブロックが含まれていれば除去
             if raw.startswith("```"):
                 raw = raw.split("```")[1]
                 if raw.startswith("json"):
                     raw = raw[4:]
             data = json.loads(raw)
-            return GeneratedCopy(**{k: data.get(k, "") for k in GeneratedCopy.__dataclass_fields__})
+            return GeneratedCopy(**{k: data.get(k, "") for k in _FIELDS})
         except json.JSONDecodeError as e:
             logger.error(f"JSON解析エラー [{company_info.get('company_name')}]: {e}")
             return GeneratedCopy()

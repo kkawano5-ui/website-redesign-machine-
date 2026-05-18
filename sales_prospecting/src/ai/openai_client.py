@@ -9,6 +9,8 @@ from ..config import get_env
 
 logger = logging.getLogger(__name__)
 
+_FIELDS = list(GeneratedCopy.__dataclass_fields__.keys())
+
 
 class OpenAIClient(BaseAIClient):
     def __init__(self, api_key_env: str = "OPENAI_API_KEY", model: str = "gpt-4o"):
@@ -29,7 +31,7 @@ class OpenAIClient(BaseAIClient):
             )
             raw = resp.choices[0].message.content.strip()
             data = json.loads(raw)
-            return GeneratedCopy(**{k: data.get(k, "") for k in GeneratedCopy.__dataclass_fields__})
+            return GeneratedCopy(**{k: data.get(k, "") for k in _FIELDS})
         except json.JSONDecodeError as e:
             logger.error(f"JSON解析エラー [{company_info.get('company_name')}]: {e}")
             return GeneratedCopy()
@@ -38,7 +40,7 @@ class OpenAIClient(BaseAIClient):
             return GeneratedCopy()
 
 
-def get_ai_client(config: dict) -> BaseAIClient:
+def get_ai_client(config: dict):
     """設定に基づいてAIクライアントを返すファクトリ"""
     from .anthropic_client import AnthropicClient
 
