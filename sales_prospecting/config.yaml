@@ -1,0 +1,121 @@
+# ============================================================
+# Sales Prospecting Automation - 設定ファイル
+# ============================================================
+
+# Google Sheets設定
+google_sheets:
+  spreadsheet_id: "YOUR_SPREADSHEET_ID"  # Google SheetsのID
+  sales_sheet_name: "営業リスト"
+  excluded_sheet_name: "対象外ログ"
+
+# AI API設定
+ai:
+  provider: "anthropic"  # "anthropic" or "openai"
+  anthropic_api_key_env: "ANTHROPIC_API_KEY"
+  openai_api_key_env: "OPENAI_API_KEY"
+  model_anthropic: "claude-opus-4-7"
+  model_openai: "gpt-4o"
+  max_tokens: 2000
+
+# 検索API設定
+search:
+  provider: "serpapi"  # "serpapi" or "google_cse"
+  serpapi_key_env: "SERPAPI_KEY"
+  google_cse_key_env: "GOOGLE_CSE_KEY"
+  google_cse_id_env: "GOOGLE_CSE_ID"
+  results_per_keyword: 10  # 1キーワードあたりの取得件数
+
+# Gmail設定
+gmail:
+  enabled: true  # Gmail下書き作成のON/OFF
+  from_name: "河野 / RAHA KENYA - 合同会社Asante Sana"
+
+# スクレイピング設定
+scraper:
+  request_delay_seconds: 2       # リクエスト間の待機時間（秒）
+  timeout_seconds: 15            # タイムアウト
+  max_retries: 2                 # リトライ回数
+  user_agent: "Mozilla/5.0 (compatible; SalesProspecting/1.0; +https://rahakenya.com)"
+
+# 除外ドメイン（検索結果から除外するドメイン）
+excluded_domains:
+  - "amazon.co.jp"
+  - "rakuten.co.jp"
+  - "yahoo.co.jp"
+  - "google.com"
+  - "wikipedia.org"
+  - "instagram.com"
+  - "tiktok.com"
+  - "youtube.com"
+  - "twitter.com"
+  - "x.com"
+  - "facebook.com"
+  - "linkedin.com"
+  - "indeed.com"
+  - "glassdoor.com"
+  - "wantedly.com"
+  - "en-gage.net"
+  - "mynavi.jp"
+  - "rikunabi.com"
+  - "base.shop"
+  - "stores.jp"
+  - "minne.com"
+  - "creema.com"
+  - "note.com"
+  - "ameblo.jp"
+
+# 除外キーワード（ページ内容から対象外を判定）
+excluded_keywords:
+  - "営業メールはお断り"
+  - "営業目的のお問い合わせはお断り"
+  - "営業お断り"
+  - "セールス目的はお断り"
+  - "営業・勧誘はお断り"
+  - "営業活動を目的とした"
+  - "営業メールお断り"
+
+# 対象カテゴリと検索キーワード
+categories:
+  overseas_send:
+    name: "海外に日本人を送っている法人"
+    keywords:
+      - "留学エージェント 会社"
+      - "語学学校紹介 法人"
+      - "ワーキングホリデー 支援 株式会社"
+      - "海外インターン 法人"
+      - "海外ボランティア 運営会社"
+      - "親子留学 エージェント"
+      - "海外研修 法人 プログラム"
+      - "海外教育プログラム 企業"
+      - "海外キャリア支援 会社"
+      - "海外移住準備 支援 法人"
+      - "海外進学支援 会社"
+      - "留学斡旋 株式会社"
+
+  overseas_receive:
+    name: "海外で日本人を受け入れている法人"
+    keywords:
+      - "海外現地ツアー 日本人向け 会社"
+      - "日本人向け 海外宿泊施設 運営"
+      - "海外移住サポート 法人"
+      - "海外不動産 日本人向け 会社"
+      - "海外ウェディング 日本人 法人"
+      - "現地日本語サポート 海外 会社"
+      - "日本人向け 現地体験 海外 法人"
+      - "海外医療 日本人 サービス 会社"
+      - "海外美容 日本人 サービス"
+      - "海外教育 日本人向け 企業"
+
+  women_products:
+    name: "女性向け商材を扱う法人"
+    keywords:
+      - "化粧品メーカー D2C 株式会社"
+      - "D2Cブランド 女性向け 法人"
+      - "アパレルブランド 女性向け 株式会社"
+      - "スイーツ メーカー 法人 SNS"
+      - "美容サロン 複数店舗 法人"
+      - "ウェルネス ヘルスケア 女性向け 株式会社"
+      - "子育て 教育サービス 法人"
+      - "ライフスタイルブランド 女性向け 株式会社"
+      - "食品メーカー 女性向け D2C"
+      - "フェムテック 法人"
