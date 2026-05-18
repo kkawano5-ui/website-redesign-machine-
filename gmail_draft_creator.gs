@@ -1,10 +1,12 @@
 /**
- * Gmail下書き一括作成スクリプト v2
- * チラシ添付（Google Drive）+ 日程調整URL自動挿入版
+ * Gmail下書き一括作成スクリプト v3
+ * チラシ添付（Google Drive）+ 日程調整URL自動挿入 + HTML太字版
  *
  * 【変更点】
  * - Driveフォルダのチラシファイルを各下書きに添付
  * - 本文の「候補日をいくつかいただけますと幸いです」をSpir URLに置換
+ * - 重要フレーズを <strong> タグで太字化（最大7箇所）
+ * - HTMLメール形式で下書き作成（plainBodyも同時にセット）
  * - メールは送信しない（下書き作成のみ）
  */
 
@@ -21,6 +23,24 @@ const SCHEDULE_URL = 'https://app.spirinc.com/t/lH7s5QtOzh9e4QKm6Z5_q/as/GbO-Vlr
 // 本文の置換（候補日テキスト → 日程調整URL）
 const SCHEDULE_OLD = 'ご関心をお持ちいただけましたら、候補日をいくつかいただけますと幸いです。';
 const SCHEDULE_NEW = 'ご関心をお持ちいただけましたら、以下よりご都合の良い日時をお選びください。\n' + SCHEDULE_URL;
+
+// 太字にするフレーズ（長い順に並べて、部分一致による二重太字を防ぐ）
+const BOLD_PHRASES = [
+  '生成AI・ChatGPTの正しい活用を全国の中小企業へ広げる',
+  '九州工業大学 鈴木章央先生監修',
+  '共催による無料セミナー開催',
+  '新富町商工会議所での開催実績',
+  '新富町商工会議所様にて実施',
+  '30分ほどオンラインでご相談',
+  '無料のAI活用セミナー',
+  '無料AI活用セミナー',
+  '鈴木章央先生監修',
+  '共催のご相談',
+  '16,000名以上の会員',
+  '候補日をいくつかいただけますと幸いです',
+];
+
+const MAX_BOLD = 7;
 
 // ============================================================
 // カスタムメニュー（スプレッドシートを開くと自動追加）
@@ -52,6 +72,85 @@ function getFlyerBlob_() {
     Logger.log('チラシ取得エラー: ' + e.message);
     return null;
   }
+}
+
+// ============================================================
+// HTML変換（エスケープ → 太字 → 改行）
+// ============================================================
+
+/**
+ * 既存の <strong> ブロックを避けながら phrase を1箇所だけ太字化する。
+ * 戻り値: { html: string, applied: boolean }
+ */
+function applyBoldOnce_(html, phrase) {
+  var result   = '';
+  var remaining = html;
+  var applied  = false;
+
+  while (remaining.length > 0) {
+    var sStart = remaining.indexOf('<strong>');
+    if (sStart === -1) {
+      // 残りに <strong> タグなし → ここで置換試行
+      if (!applied && remaining.indexOf(phrase) !== -1) {
+        result  += remaining.replace(phrase, '<strong>' + phrase + '</strong>');
+        applied  = true;
+      } else {
+        result += remaining;
+      }
+      remaining = '';
+      break;
+    }
+
+    // <strong> より前のテキストで置換試行
+    var before = remaining.substring(0, sStart);
+    if (!applied && before.indexOf(phrase) !== -1) {
+      result  += before.replace(phrase, '<strong>' + phrase + '</strong>');
+      applied  = true;
+    } else {
+      result += before;
+    }
+
+    // <strong>...</strong> ブロックをそのまま通す
+    var sEnd = remaining.indexOf('</strong>', sStart);
+    if (sEnd === -1) {
+      result   += remaining.substring(sStart);
+      remaining = '';
+      break;
+    }
+    var blockEnd = sEnd + '</strong>'.length;
+    result   += remaining.substring(sStart, blockEnd);
+    remaining = remaining.substring(blockEnd);
+  }
+
+  return { html: result, applied: applied };
+}
+
+/**
+ * プレーンテキストをHTML本文に変換する。
+ *  1. HTML特殊文字をエスケープ
+ *  2. BOLD_PHRASES を最大 MAX_BOLD 箇所 <strong> で太字化
+ *  3. 改行を <br> に変換
+ */
+function convertToHtml_(text) {
+  // 1. HTML エスケープ
+  var html = text
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;');
+
+  // 2. 太字化（最大 MAX_BOLD 箇所）
+  var boldCount = 0;
+  for (var i = 0; i < BOLD_PHRASES.length; i++) {
+    if (boldCount >= MAX_BOLD) break;
+    var res = applyBoldOnce_(html, BOLD_PHRASES[i]);
+    if (res.applied) {
+      html = res.html;
+      boldCount++;
+    }
+  }
+
+  // 3. 改行 → <br>
+  return html.replace(/\n/g, '<br>\n');
 }
 
 // ============================================================
@@ -88,6 +187,7 @@ function createDraftsTest() {
     '  ・対象: 送信方法「メール」かつ営業優先度「A」の上位20件\n' +
     '  ・チラシ（Driveのファイル）を添付\n' +
     '  ・日程調整URLを本文に追加（Spir）\n' +
+    '  ・重要フレーズを太字化（HTMLメール）\n' +
     '  ・メールは送信しません（下書き作成のみ）\n\n' +
     'よろしいですか？',
     ui.ButtonSet.OK_CANCEL
@@ -107,6 +207,7 @@ function createDraftsAll() {
     '  ・対象: 送信方法「メール」の全行\n' +
     '  ・チラシ（Driveのファイル）を添付\n' +
     '  ・日程調整URLを本文に追加（Spir）\n' +
+    '  ・重要フレーズを太字化（HTMLメール）\n' +
     '  ・メールは送信しません（下書き作成のみ）\n\n' +
     '件数が多い場合は時間がかかります。よろしいですか？',
     ui.ButtonSet.OK_CANCEL
@@ -203,17 +304,20 @@ function createDrafts_(options) {
     if (created >= limit) break;
 
     // 本文に日程調整URLを挿入（テキスト置換）
-    const body = rawBody.replace(SCHEDULE_OLD, SCHEDULE_NEW);
+    const plainBody = rawBody.replace(SCHEDULE_OLD, SCHEDULE_NEW);
+
+    // HTML本文（太字 + 改行 <br>）
+    const htmlBody = convertToHtml_(plainBody);
 
     // ----- Gmail下書き作成 -----
     try {
-      const draftOptions = {};
+      const draftOptions = { htmlBody: htmlBody };
       if (flyerBlob) {
         // copyBlob()で毎回フレッシュなコピーを作成（同一Blobの使い回し防止）
         draftOptions.attachments = [flyerBlob.copyBlob()];
       }
 
-      GmailApp.createDraft(email, subject, body, draftOptions);
+      GmailApp.createDraft(email, subject, plainBody, draftOptions);
       sheet.getRange(i + 1, COL_STATUS + 1).setValue('下書き作成済み');
 
       logCreated.push('行' + (i + 1) + ': ' + email);
@@ -230,7 +334,7 @@ function createDrafts_(options) {
   // ----- 完了ダイアログ -----
   const flyerMsg = flyerBlob ? 'チラシ添付あり ✅' : 'チラシ添付なし ⚠️';
   const summary = [
-    '【完了】' + flyerMsg,
+    '【完了】' + flyerMsg + '　HTMLメール ✅',
     '',
     '✅ 下書き作成: ' + logCreated.length + '件',
     '⏭️  スキップ:   ' + logSkipped.length + '件',
