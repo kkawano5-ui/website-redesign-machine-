@@ -43,15 +43,15 @@ const CONFIG = {
     '───────────────────────────□□□',
   ].join('\n'),
 
-  // シートのヘッダー列名（CSVと同じ名前を想定）
-  // emailBody はスクリプトが自動で追加（J列相当）
+  // シートのヘッダー列名（日本語/英語のどちらでもOK）
+  // 配列の先頭が「新規追加時に使う正式名」、それ以降はエイリアス
   columns: {
-    companyName: 'companyName',
-    contact: 'contact',
-    emailValueProposition: 'emailValueProposition',
-    emailBody: 'emailBody',
-    status: 'emailStatus',
-    draftedAt: 'draftedAt',
+    companyName: ['会社名', 'companyName'],
+    contact: ['問い合わせ窓口', 'contact'],
+    emailValueProposition: ['メール挿入用 提案文', 'emailValueProposition'],
+    emailBody: ['メール本文', 'emailBody'],
+    status: ['送信ステータス', 'emailStatus'],
+    draftedAt: ['下書き作成日時', 'draftedAt'],
   },
 
   // 1回の実行で生成する最大件数（Apps Scriptの実行時間制限対策）
@@ -125,8 +125,8 @@ function clearEmailBodies() {
 
   const sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
   const headers = sheet.getRange(1, 1, 1, sheet.getLastColumn()).getValues()[0].map(h => String(h).trim());
-  const bodyCol = headers.indexOf(CONFIG.columns.emailBody);
-  if (bodyCol < 0) { ui.alert('emailBody 列が見つかりません'); return; }
+  const bodyCol = findColumnIndex_(headers, CONFIG.columns.emailBody);
+  if (bodyCol < 0) { ui.alert('メール本文の列が見つかりません'); return; }
 
   const lastRow = sheet.getLastRow();
   if (lastRow < 2) return;
@@ -232,9 +232,9 @@ function resetStatus() {
 
   const sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
   const headers = sheet.getRange(1, 1, 1, sheet.getLastColumn()).getValues()[0].map(h => String(h).trim());
-  const statusCol = headers.indexOf(CONFIG.columns.status);
-  const draftedAtCol = headers.indexOf(CONFIG.columns.draftedAt);
-  if (statusCol < 0) { ui.alert('ステータス列が見つかりません'); return; }
+  const statusCol = findColumnIndex_(headers, CONFIG.columns.status);
+  const draftedAtCol = findColumnIndex_(headers, CONFIG.columns.draftedAt);
+  if (statusCol < 0) { ui.alert('送信ステータス列が見つかりません'); return; }
 
   const lastRow = sheet.getLastRow();
   if (lastRow < 2) return;
@@ -254,20 +254,24 @@ function prepareContext_(loadAttachment) {
 
   const headers = data[0].map(h => String(h).trim());
   const col = {};
-  for (const [key, name] of Object.entries(CONFIG.columns)) {
-    col[key] = headers.indexOf(name);
+  for (const [key, names] of Object.entries(CONFIG.columns)) {
+    col[key] = findColumnIndex_(headers, names);
   }
   for (const k of ['companyName', 'contact', 'emailValueProposition']) {
-    if (col[k] < 0) { ui.alert(`必須列「${CONFIG.columns[k]}」が見つかりません`); return null; }
+    if (col[k] < 0) {
+      const list = Array.isArray(CONFIG.columns[k]) ? CONFIG.columns[k] : [CONFIG.columns[k]];
+      ui.alert(`必須列「${list.join(' / ')}」のいずれかが見つかりません`);
+      return null;
+    }
   }
 
-  // 不足列を順番に追加：emailStatus(H) → draftedAt(I) → emailBody(J)
-  // 元CSVは A〜G の 7列のため、この順で追加すれば emailBody が J列に来る
+  // 不足列を順番に追加：送信ステータス(H) → 下書き作成日時(I) → メール本文(J)
+  // 元CSVは A〜G の 7列のため、この順で追加すれば「メール本文」が J列に来る
   let lastCol = headers.length;
   for (const key of ['status', 'draftedAt', 'emailBody']) {
     if (col[key] < 0) {
       col[key] = lastCol++;
-      sheet.getRange(1, col[key] + 1).setValue(CONFIG.columns[key]);
+      sheet.getRange(1, col[key] + 1).setValue(primaryColumnName_(CONFIG.columns[key]));
     }
   }
 
@@ -327,4 +331,17 @@ function buildBody_(companyName, valueProposition) {
 
 function isValidEmail_(s) {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(s);
+}
+
+function findColumnIndex_(headers, names) {
+  const list = Array.isArray(names) ? names : [names];
+  for (const n of list) {
+    const idx = headers.indexOf(n);
+    if (idx >= 0) return idx;
+  }
+  return -1;
+}
+
+function primaryColumnName_(names) {
+  return Array.isArray(names) ? names[0] : names;
 }
