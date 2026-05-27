@@ -38,16 +38,18 @@ const CONFIG = {
     '□□□───────────────────────────',
     '　　　合同会社 Asante Sana・RAHA KENYA',
     '　　　執行役員　河野 邦彦 / Kawano Kunihiko',
-    '　　　TEL　：070-8311-7053',
-    '　　　Email：info@rahakenya.jp',
+    '　　　電話　：070-8311-7053',
+    '　　　メール：info@rahakenya.jp',
     '───────────────────────────□□□',
   ].join('\n'),
 
   // シートのヘッダー列名（CSVと同じ名前を想定）
+  // emailBody はスクリプトが自動で追加（J列相当）
   columns: {
     companyName: 'companyName',
     contact: 'contact',
     emailValueProposition: 'emailValueProposition',
+    emailBody: 'emailBody',
     status: 'emailStatus',
     draftedAt: 'draftedAt',
   },
@@ -63,12 +65,74 @@ const CONFIG = {
 function onOpen() {
   SpreadsheetApp.getUi()
     .createMenu('RAHA')
-    .addItem('1行プレビュー（最初の未処理行）', 'previewFirstUnprocessed')
+    .addItem('① メール文面をJ列に書き出し', 'fillEmailBodies')
     .addSeparator()
-    .addItem('下書きを一括生成', 'generateDrafts')
+    .addItem('② Gmail下書きを一括生成（J列の本文を使用）', 'generateDrafts')
+    .addItem('　└ 1行プレビュー（最初の未処理行を試す）', 'previewFirstUnprocessed')
     .addSeparator()
-    .addItem('ステータスをリセット（強制再生成）', 'resetStatus')
+    .addItem('ステータスをリセット（再生成用）', 'resetStatus')
+    .addItem('J列の本文をクリア', 'clearEmailBodies')
     .addToUi();
+}
+
+function fillEmailBodies() {
+  const ctx = prepareContext_(false);
+  if (!ctx) return;
+  const { sheet, data, col, ui } = ctx;
+
+  // 既存セルがあるか確認
+  let existingCount = 0;
+  for (let i = 1; i < data.length; i++) {
+    if (String(data[i][col.emailBody] || '').trim()) existingCount++;
+  }
+
+  let overwrite = false;
+  if (existingCount > 0) {
+    const ans = ui.alert(
+      `既に ${existingCount} 件のセルに本文が入っています。\n\n` +
+      `[はい] 全部上書きする\n[いいえ] 空セルだけ書き出し\n[キャンセル] 中止`,
+      ui.ButtonSet.YES_NO_CANCEL
+    );
+    if (ans === ui.Button.CANCEL || ans === ui.Button.CLOSE) return;
+    overwrite = (ans === ui.Button.YES);
+  }
+
+  let written = 0, skipped = 0;
+
+  for (let i = 1; i < data.length; i++) {
+    const row = data[i];
+    const companyName = String(row[col.companyName] || '').trim();
+    const contact = String(row[col.contact] || '').trim();
+    const valueProp = String(row[col.emailValueProposition] || '').trim();
+    const existingBody = String(row[col.emailBody] || '').trim();
+
+    if (!overwrite && existingBody) continue;
+    if (!companyName || !contact || !valueProp) { skipped++; continue; }
+    if (!isValidEmail_(contact)) { skipped++; continue; }
+
+    const body = buildBody_(companyName, valueProp);
+    sheet.getRange(i + 1, col.emailBody + 1).setValue(body);
+    written++;
+  }
+
+  ui.alert(`完了\n書き出し: ${written} 件\nスキップ: ${skipped} 件`);
+}
+
+function clearEmailBodies() {
+  const ui = SpreadsheetApp.getUi();
+  const ans = ui.alert('J列（メール本文）を全行クリアします。よろしいですか？', ui.ButtonSet.YES_NO);
+  if (ans !== ui.Button.YES) return;
+
+  const sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+  const headers = sheet.getRange(1, 1, 1, sheet.getLastColumn()).getValues()[0].map(h => String(h).trim());
+  const bodyCol = headers.indexOf(CONFIG.columns.emailBody);
+  if (bodyCol < 0) { ui.alert('emailBody 列が見つかりません'); return; }
+
+  const lastRow = sheet.getLastRow();
+  if (lastRow < 2) return;
+
+  sheet.getRange(2, bodyCol + 1, lastRow - 1, 1).clearContent();
+  ui.alert('クリア完了');
 }
 
 function previewFirstUnprocessed() {
@@ -84,21 +148,23 @@ function previewFirstUnprocessed() {
     const companyName = String(row[col.companyName] || '').trim();
     const contact = String(row[col.contact] || '').trim();
     const valueProp = String(row[col.emailValueProposition] || '').trim();
+    const bodyFromSheet = String(row[col.emailBody] || '').trim();
 
     if (!companyName || !contact || !valueProp || !isValidEmail_(contact)) {
       continue;
     }
 
     const subject = CONFIG.subjectTemplate.replace('{companyName}', companyName);
-    const body = buildBody_(companyName, valueProp);
+    const body = bodyFromSheet || buildBody_(companyName, valueProp);
     const options = { from: CONFIG.fromEmail, name: CONFIG.fromName };
     if (attachment) options.attachments = [attachment];
 
     GmailApp.createDraft(contact, subject, body, options);
     sheet.getRange(i + 1, col.status + 1).setValue('drafted');
     sheet.getRange(i + 1, col.draftedAt + 1).setValue(new Date());
+    if (!bodyFromSheet) sheet.getRange(i + 1, col.emailBody + 1).setValue(body);
 
-    ui.alert(`プレビュー下書きを作成しました\n\n社名: ${companyName}\n宛先: ${contact}\n件名: ${subject}\n\nGmailの「下書き」フォルダで実物を確認してください。`);
+    ui.alert(`プレビュー下書きを作成しました\n\n社名: ${companyName}\n宛先: ${contact}\n件名: ${subject}\n本文ソース: ${bodyFromSheet ? 'J列の内容を使用' : '新規生成（J列にも保存）'}\n\nGmailの「下書き」フォルダで実物を確認してください。`);
     return;
   }
   ui.alert('未処理の有効行が見つかりませんでした');
@@ -138,13 +204,15 @@ function generateDrafts() {
 
     try {
       const subject = CONFIG.subjectTemplate.replace('{companyName}', companyName);
-      const body = buildBody_(companyName, valueProp);
+      const bodyFromSheet = String(row[col.emailBody] || '').trim();
+      const body = bodyFromSheet || buildBody_(companyName, valueProp);
       const options = { from: CONFIG.fromEmail, name: CONFIG.fromName };
       if (attachment) options.attachments = [attachment];
 
       GmailApp.createDraft(contact, subject, body, options);
       sheet.getRange(i + 1, col.status + 1).setValue('drafted');
       sheet.getRange(i + 1, col.draftedAt + 1).setValue(new Date());
+      if (!bodyFromSheet) sheet.getRange(i + 1, col.emailBody + 1).setValue(body);
       drafted++;
       Utilities.sleep(CONFIG.sleepBetweenDrafts);
     } catch (e) {
@@ -193,14 +261,14 @@ function prepareContext_(loadAttachment) {
     if (col[k] < 0) { ui.alert(`必須列「${CONFIG.columns[k]}」が見つかりません`); return null; }
   }
 
+  // 不足列を順番に追加：emailStatus(H) → draftedAt(I) → emailBody(J)
+  // 元CSVは A〜G の 7列のため、この順で追加すれば emailBody が J列に来る
   let lastCol = headers.length;
-  if (col.status < 0) {
-    col.status = lastCol++;
-    sheet.getRange(1, col.status + 1).setValue(CONFIG.columns.status);
-  }
-  if (col.draftedAt < 0) {
-    col.draftedAt = lastCol++;
-    sheet.getRange(1, col.draftedAt + 1).setValue(CONFIG.columns.draftedAt);
+  for (const key of ['status', 'draftedAt', 'emailBody']) {
+    if (col[key] < 0) {
+      col[key] = lastCol++;
+      sheet.getRange(1, col[key] + 1).setValue(CONFIG.columns[key]);
+    }
   }
 
   let attachment = null;
