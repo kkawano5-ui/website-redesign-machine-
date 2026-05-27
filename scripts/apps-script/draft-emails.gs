@@ -33,13 +33,14 @@ const CONFIG = {
   // 添付PDFのGoogle DriveファイルID
   materialFileId: '1paLoTQO_38q-Q1BwRcE6P5c66F2E9BEh',
 
-  // 署名（複数行可。後で差し替え）
+  // 署名
   signature: [
-    '--',
-    '河野',
-    'RAHA KENYA',
-    'Mail: info@rahakenya.jp',
-    'HP: https://raha-kenya.com',
+    '□□□───────────────────────────',
+    '　　　合同会社 Asante Sana・RAHA KENYA',
+    '           執行役員   河野 邦彦 / Kawano Kunihiko',
+    '　　　TEL：070-8311-7053',
+    '　       Email：info@rahakenya.jp',
+    '───────────────────────────□□□',
   ].join('\n'),
 
   // シートのヘッダー列名（CSVと同じ名前を想定）
