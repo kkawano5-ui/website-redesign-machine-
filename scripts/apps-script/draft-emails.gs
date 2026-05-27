@@ -156,7 +156,11 @@ function previewFirstUnprocessed() {
 
     const subject = CONFIG.subjectTemplate.replace('{companyName}', companyName);
     const body = bodyFromSheet || buildBody_(companyName, valueProp);
-    const options = { from: CONFIG.fromEmail, name: CONFIG.fromName };
+    const options = {
+      from: CONFIG.fromEmail,
+      name: CONFIG.fromName,
+      htmlBody: toHtmlBody_(body),
+    };
     if (attachment) options.attachments = [attachment];
 
     GmailApp.createDraft(contact, subject, body, options);
@@ -206,7 +210,11 @@ function generateDrafts() {
       const subject = CONFIG.subjectTemplate.replace('{companyName}', companyName);
       const bodyFromSheet = String(row[col.emailBody] || '').trim();
       const body = bodyFromSheet || buildBody_(companyName, valueProp);
-      const options = { from: CONFIG.fromEmail, name: CONFIG.fromName };
+      const options = {
+        from: CONFIG.fromEmail,
+        name: CONFIG.fromName,
+        htmlBody: toHtmlBody_(body),
+      };
       if (attachment) options.attachments = [attachment];
 
       GmailApp.createDraft(contact, subject, body, options);
@@ -331,6 +339,19 @@ function buildBody_(companyName, valueProposition) {
 
 function isValidEmail_(s) {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(s);
+}
+
+function toHtmlBody_(plainBody) {
+  // HTMLエスケープ
+  let html = String(plainBody)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;');
+  // URLを<a>タグでリンク化（行末や全角文字の前で停止）
+  html = html.replace(/(https?:\/\/[^\s<　]+)/g, '<a href="$1">$1</a>');
+  // 改行を<br>に変換
+  html = html.replace(/\n/g, '<br>\n');
+  return `<div style="font-family: 'Hiragino Sans', 'Meiryo', sans-serif; font-size: 14px; line-height: 1.7; color: #222;">${html}</div>`;
 }
 
 function findColumnIndex_(headers, names) {
