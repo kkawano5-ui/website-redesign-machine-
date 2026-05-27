@@ -16,8 +16,6 @@ const headers = [
   ['url', 'URL'],
   ['businessOverview', '事業概要'],
   ['contact', '問い合わせ窓口'],
-  ['representative', '代表者'],
-  ['recruitPageUrl', '採用ページURL'],
   ['emailValueProposition', 'メール挿入用 提案文'],
 ];
 
