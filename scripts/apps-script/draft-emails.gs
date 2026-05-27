@@ -27,12 +27,11 @@ const CONFIG = {
   // 件名テンプレート（{companyName} は社名に置換）
   subjectTemplate: '{companyName}様の集客・採用について、SNS活用のご提案',
 
-  // Spir 調整リンク（後で記入）
-  spirUrl: '',
+  // Spir 調整リンク
+  spirUrl: 'https://app.spirinc.com/t/lH7s5QtOzh9e4QKm6Z5_q/as/GbO-VlrFmSDEq2AnmZhTl/confirm',
 
   // 添付PDFのGoogle DriveファイルID
-  // 例: https://drive.google.com/file/d/【この部分がID】/view
-  materialFileId: '',
+  materialFileId: '1paLoTQO_38q-Q1BwRcE6P5c66F2E9BEh',
 
   // 署名（複数行可。後で差し替え）
   signature: [
