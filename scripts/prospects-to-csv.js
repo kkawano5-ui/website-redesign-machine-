@@ -18,7 +18,7 @@ const headers = [
   ['contact', '問い合わせ窓口'],
   ['representative', '代表者'],
   ['recruitPageUrl', '採用ページURL'],
-  ['salesHookHypothesis', '営業トーク仮説'],
+  ['emailValueProposition', 'メール挿入用 提案文'],
 ];
 
 const escapeCsv = (value) => {
