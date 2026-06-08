@@ -9,7 +9,8 @@
     "model": "node scripts/revenue-model.js",
     "leads": "node scripts/expand-leads.js",
     "outreach": "node scripts/generate-outreach.js",
-    "audit": "node scripts/audit-site.js"
+    "audit": "node scripts/audit-site.js",
+    "test": "node --test"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.39.0",
