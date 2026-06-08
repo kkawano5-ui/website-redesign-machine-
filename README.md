@@ -172,6 +172,26 @@ npm run model -- --price 400000 --close 0.08 --demos 60 --retainer 18000
 - `gtm/pricing.md`: 料金パッケージ、価格の根拠、ユニットエコノミクス
 - `gtm/outreach-templates.md`: 価値提供型・法令順守のアウトリーチ文面（送信前チェック付き）
 
+### 個別アウトリーチ生成 + パイプライン管理
+
+入力JSONから、会社ごとにパーソナライズした送付用文面（初回＋フォロー）を生成します。
+既存サイトの課題・強み・デモURLを自動で差し込むため、手作業の差し込みが不要になり
+送付数（最も安いレバー）を増やせます。
+
+```bash
+npm run outreach -- --base-url https://demos.example.com
+# 特定の1社だけ:
+npm run outreach -- --base-url https://demos.example.com data/inputs/sample.json
+```
+
+生成物:
+- `data/outreach/{slug}.md`: 送付用の下書き（コンプライアンス確認は `gtm/outreach-templates.md`）
+- `data/outreach/pipeline.csv`: 商談管理表（slug/会社名/デモURL/ステータス/最終接触/メモ）
+
+`pipeline.csv` の `status` を手で更新（未送付→送付→返信→商談化→成約 等）すれば、
+再実行してもステータスは保持されます。実績の `送付→成約` 率を `npm run model --close`
+に反映すれば、到達予測が実データで精緻化します。
+
 ## 実運用のコツ（業種汎用化）
 
 - `industry`（例: 墓石・霊園 / 病院 / 士業 / 製造業 / 介護）を入力すると、仕様書内の信頼要素・画像方針・注意表現が業種寄りになります。
