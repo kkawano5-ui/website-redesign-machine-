@@ -7,6 +7,7 @@
     "build:site": "node scripts/generate-site.js",
     "build:all": "node scripts/build-all-sites.js",
     "model": "node scripts/revenue-model.js",
+    "saas": "node scripts/saas-model.js",
     "leads": "node scripts/expand-leads.js",
     "outreach": "node scripts/generate-outreach.js",
     "audit": "node scripts/audit-site.js",
