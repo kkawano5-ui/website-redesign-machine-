@@ -4,7 +4,8 @@
   "type": "module",
   "scripts": {
     "run:one": "node scripts/run-one.js",
-    "build:site": "node scripts/generate-site.js"
+    "build:site": "node scripts/generate-site.js",
+    "build:all": "node scripts/build-all-sites.js"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.39.0",
