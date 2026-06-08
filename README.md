@@ -77,6 +77,29 @@ npm run run:one -- data/inputs/sample.json
 - `slug` は `companySlug` があればそれを優先、なければ会社名またはファイル名から生成
 
 
+## 既存サイト診断（根拠あるアウトリーチ）
+
+見込み客の現サイトを解析し、具体的な課題（スマホ非対応・メタ情報欠落・非HTTPS・
+古いHTMLタグなど）を検出します。アウトリーチを「拝見したところ〇〇が…」と
+根拠ベースにでき、返信・成約率の向上につながります。手作業のリサーチも省けます。
+
+```bash
+# 保存したHTMLファイルを診断（ネットワーク制限環境でも動作）
+npm run audit -- data/samples/old-site-example.html
+
+# URL指定（取得できない環境では保存HTMLでの実行を案内）
+npm run audit -- https://prospect.example.com
+
+# 検出結果を入力JSONの currentSiteIssues に反映
+npm run audit -- prospect-saved.html --write data/inputs/foo.json
+```
+
+出力: 簡易スコア（低いほど改善余地大）＋検出課題＋`currentSiteIssues` 用のJSON。
+`--write` で入力JSONの課題を実測値に差し替えられ、その後の仕様書・デモ・アウトリーチ
+すべてに根拠が反映されます。
+
+> 注: 正規表現ベースの簡易ヒューリスティックです。商談で事実として述べる前に裏取りを。
+
 ## リード一括展開（CSV -> 入力JSONの量産）
 
 営業先リスト（CSV）を、検証を通る入力JSONに一括変換します。`companyName` と

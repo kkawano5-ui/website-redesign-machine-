@@ -338,6 +338,9 @@ export function buildDemoSiteHtml(manusJson) {
   <title>${escapeHtml(companyName)}｜リニューアルデモ</title>
   <meta name="description" content="${escapeHtml(companyName)}のWebサイトリニューアル提案デモ。${escapeHtml(industryLabel)}向けに、信頼感と相談導線を重視して再設計しました。" />
   <meta name="robots" content="noindex" />
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="${escapeHtml(companyName)}｜リニューアルデモ" />
+  <meta property="og:description" content="${escapeHtml(industryLabel)}向けに信頼感と相談導線を重視して再設計した提案デモです。" />
   <script src="https://cdn.tailwindcss.com"></script>
   <style>:root{--accent:${theme.accent};--accent-dark:${theme.accentDark};--tint:${theme.tint}}html{scroll-behavior:smooth}body{font-feature-settings:"palt"}</style>
 </head>

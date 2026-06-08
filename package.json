@@ -8,7 +8,8 @@
     "build:all": "node scripts/build-all-sites.js",
     "model": "node scripts/revenue-model.js",
     "leads": "node scripts/expand-leads.js",
-    "outreach": "node scripts/generate-outreach.js"
+    "outreach": "node scripts/generate-outreach.js",
+    "audit": "node scripts/audit-site.js"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.39.0",
