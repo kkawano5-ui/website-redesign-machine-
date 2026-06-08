@@ -192,6 +192,108 @@ ${buttons}
   </section>`;
 }
 
+// Industry-aware FAQ. Answering common doubts on-page is a proven way to
+// lift the demo->contact conversion rate (the `close` lever in the model).
+const FAQ_BY_INDUSTRY = {
+  memorial: [
+    ['見学だけでも可能ですか？', 'はい、見学のみでも歓迎です。無理な勧誘はいたしません。ご都合に合わせてご案内します。'],
+    ['費用には何が含まれますか？', '基本費用に含まれる範囲と、別途必要になる費用の条件まで事前にご説明します。'],
+    ['宗旨宗派の制限はありますか？', '原則として宗旨宗派を問わずご相談いただけます。詳細はお問い合わせください。']
+  ],
+  medical: [
+    ['予約は必要ですか？', 'Web予約・お電話のいずれでも受け付けています。当日の空き状況もご案内できます。'],
+    ['初診で持っていくものは？', '保険証と、お持ちの方はお薬手帳をご持参ください。問診票は事前にご記入いただけます。'],
+    ['駐車場はありますか？', 'アクセスページに駐車場・最寄り交通機関の情報を掲載しています。']
+  ],
+  professional: [
+    ['初回相談は無料ですか？', '初回相談の条件（無料/有料・時間）を明記しています。お気軽にご予約ください。'],
+    ['料金体系を知りたいのですが', '主要業務の料金の目安を料金案内に掲載しています。お見積りは無料です。'],
+    ['オンライン相談は可能ですか？', '対応可否をご相談時にご案内します。遠方の方もお問い合わせください。']
+  ],
+  care: [
+    ['見学はできますか？', 'はい、随時見学を受け付けています。ご家族そろってのご相談も歓迎です。'],
+    ['空き状況を知りたい', '最新の受け入れ状況をお問い合わせ時にご案内します。'],
+    ['送迎はありますか？', '対応エリア・送迎の有無をご相談時にご説明します。']
+  ],
+  manufacturing: [
+    ['小ロットでも対応可能ですか？', '対応可能なロット・材質・精度をお問い合わせ時にご確認いただけます。'],
+    ['見積もりにかかる時間は？', '図面・仕様をいただければ、可能な範囲で迅速にお見積りします。'],
+    ['短納期に対応できますか？', '工程と現状の負荷に応じてご相談に応じます。まずはご連絡ください。']
+  ],
+  construction: [
+    ['相談・見積もりは無料ですか？', 'ご相談・お見積りは無料です。内容を伺ったうえでご提案します。'],
+    ['対応エリアはどこまでですか？', '地域密着で対応しています。エリアの詳細はお問い合わせください。'],
+    ['アフター対応はありますか？', '施工後の保証・アフターサポート体制についてもご説明します。']
+  ],
+  general: [
+    ['相談・見積もりは無料ですか？', 'ご相談・お見積りは無料です。内容を伺ったうえで最適なご提案をします。'],
+    ['対応エリアを教えてください', '地域を中心に対応しています。詳細はお問い合わせ時にご案内します。'],
+    ['どのくらいで対応できますか？', '内容を伺ったうえで、スケジュールの目安をご案内します。']
+  ]
+};
+
+function renderTestimonials(ctx) {
+  // Placeholder testimonials — clearly marked as samples to replace.
+  const samples = [
+    ['丁寧に相談に乗ってもらえて安心できました。', '40代・ご家族'],
+    ['対応が早く、こちらの要望をよく汲んでくれました。', '50代・ご利用者'],
+    ['初めてでも分かりやすく説明してもらえました。', '30代・ご相談者']
+  ];
+  const cards = samples
+    .map(
+      ([quote, who]) => `      <figure class="rounded-xl border border-slate-200 bg-white p-6">
+        <div class="mb-3 text-lg" style="color:var(--accent)" aria-hidden="true">★★★★★</div>
+        <blockquote class="text-slate-700">「${escapeHtml(quote)}」</blockquote>
+        <figcaption class="mt-3 text-sm text-slate-500">${escapeHtml(who)}</figcaption>
+      </figure>`
+    )
+    .join('\n');
+  return `  <section class="bg-slate-50">
+    <div class="mx-auto max-w-6xl px-6 py-20">
+      <h2 class="text-2xl font-bold text-slate-900 sm:text-3xl">お客様の声</h2>
+      <p class="mt-3 text-sm text-slate-500">※掲載内容はデモ用のサンプルです。実際の声に差し替えてください。</p>
+      <div class="mt-10 grid grid-cols-1 gap-6 sm:grid-cols-3">
+${cards}
+      </div>
+    </div>
+  </section>`;
+}
+
+function renderFaq(industry) {
+  const faqs = FAQ_BY_INDUSTRY[industry] ?? FAQ_BY_INDUSTRY.general;
+  const items = faqs
+    .map(
+      ([q, a]) => `      <details class="group border-b border-slate-200 py-5">
+        <summary class="flex cursor-pointer items-center justify-between text-base font-semibold text-slate-900">
+          <span>${escapeHtml(q)}</span>
+          <span class="ml-4 select-none text-slate-400 transition group-open:rotate-45" aria-hidden="true">＋</span>
+        </summary>
+        <p class="mt-3 text-slate-600">${escapeHtml(a)}</p>
+      </details>`
+    )
+    .join('\n');
+  return `  <section class="bg-white">
+    <div class="mx-auto max-w-3xl px-6 py-20">
+      <h2 class="text-2xl font-bold text-slate-900 sm:text-3xl">よくあるご質問</h2>
+      <div class="mt-8">
+${items}
+      </div>
+    </div>
+  </section>`;
+}
+
+function renderStickyBar(ctx) {
+  // Mobile-only sticky CTA — keeps the primary action one tap away while
+  // scrolling, a reliable lift to contact rate on phones.
+  // NOTE: replace href="#contact" on the call button with a real tel: link.
+  return `  <div class="fixed inset-x-0 bottom-0 z-30 border-t border-slate-200 bg-white/95 p-3 backdrop-blur sm:hidden">
+    <div class="flex gap-3">
+      <a href="#contact" class="flex-1 rounded-lg border border-slate-300 py-3 text-center text-sm font-semibold text-slate-700">電話で相談</a>
+      <a href="#contact" class="flex-1 rounded-lg py-3 text-center text-sm font-semibold text-white" style="background:var(--accent)">${escapeHtml(ctx.primaryCta)}</a>
+    </div>
+  </div>`;
+}
+
 export function buildDemoSiteHtml(manusJson) {
   const companyName = pickFirstValue(manusJson, ['companyName', 'company', 'name'], '対象企業');
   const industry = detectIndustry(manusJson);
@@ -214,6 +316,7 @@ export function buildDemoSiteHtml(manusJson) {
   const ctx = {
     companyName,
     theme,
+    industry,
     industryLabel,
     catch1,
     catch2,
@@ -255,15 +358,18 @@ ${renderHero(ctx)}
 ${renderStats(stats)}
 ${renderServices(ctx)}
 ${renderTrust(ctx)}
+${renderTestimonials(ctx)}
+${renderFaq(industry)}
 ${renderCta(ctx)}
 
-  <footer class="bg-slate-900 py-10 text-slate-300">
+  <footer class="bg-slate-900 py-10 pb-24 text-slate-300 sm:pb-10">
     <div class="mx-auto flex max-w-6xl flex-col gap-2 px-6 text-sm">
       <span class="font-semibold text-white">${escapeHtml(companyName)}</span>
       <span class="text-slate-400">&copy; ${year} ${escapeHtml(companyName)}</span>
       <span class="mt-2 text-xs text-slate-500">Demo redesign concept — 営業提案用のデモサイトです。実在の内容とは異なる場合があります。</span>
     </div>
   </footer>
+${renderStickyBar(ctx)}
 </body>
 </html>
 `;
