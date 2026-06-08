@@ -1,6 +1,6 @@
 import { pickFirstValue, toBulletList } from './utils.js';
 
-function normalizeArray(value) {
+export function normalizeArray(value) {
   if (Array.isArray(value)) return value.map((v) => String(v).trim()).filter(Boolean);
   if (typeof value === 'string' && value.trim()) return [value.trim()];
   return [];
@@ -13,7 +13,7 @@ function indentBullets(text, indent = '  ') {
     .join('\n');
 }
 
-function detectIndustry(manusJson) {
+export function detectIndustry(manusJson) {
   const explicit = pickFirstValue(manusJson, ['industry', 'businessType'], '').toLowerCase();
   const seed = [
     explicit,
@@ -42,7 +42,7 @@ function pagePurpose(page) {
   return 'ページの役割を明確化し、次アクションに進みやすい導線を作る。';
 }
 
-function createIndustryGuide(industry) {
+export function createIndustryGuide(industry) {
   const guides = {
     memorial: {
       trust: ['宗派・宗旨への対応可否', '供養・法要の流れ説明', '費用内訳の透明性', 'アクセスと駐車場情報'],
