@@ -77,6 +77,35 @@ npm run run:one -- data/inputs/sample.json
 - `slug` は `companySlug` があればそれを優先、なければ会社名またはファイル名から生成
 
 
+## リード一括展開（CSV -> 入力JSONの量産）
+
+営業先リスト（CSV）を、検証を通る入力JSONに一括変換します。`companyName` と
+`website`、`industry` 程度の薄い情報から、業種テンプレートで必須項目を補完します。
+これにより「送付デモ数」を増やす入口を量産できます（売上モデルで最も安いレバー）。
+
+```bash
+npm run leads -- data/leads/prospects-sample.csv
+# 既存JSONを上書きする場合:
+npm run leads -- data/leads/prospects-sample.csv --force
+```
+
+CSVの列:
+- `companyName`（必須）, `website`, `industry`, `companySlug`
+- 任意で各必須項目を上書き可能（複数値は `|` 区切り。例: `companyOverview` 列に `A|B`）
+
+業種は `industry` 列または会社名・概要から自動判定し、`recommendedPages` /
+`ctaIdeas` / `designTone` などを業種に合わせて補完します。生成物は
+`data/inputs/{slug}.json`。既存ファイルは既定でスキップします。
+
+### 量産パイプライン（リスト -> デモ一覧）
+
+```bash
+npm run leads -- data/leads/prospects-sample.csv   # CSV -> 入力JSON
+npm run build:all                                  # 入力JSON -> デモ + ギャラリー
+```
+
+2コマンドで、プロスペクト一覧からデモサイト群と提案用まとめURLまで生成できます。
+
 ## デモサイト生成（Manus JSON -> 公開可能な1ページサイト）
 
 仕様書だけでなく、**そのまま公開できる営業デモサイト**を1コマンドで生成します。
