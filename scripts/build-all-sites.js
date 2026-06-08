@@ -51,13 +51,16 @@ async function listInputFiles(inputsDir) {
 function renderGallery(cards) {
   const cardHtml = cards
     .map(
-      (c) => `      <a href="./${escapeHtml(c.slug)}/index.html" class="group block overflow-hidden rounded-xl border border-slate-200 bg-white transition hover:-translate-y-1 hover:shadow-lg">
-        <div class="h-28" style="background:linear-gradient(135deg, ${c.accent} 0%, ${c.accentDark} 100%)"></div>
-        <div class="p-5">
-          <span class="text-xs font-medium text-slate-500">${escapeHtml(c.industryLabel)}</span>
-          <h2 class="mt-1 text-lg font-semibold text-slate-900 group-hover:underline">${escapeHtml(c.companyName)}</h2>
+      (c) => `      <a href="./${escapeHtml(c.slug)}/index.html" class="group block overflow-hidden rounded-[1.75rem] bg-white shadow-sm ring-1 ring-slate-100 transition hover:-translate-y-1.5 hover:shadow-xl">
+        <div class="relative h-32 overflow-hidden" style="background:linear-gradient(135deg, ${c.accent} 0%, ${c.accentDark} 100%)">
+          <span class="absolute -right-6 -top-6 h-24 w-24 rounded-full bg-white/20" aria-hidden="true"></span>
+          <span class="absolute bottom-3 left-4 h-10 w-10 rounded-full bg-white/25" aria-hidden="true"></span>
+        </div>
+        <div class="p-6">
+          <span class="text-xs font-semibold" style="color:${c.accent}">${escapeHtml(c.industryLabel)}</span>
+          <h2 class="mt-1 text-lg font-bold text-slate-900">${escapeHtml(c.companyName)}</h2>
           <p class="mt-2 line-clamp-2 text-sm text-slate-600">${escapeHtml(c.concept)}</p>
-          <span class="mt-4 inline-flex items-center gap-1 text-sm font-semibold text-slate-700">デモを開く <span aria-hidden="true">→</span></span>
+          <span class="mt-4 inline-flex items-center gap-1 text-sm font-bold" style="color:${c.accent}">デモを開く <span class="transition group-hover:translate-x-1" aria-hidden="true">→</span></span>
         </div>
       </a>`
     )
@@ -74,10 +77,12 @@ function renderGallery(cards) {
   <style>body{font-feature-settings:"palt"}.line-clamp-2{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}</style>
 </head>
 <body class="bg-slate-50 text-slate-800 antialiased">
-  <header class="bg-slate-900 py-12 text-white">
-    <div class="mx-auto max-w-6xl px-6">
-      <h1 class="text-2xl font-bold sm:text-3xl">Webサイトリニューアル提案デモ</h1>
-      <p class="mt-3 text-slate-300">各社向けに作成したデモサイトの一覧です（${cards.length}件）。カードから個別デモを開けます。</p>
+  <header class="relative overflow-hidden py-16 text-white" style="background:linear-gradient(135deg, #6366f1 0%, #ec4899 100%)">
+    <div class="pointer-events-none absolute -left-16 -top-16 h-56 w-56 rounded-full bg-white/15 blur-2xl" aria-hidden="true"></div>
+    <div class="pointer-events-none absolute -bottom-20 right-10 h-64 w-64 rounded-full bg-white/10 blur-2xl" aria-hidden="true"></div>
+    <div class="relative mx-auto max-w-6xl px-6">
+      <h1 class="text-3xl font-extrabold sm:text-4xl">Webサイトリニューアル提案デモ</h1>
+      <p class="mt-3 text-white/90">各社向けに作成したデモサイトの一覧です（${cards.length}件）。カードから個別デモを開けます。</p>
     </div>
   </header>
   <main class="mx-auto max-w-6xl px-6 py-12">
@@ -91,15 +96,16 @@ ${cardHtml}
 `;
 }
 
-// Keep theme colors in sync with build-demo-site.js for gallery thumbnails.
+// Keep theme colors in sync with build-demo-site.js (accent -> accent2)
+// for gallery thumbnails.
 const THEME_COLORS = {
-  memorial: ['#2f6b4f', '#1f4a37'],
-  medical: ['#1f6fb2', '#155080'],
-  professional: ['#1f3a5f', '#13263f'],
-  care: ['#c9742b', '#9c581f'],
-  manufacturing: ['#37597a', '#243c52'],
-  construction: ['#b9772b', '#8a591f'],
-  general: ['#3a4db5', '#283787']
+  memorial: ['#10b981', '#5eead4'],
+  medical: ['#2563eb', '#22d3ee'],
+  professional: ['#6366f1', '#a78bfa'],
+  care: ['#fb7185', '#fbbf24'],
+  manufacturing: ['#0ea5e9', '#38bdf8'],
+  construction: ['#f59e0b', '#fb923c'],
+  general: ['#8b5cf6', '#ec4899']
 };
 
 async function main() {

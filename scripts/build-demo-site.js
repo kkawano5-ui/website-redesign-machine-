@@ -17,14 +17,17 @@ import { pickFirstValue } from './utils.js';
  * dropped straight onto Cloudflare Pages / any static host.
  */
 
+// Pop palette: each theme is a vivid two-stop gradient (accent -> accent2)
+// plus a soft tint for blob backgrounds. Brighter and friendlier than a
+// single corporate hue, while staying tasteful enough for SMB trust.
 const THEMES = {
-  memorial: { accent: '#2f6b4f', accentDark: '#1f4a37', tint: '#eef4f0', name: '深緑' },
-  medical: { accent: '#1f6fb2', accentDark: '#155080', tint: '#eaf3fa', name: '清潔ブルー' },
-  professional: { accent: '#1f3a5f', accentDark: '#13263f', tint: '#eef1f6', name: 'ネイビー' },
-  care: { accent: '#c9742b', accentDark: '#9c581f', tint: '#fbf2e8', name: '温かみオレンジ' },
-  manufacturing: { accent: '#37597a', accentDark: '#243c52', tint: '#eef1f5', name: 'スチールブルー' },
-  construction: { accent: '#b9772b', accentDark: '#8a591f', tint: '#fbf4e9', name: 'アンバー' },
-  general: { accent: '#3a4db5', accentDark: '#283787', tint: '#eef0fa', name: 'インディゴ' }
+  memorial: { accent: '#10b981', accent2: '#5eead4', accentDark: '#047857', tint: '#ecfdf5', name: 'フレッシュグリーン' },
+  medical: { accent: '#2563eb', accent2: '#22d3ee', accentDark: '#1d4ed8', tint: '#eff6ff', name: 'スカイブルー' },
+  professional: { accent: '#6366f1', accent2: '#a78bfa', accentDark: '#4338ca', tint: '#eef2ff', name: 'バイオレット' },
+  care: { accent: '#fb7185', accent2: '#fbbf24', accentDark: '#e11d48', tint: '#fff1f2', name: 'コーラルポップ' },
+  manufacturing: { accent: '#0ea5e9', accent2: '#38bdf8', accentDark: '#0369a1', tint: '#f0f9ff', name: 'エレクトリックブルー' },
+  construction: { accent: '#f59e0b', accent2: '#fb923c', accentDark: '#d97706', tint: '#fffbeb', name: 'サンセットアンバー' },
+  general: { accent: '#8b5cf6', accent2: '#ec4899', accentDark: '#6d28d9', tint: '#faf5ff', name: 'ポップパープル' }
 };
 
 const INDUSTRY_LABELS = {
@@ -76,18 +79,59 @@ function navId(index) {
   return `section-${index + 1}`;
 }
 
+// Abstract, copyright-safe hero artwork built purely from theme colors:
+// overlapping circles, an organic blob, an ellipse, floating dots and a
+// hand-drawn-style curve. Gives the "ポップ" visual the hero needs without
+// any photo/illustration licensing risk.
+function renderHeroArt(theme) {
+  return `        <svg viewBox="0 0 420 420" class="h-full w-full" role="img" aria-label="装飾イラスト" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <linearGradient id="hg1" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0" stop-color="${theme.accent}" />
+              <stop offset="1" stop-color="${theme.accent2}" />
+            </linearGradient>
+            <linearGradient id="hg2" x1="0" y1="1" x2="1" y2="0">
+              <stop offset="0" stop-color="${theme.accent2}" />
+              <stop offset="1" stop-color="${theme.accent}" />
+            </linearGradient>
+          </defs>
+          <ellipse cx="225" cy="320" rx="150" ry="40" fill="${theme.accent2}" opacity="0.18" />
+          <path d="M300 120 C350 160 360 250 300 300 C245 345 150 345 105 290 C65 240 70 150 130 110 C185 73 255 83 300 120 Z" fill="url(#hg1)" />
+          <circle cx="150" cy="150" r="70" fill="url(#hg2)" opacity="0.85" />
+          <circle cx="225" cy="210" r="120" fill="none" stroke="${theme.accent2}" stroke-width="3" opacity="0.6" />
+          <path d="M70 270 C140 220 200 320 350 250" fill="none" stroke="#ffffff" stroke-width="4" stroke-linecap="round" opacity="0.85" />
+          <circle cx="330" cy="110" r="16" fill="#ffffff" opacity="0.9" />
+          <circle cx="95" cy="120" r="10" fill="${theme.accent2}" />
+          <circle cx="300" cy="300" r="13" fill="#ffffff" opacity="0.8" />
+          <circle cx="360" cy="200" r="8" fill="${theme.accent}" />
+        </svg>`;
+}
+
 function renderHero(ctx) {
-  const { companyName, catch1, catch2, primaryCta, theme, industryLabel } = ctx;
-  return `  <section class="relative overflow-hidden">
-    <div class="absolute inset-0 -z-10" style="background:linear-gradient(135deg, ${theme.accent} 0%, ${theme.accentDark} 100%)"></div>
-    <div class="mx-auto max-w-6xl px-6 py-24 sm:py-32 text-white">
-      <p class="mb-4 inline-block rounded-full bg-white/15 px-4 py-1 text-sm font-medium tracking-wide">${escapeHtml(industryLabel)}向けリニューアル提案</p>
-      <h1 class="max-w-3xl text-3xl font-bold leading-tight sm:text-5xl">${escapeHtml(catch1)}</h1>
-      <p class="mt-6 max-w-2xl text-lg leading-relaxed text-white/90">${escapeHtml(catch2)}</p>
-      <div class="mt-10 flex flex-wrap gap-4">
-        <a href="#contact" class="rounded-lg bg-white px-7 py-3.5 text-base font-semibold shadow-sm transition hover:translate-y-[-1px] hover:shadow-md" style="color:${theme.accentDark}">${escapeHtml(primaryCta)}</a>
-        <a href="#${navId(0)}" class="rounded-lg border border-white/40 px-7 py-3.5 text-base font-semibold text-white transition hover:bg-white/10">サービスを見る</a>
+  const { catch1, catch2, primaryCta, theme, industryLabel } = ctx;
+  return `  <section class="relative overflow-hidden bg-white">
+    <div class="pointer-events-none absolute inset-0 -z-10 overflow-hidden" aria-hidden="true">
+      <div class="absolute -left-28 -top-28 h-96 w-96 rounded-full opacity-40 blur-3xl" style="background:radial-gradient(circle at 30% 30%, ${theme.accent2}, transparent 70%)"></div>
+      <div class="absolute -right-10 top-24 h-[30rem] w-[30rem] rounded-full opacity-30 blur-3xl" style="background:radial-gradient(circle at 70% 30%, ${theme.accent}, transparent 70%)"></div>
+    </div>
+    <div class="mx-auto grid max-w-6xl items-center gap-10 px-6 pb-28 pt-16 sm:pt-20 lg:grid-cols-2 lg:gap-6">
+      <div>
+        <p class="mb-5 inline-flex items-center gap-2 rounded-full bg-white px-4 py-1.5 text-sm font-semibold shadow-sm ring-1 ring-slate-100" style="color:${theme.accentDark}"><span class="inline-block h-2 w-2 rounded-full" style="background:${theme.accent}"></span>${escapeHtml(industryLabel)}向けリニューアル提案</p>
+        <h1 class="text-4xl font-extrabold leading-[1.15] tracking-tight text-slate-900 sm:text-5xl">${escapeHtml(catch1)}</h1>
+        <p class="mt-6 max-w-xl text-lg leading-relaxed text-slate-600">${escapeHtml(catch2)}</p>
+        <div class="mt-9 flex flex-wrap gap-4">
+          <a href="#contact" class="rounded-full px-8 py-4 text-base font-bold text-white shadow-lg transition hover:-translate-y-0.5 hover:shadow-xl" style="background:linear-gradient(135deg, ${theme.accent} 0%, ${theme.accent2} 100%)">${escapeHtml(primaryCta)}</a>
+          <a href="#${navId(0)}" class="rounded-full bg-white px-8 py-4 text-base font-bold text-slate-700 shadow-sm ring-1 ring-slate-200 transition hover:-translate-y-0.5 hover:shadow">サービスを見る</a>
+        </div>
       </div>
+      <div class="relative mx-auto aspect-square w-full max-w-sm sm:max-w-md">
+${renderHeroArt(theme)}
+      </div>
+    </div>
+    <div class="-mb-px" aria-hidden="true">
+      <svg viewBox="0 0 1440 120" preserveAspectRatio="none" class="h-16 w-full sm:h-24" xmlns="http://www.w3.org/2000/svg">
+        <path d="M0 64 C 240 8 480 8 720 56 C 960 104 1200 112 1440 64 L1440 120 L0 120 Z" fill="#f8fafc" />
+      </svg>
     </div>
   </section>`;
 }
@@ -95,14 +139,15 @@ function renderHero(ctx) {
 function renderStats(stats) {
   const cells = stats
     .map(
-      (s) => `      <div class="text-center">
-        <dt class="text-3xl font-bold" style="color:var(--accent)">${escapeHtml(s.value)}</dt>
-        <dd class="mt-1 text-sm text-slate-600">${escapeHtml(s.label)}</dd>
+      (s) => `      <div class="flex flex-col items-center rounded-[2rem] bg-white px-6 py-8 text-center shadow-sm ring-1 ring-slate-100">
+        <span class="mb-3 inline-flex h-3 w-3 rounded-full" style="background:var(--accent)" aria-hidden="true"></span>
+        <dt class="text-2xl font-extrabold text-slate-900 sm:text-3xl">${escapeHtml(s.value)}</dt>
+        <dd class="mt-1 text-sm text-slate-500">${escapeHtml(s.label)}</dd>
       </div>`
     )
     .join('\n');
-  return `  <section class="border-b border-slate-100 bg-white">
-    <dl class="mx-auto grid max-w-4xl grid-cols-1 gap-8 px-6 py-12 sm:grid-cols-3">
+  return `  <section class="bg-slate-50">
+    <dl class="mx-auto grid max-w-4xl grid-cols-1 gap-6 px-6 pb-16 sm:grid-cols-3">
 ${cells}
     </dl>
   </section>`;
@@ -123,19 +168,19 @@ function renderServices(ctx) {
   const cards = pages
     .map((page, i) => {
       const cta = ctaIdeas[i % Math.max(ctaIdeas.length, 1)] ?? '詳しく見る';
-      return `      <article class="group rounded-xl border border-slate-200 bg-white p-7 transition hover:border-transparent hover:shadow-lg">
-        <div class="mb-4 inline-flex h-11 w-11 items-center justify-center rounded-lg text-lg font-bold text-white" style="background:var(--accent)">${i + 1}</div>
-        <h3 class="text-lg font-semibold text-slate-900">${escapeHtml(page)}</h3>
+      return `      <article class="group rounded-[1.75rem] bg-white p-7 shadow-sm ring-1 ring-slate-100 transition hover:-translate-y-1 hover:shadow-xl">
+        <div class="mb-5 inline-flex h-14 w-14 items-center justify-center rounded-full text-lg font-extrabold text-white shadow-md" style="background:linear-gradient(135deg, var(--accent) 0%, var(--accent2) 100%)">${i + 1}</div>
+        <h3 class="text-lg font-bold text-slate-900">${escapeHtml(page)}</h3>
         <p class="mt-2 text-sm leading-relaxed text-slate-600">${escapeHtml(pagePurposeLine(page))}</p>
-        <a href="#contact" class="mt-4 inline-flex items-center gap-1 text-sm font-semibold" style="color:var(--accent)">${escapeHtml(cta)} <span aria-hidden="true">→</span></a>
+        <a href="#contact" class="mt-4 inline-flex items-center gap-1 text-sm font-bold" style="color:var(--accent)">${escapeHtml(cta)} <span class="transition group-hover:translate-x-1" aria-hidden="true">→</span></a>
       </article>`;
     })
     .join('\n');
   return `  <section id="${navId(0)}" class="bg-slate-50">
     <div class="mx-auto max-w-6xl px-6 py-20">
-      <h2 class="text-2xl font-bold text-slate-900 sm:text-3xl">ご提案するページ構成</h2>
+      <h2 class="text-2xl font-extrabold text-slate-900 sm:text-3xl">ご提案するページ構成</h2>
       <p class="mt-3 max-w-2xl text-slate-600">検討中のお客様が迷わず相談まで進める導線でリニューアルします。</p>
-      <div class="mt-10 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+      <div class="mt-12 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
 ${cards}
       </div>
     </div>
@@ -145,22 +190,23 @@ ${cards}
 function renderTrust(ctx) {
   const { trust, concept } = ctx;
   const conceptItems = concept
-    .map((c) => `        <li class="flex gap-3"><span class="mt-1 select-none" style="color:var(--accent)" aria-hidden="true">●</span><span>${escapeHtml(c)}</span></li>`)
+    .map((c) => `        <li class="flex gap-3"><span class="mt-0.5 inline-flex h-6 w-6 flex-none items-center justify-center rounded-full text-xs font-bold text-white" style="background:linear-gradient(135deg, var(--accent) 0%, var(--accent2) 100%)" aria-hidden="true">●</span><span>${escapeHtml(c)}</span></li>`)
     .join('\n');
   const trustItems = trust
-    .map((t) => `        <li class="flex gap-3"><span class="mt-1 select-none text-slate-400" aria-hidden="true">✓</span><span>${escapeHtml(t)}</span></li>`)
+    .map((t) => `        <li class="flex gap-3"><span class="mt-0.5 inline-flex h-6 w-6 flex-none items-center justify-center rounded-full bg-white text-xs font-bold shadow-sm" style="color:var(--accent)" aria-hidden="true">✓</span><span>${escapeHtml(t)}</span></li>`)
     .join('\n');
   return `  <section id="${navId(1)}" class="bg-white">
     <div class="mx-auto grid max-w-6xl gap-12 px-6 py-20 lg:grid-cols-2">
       <div>
-        <h2 class="text-2xl font-bold text-slate-900 sm:text-3xl">私たちが大切にすること</h2>
-        <ul class="mt-6 space-y-3 text-slate-700">
+        <h2 class="text-2xl font-extrabold text-slate-900 sm:text-3xl">私たちが大切にすること</h2>
+        <ul class="mt-6 space-y-4 text-slate-700">
 ${conceptItems}
         </ul>
       </div>
-      <div class="rounded-2xl p-8" style="background:var(--tint)">
-        <h3 class="text-lg font-semibold text-slate-900">安心していただくために</h3>
-        <ul class="mt-5 space-y-3 text-slate-700">
+      <div class="relative overflow-hidden rounded-[2.5rem] p-8" style="background:var(--tint)">
+        <div class="pointer-events-none absolute -right-10 -top-10 h-40 w-40 rounded-full opacity-50 blur-2xl" style="background:var(--accent2)" aria-hidden="true"></div>
+        <h3 class="relative text-lg font-bold text-slate-900">安心していただくために</h3>
+        <ul class="relative mt-5 space-y-4 text-slate-700">
 ${trustItems}
         </ul>
       </div>
@@ -174,19 +220,21 @@ function renderCta(ctx) {
     .slice(0, 3)
     .map((c, i) =>
       i === 0
-        ? `        <a href="#contact" class="rounded-lg bg-white px-7 py-3.5 font-semibold shadow-sm transition hover:shadow-md" style="color:${theme.accentDark}">${escapeHtml(c)}</a>`
-        : `        <a href="#contact" class="rounded-lg border border-white/50 px-7 py-3.5 font-semibold text-white transition hover:bg-white/10">${escapeHtml(c)}</a>`
+        ? `        <a href="#contact" class="rounded-full bg-white px-8 py-4 font-bold shadow-lg transition hover:-translate-y-0.5 hover:shadow-xl" style="color:${theme.accentDark}">${escapeHtml(c)}</a>`
+        : `        <a href="#contact" class="rounded-full border-2 border-white/60 px-8 py-4 font-bold text-white transition hover:bg-white/10">${escapeHtml(c)}</a>`
     )
     .join('\n');
-  return `  <section id="contact">
-    <div class="px-6 py-20 text-white" style="background:linear-gradient(135deg, ${theme.accent} 0%, ${theme.accentDark} 100%)">
-      <div class="mx-auto max-w-3xl text-center">
-        <h2 class="text-2xl font-bold sm:text-3xl">まずはお気軽にご相談ください</h2>
+  return `  <section id="contact" class="bg-white px-6 py-20">
+    <div class="relative mx-auto max-w-5xl overflow-hidden rounded-[3rem] px-6 py-20 text-center text-white shadow-xl" style="background:linear-gradient(135deg, ${theme.accent} 0%, ${theme.accent2} 100%)">
+      <div class="pointer-events-none absolute -left-16 -top-16 h-64 w-64 rounded-full bg-white/15 blur-2xl" aria-hidden="true"></div>
+      <div class="pointer-events-none absolute -bottom-20 -right-12 h-72 w-72 rounded-full bg-white/10 blur-2xl" aria-hidden="true"></div>
+      <div class="relative mx-auto max-w-3xl">
+        <h2 class="text-3xl font-extrabold sm:text-4xl">まずはお気軽にご相談ください</h2>
         <p class="mt-4 text-white/90">ご相談・お見積りは無料です。内容を伺ったうえで、最適なご提案をいたします。</p>
-        <div class="mt-8 flex flex-wrap justify-center gap-4">
+        <div class="mt-9 flex flex-wrap justify-center gap-4">
 ${buttons}
         </div>
-        <p class="mt-6 text-sm text-white/70">※本ページはリニューアル提案用のデモです。お問い合わせ内容は送信されません。</p>
+        <p class="mt-6 text-sm text-white/80">※本ページはリニューアル提案用のデモです。お問い合わせ内容は送信されません。</p>
       </div>
     </div>
   </section>`;
@@ -241,16 +289,19 @@ function renderTestimonials(ctx) {
   ];
   const cards = samples
     .map(
-      ([quote, who]) => `      <figure class="rounded-xl border border-slate-200 bg-white p-6">
-        <div class="mb-3 text-lg" style="color:var(--accent)" aria-hidden="true">★★★★★</div>
-        <blockquote class="text-slate-700">「${escapeHtml(quote)}」</blockquote>
+      ([quote, who]) => `      <figure class="rounded-[1.75rem] bg-white p-7 shadow-sm ring-1 ring-slate-100">
+        <div class="flex items-center gap-3">
+          <span class="inline-flex h-11 w-11 items-center justify-center rounded-full text-base font-extrabold text-white" style="background:linear-gradient(135deg, var(--accent) 0%, var(--accent2) 100%)" aria-hidden="true">${escapeHtml(who.slice(0, 1))}</span>
+          <span class="text-lg" style="color:var(--accent)" aria-hidden="true">★★★★★</span>
+        </div>
+        <blockquote class="mt-4 text-slate-700">「${escapeHtml(quote)}」</blockquote>
         <figcaption class="mt-3 text-sm text-slate-500">${escapeHtml(who)}</figcaption>
       </figure>`
     )
     .join('\n');
   return `  <section class="bg-slate-50">
     <div class="mx-auto max-w-6xl px-6 py-20">
-      <h2 class="text-2xl font-bold text-slate-900 sm:text-3xl">お客様の声</h2>
+      <h2 class="text-2xl font-extrabold text-slate-900 sm:text-3xl">お客様の声</h2>
       <p class="mt-3 text-sm text-slate-500">※掲載内容はデモ用のサンプルです。実際の声に差し替えてください。</p>
       <div class="mt-10 grid grid-cols-1 gap-6 sm:grid-cols-3">
 ${cards}
@@ -263,10 +314,10 @@ function renderFaq(industry) {
   const faqs = FAQ_BY_INDUSTRY[industry] ?? FAQ_BY_INDUSTRY.general;
   const items = faqs
     .map(
-      ([q, a]) => `      <details class="group border-b border-slate-200 py-5">
-        <summary class="flex cursor-pointer items-center justify-between text-base font-semibold text-slate-900">
+      ([q, a]) => `      <details class="group mb-4 rounded-2xl bg-slate-50 px-6 py-5 ring-1 ring-slate-100">
+        <summary class="flex cursor-pointer items-center justify-between text-base font-bold text-slate-900">
           <span>${escapeHtml(q)}</span>
-          <span class="ml-4 select-none text-slate-400 transition group-open:rotate-45" aria-hidden="true">＋</span>
+          <span class="ml-4 inline-flex h-7 w-7 flex-none select-none items-center justify-center rounded-full text-white transition group-open:rotate-45" style="background:linear-gradient(135deg, var(--accent) 0%, var(--accent2) 100%)" aria-hidden="true">＋</span>
         </summary>
         <p class="mt-3 text-slate-600">${escapeHtml(a)}</p>
       </details>`
@@ -274,7 +325,7 @@ function renderFaq(industry) {
     .join('\n');
   return `  <section class="bg-white">
     <div class="mx-auto max-w-3xl px-6 py-20">
-      <h2 class="text-2xl font-bold text-slate-900 sm:text-3xl">よくあるご質問</h2>
+      <h2 class="text-2xl font-extrabold text-slate-900 sm:text-3xl">よくあるご質問</h2>
       <div class="mt-8">
 ${items}
       </div>
@@ -288,8 +339,8 @@ function renderStickyBar(ctx) {
   // NOTE: replace href="#contact" on the call button with a real tel: link.
   return `  <div class="fixed inset-x-0 bottom-0 z-30 border-t border-slate-200 bg-white/95 p-3 backdrop-blur sm:hidden">
     <div class="flex gap-3">
-      <a href="#contact" class="flex-1 rounded-lg border border-slate-300 py-3 text-center text-sm font-semibold text-slate-700">電話で相談</a>
-      <a href="#contact" class="flex-1 rounded-lg py-3 text-center text-sm font-semibold text-white" style="background:var(--accent)">${escapeHtml(ctx.primaryCta)}</a>
+      <a href="#contact" class="flex-1 rounded-full border border-slate-300 py-3 text-center text-sm font-bold text-slate-700">電話で相談</a>
+      <a href="#contact" class="flex-1 rounded-full py-3 text-center text-sm font-bold text-white" style="background:linear-gradient(135deg, var(--accent) 0%, var(--accent2) 100%)">${escapeHtml(ctx.primaryCta)}</a>
     </div>
   </div>`;
 }
@@ -342,7 +393,7 @@ export function buildDemoSiteHtml(manusJson) {
   <meta property="og:title" content="${escapeHtml(companyName)}｜リニューアルデモ" />
   <meta property="og:description" content="${escapeHtml(industryLabel)}向けに信頼感と相談導線を重視して再設計した提案デモです。" />
   <script src="https://cdn.tailwindcss.com"></script>
-  <style>:root{--accent:${theme.accent};--accent-dark:${theme.accentDark};--tint:${theme.tint}}html{scroll-behavior:smooth}body{font-feature-settings:"palt"}</style>
+  <style>:root{--accent:${theme.accent};--accent2:${theme.accent2};--accent-dark:${theme.accentDark};--tint:${theme.tint}}html{scroll-behavior:smooth}body{font-feature-settings:"palt"}</style>
 </head>
 <body class="bg-white text-slate-800 antialiased">
   <header class="sticky top-0 z-20 border-b border-slate-100 bg-white/90 backdrop-blur">
@@ -353,7 +404,7 @@ export function buildDemoSiteHtml(manusJson) {
         <a href="#${navId(1)}" class="hover:text-slate-900">特長</a>
         <a href="#contact" class="hover:text-slate-900">お問い合わせ</a>
       </nav>
-      <a href="#contact" class="rounded-lg px-5 py-2 text-sm font-semibold text-white shadow-sm transition hover:opacity-90" style="background:var(--accent)">${escapeHtml(primaryCta)}</a>
+      <a href="#contact" class="rounded-full px-6 py-2.5 text-sm font-bold text-white shadow-sm transition hover:opacity-90" style="background:linear-gradient(135deg, var(--accent) 0%, var(--accent2) 100%)">${escapeHtml(primaryCta)}</a>
     </div>
   </header>
 
