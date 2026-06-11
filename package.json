@@ -3,7 +3,15 @@
   "version": "0.1.0",
   "type": "module",
   "scripts": {
-    "run:one": "node scripts/run-one.js"
+    "run:one": "node scripts/run-one.js",
+    "build:site": "node scripts/generate-site.js",
+    "build:all": "node scripts/build-all-sites.js",
+    "model": "node scripts/revenue-model.js",
+    "saas": "node scripts/saas-model.js",
+    "leads": "node scripts/expand-leads.js",
+    "outreach": "node scripts/generate-outreach.js",
+    "audit": "node scripts/audit-site.js",
+    "test": "node --test"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.39.0",

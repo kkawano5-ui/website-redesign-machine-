@@ -1,0 +1,21 @@
+name: CI
+
+on:
+  push:
+    branches: ['**']
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      # Core logic uses only Node built-ins + local modules, so no install
+      # is needed to verify the revenue machine stays correct.
+      - name: Run tests
+        run: node --test
+      - name: Smoke-build demo sites
+        run: npm run build:all

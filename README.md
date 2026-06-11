@@ -77,6 +77,144 @@ npm run run:one -- data/inputs/sample.json
 - `slug` は `companySlug` があればそれを優先、なければ会社名またはファイル名から生成
 
 
+## 既存サイト診断（根拠あるアウトリーチ）
+
+見込み客の現サイトを解析し、具体的な課題（スマホ非対応・メタ情報欠落・非HTTPS・
+古いHTMLタグなど）を検出します。アウトリーチを「拝見したところ〇〇が…」と
+根拠ベースにでき、返信・成約率の向上につながります。手作業のリサーチも省けます。
+
+```bash
+# 保存したHTMLファイルを診断（ネットワーク制限環境でも動作）
+npm run audit -- data/samples/old-site-example.html
+
+# URL指定（取得できない環境では保存HTMLでの実行を案内）
+npm run audit -- https://prospect.example.com
+
+# 検出結果を入力JSONの currentSiteIssues に反映
+npm run audit -- prospect-saved.html --write data/inputs/foo.json
+```
+
+出力: 簡易スコア（低いほど改善余地大）＋検出課題＋`currentSiteIssues` 用のJSON。
+`--write` で入力JSONの課題を実測値に差し替えられ、その後の仕様書・デモ・アウトリーチ
+すべてに根拠が反映されます。
+
+> 注: 正規表現ベースの簡易ヒューリスティックです。商談で事実として述べる前に裏取りを。
+
+## リード一括展開（CSV -> 入力JSONの量産）
+
+営業先リスト（CSV）を、検証を通る入力JSONに一括変換します。`companyName` と
+`website`、`industry` 程度の薄い情報から、業種テンプレートで必須項目を補完します。
+これにより「送付デモ数」を増やす入口を量産できます（売上モデルで最も安いレバー）。
+
+```bash
+npm run leads -- data/leads/prospects-sample.csv
+# 既存JSONを上書きする場合:
+npm run leads -- data/leads/prospects-sample.csv --force
+```
+
+CSVの列:
+- `companyName`（必須）, `website`, `industry`, `companySlug`
+- 任意で各必須項目を上書き可能（複数値は `|` 区切り。例: `companyOverview` 列に `A|B`）
+
+業種は `industry` 列または会社名・概要から自動判定し、`recommendedPages` /
+`ctaIdeas` / `designTone` などを業種に合わせて補完します。生成物は
+`data/inputs/{slug}.json`。既存ファイルは既定でスキップします。
+
+### 量産パイプライン（リスト -> デモ一覧）
+
+```bash
+npm run leads -- data/leads/prospects-sample.csv   # CSV -> 入力JSON
+npm run build:all                                  # 入力JSON -> デモ + ギャラリー
+```
+
+2コマンドで、プロスペクト一覧からデモサイト群と提案用まとめURLまで生成できます。
+
+## デモサイト生成（Manus JSON -> 公開可能な1ページサイト）
+
+仕様書だけでなく、**そのまま公開できる営業デモサイト**を1コマンドで生成します。
+LLM APIを呼ばない決定論的生成のため、APIキー不要・追加課金なし・即時・再現可能で、
+デモURLを量産できます（営業の核となる導線）。
+
+```bash
+npm run build:site -- data/inputs/sample.json
+```
+
+生成物:
+- `data/sites/{slug}/index.html`（Tailwind CDN利用・ビルド不要の静的1ページ）
+- `data/sites/{slug}/_headers`（`noindex` 付与）
+
+特徴:
+- 業種を自動判定し、配色テーマ・信頼補強要素・注意表現を業種寄りに最適化
+- 会社概要テキストから「◯年」「◯件」などの実績値を抽出してトラストバーに反映
+- ヒーロー / 実績 / ページ構成 / 特長 / お客様の声 / FAQ / CTA / フッターのセクション構成
+- 成約率を高める要素を標準搭載: 業種別FAQ（来店前の不安を解消）、お客様の声（差し替え枠）、
+  モバイル用の固定CTAバー（電話・相談が常に1タップ）
+- セマンティックHTML・レスポンシブ・スムーススクロール対応
+- フッターに「Demo redesign concept」を明記（提案デモであることを明示）
+
+### 一括生成 + ポートフォリオ（量産）
+
+`data/inputs` 内の全JSONをまとめてサイト化し、全デモへのリンクをまとめた
+ギャラリーページ（`data/sites/index.html`）を自動生成します。営業先に見せる
+「1つのまとめURL」を1コマンドで用意できます。
+
+```bash
+npm run build:all
+```
+
+生成物:
+- `data/sites/{slug}/`（各社のデモサイト）
+- `data/sites/index.html`（全デモを業種別カードで一覧表示するギャラリー）
+
+1社失敗しても他社の生成は継続し、最後に成功/失敗件数を表示します。
+
+### Cloudflare Pages へのデプロイ
+
+`data/sites/{slug}/` を静的ディレクトリとしてアップロードするだけで公開できます
+（ビルドコマンド不要、出力ディレクトリにそのフォルダを指定）。`data/sites/` 全体を
+公開すれば、`index.html` がそのままデモ一覧のトップページになります。
+
+## 収益化キット（デモ → 売上）
+
+デモを作るだけでは1円も生みません。成約までの「営業の型」と「数値モデル」を同梱しています。
+
+### 売上モデル（¥1億までの道筋を可視化）
+
+```bash
+npm run model
+# 前提を変える例:
+npm run model -- --price 400000 --close 0.08 --demos 60 --retainer 18000
+```
+
+初期制作単価・月額保守・月間デモ送付数・成約率などを入力すると、月次の売上/利益/累計利益と
+**目標純資産（既定 ¥1億）への到達月**を表示します。最も安く動かせる変数は
+`demos`（送付デモ数）＝このマシンの量産機能です。
+
+### 営業資料
+
+- `gtm/pricing.md`: 料金パッケージ、価格の根拠、ユニットエコノミクス
+- `gtm/outreach-templates.md`: 価値提供型・法令順守のアウトリーチ文面（送信前チェック付き）
+
+### 個別アウトリーチ生成 + パイプライン管理
+
+入力JSONから、会社ごとにパーソナライズした送付用文面（初回＋フォロー）を生成します。
+既存サイトの課題・強み・デモURLを自動で差し込むため、手作業の差し込みが不要になり
+送付数（最も安いレバー）を増やせます。
+
+```bash
+npm run outreach -- --base-url https://demos.example.com
+# 特定の1社だけ:
+npm run outreach -- --base-url https://demos.example.com data/inputs/sample.json
+```
+
+生成物:
+- `data/outreach/{slug}.md`: 送付用の下書き（コンプライアンス確認は `gtm/outreach-templates.md`）
+- `data/outreach/pipeline.csv`: 商談管理表（slug/会社名/デモURL/ステータス/最終接触/メモ）
+
+`pipeline.csv` の `status` を手で更新（未送付→送付→返信→商談化→成約 等）すれば、
+再実行してもステータスは保持されます。実績の `送付→成約` 率を `npm run model --close`
+に反映すれば、到達予測が実データで精緻化します。
+
 ## 実運用のコツ（業種汎用化）
 
 - `industry`（例: 墓石・霊園 / 病院 / 士業 / 製造業 / 介護）を入力すると、仕様書内の信頼要素・画像方針・注意表現が業種寄りになります。
