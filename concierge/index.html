@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Tokyo Insider — Private Concierge | The Japan you can't book on your own</title>
+  <meta name="description" content="An English-speaking private concierge for hard-to-reserve dining, private cultural access, and bespoke journeys across Tokyo, Kyoto and beyond. Designed, reserved and hosted for you." />
+  <meta property="og:title" content="Tokyo Insider — Private Concierge" />
+  <meta property="og:description" content="The Japan you can't book on your own — hard-to-reserve dining, private cultural access, and bespoke journeys, in English." />
+  <meta property="og:type" content="website" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            ink: '#0b0907', ink2: '#120d0a',
+            ember: '#d8a23a', ember2: '#e7c06a',
+            cream: '#f4ece0', muted: '#b3a48f',
+          },
+          fontFamily: {
+            display: ['"Cormorant Garamond"', 'serif'],
+            sans: ['Inter', 'system-ui', 'sans-serif'],
+          },
+        },
+      },
+    };
+  </script>
+  <style>
+    body { background-color: #0b0907; }
+    .grain::before {
+      content: ""; position: fixed; inset: 0; pointer-events: none; z-index: 1; opacity: .05;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    }
+    .glow { background: radial-gradient(60% 50% at 50% 0%, rgba(216,162,58,.18), transparent 70%); }
+    .hairline { border-color: rgba(216,162,58,.18); }
+    .photo { background-size: cover; background-position: center; }
+    .p-hero {
+      background-image:
+        linear-gradient(180deg, rgba(11,9,7,.36) 0%, rgba(11,9,7,.66) 62%, rgba(11,9,7,.92) 100%),
+        url('hero.png'),
+        linear-gradient(180deg, #1a130d, #0b0907);
+    }
+    .p-dining {
+      background-image:
+        linear-gradient(180deg, rgba(11,9,7,.12), rgba(11,9,7,.55)),
+        url('taste.png'),
+        linear-gradient(135deg, #1a130d, #0b0907);
+    }
+    .p-culture {
+      background-image:
+        linear-gradient(180deg, rgba(11,9,7,.12), rgba(11,9,7,.55)),
+        url('host.png'),
+        linear-gradient(135deg, #1a130d, #0b0907);
+    }
+    .p-journey {
+      background-image:
+        linear-gradient(180deg, rgba(11,9,7,.12), rgba(11,9,7,.55)),
+        url('private.png'),
+        linear-gradient(135deg, #1a130d, #0b0907);
+    }
+    details > summary { list-style: none; cursor: pointer; }
+    details > summary::-webkit-details-marker { display: none; }
+    details[open] .chev { transform: rotate(45deg); }
+  </style>
+</head>
+<body class="grain font-sans text-cream antialiased selection:bg-ember/30">
+
+  <!-- NAV -->
+  <header class="fixed top-0 inset-x-0 z-50 backdrop-blur-md bg-ink/70 border-b hairline">
+    <div class="max-w-6xl mx-auto px-5 h-16 flex items-center justify-between">
+      <a href="#top" class="font-display text-lg tracking-wide text-cream">Tokyo <span class="text-ember">Insider</span> <span class="text-muted text-sm tracking-widest">· Private Concierge</span></a>
+      <nav class="hidden md:flex items-center gap-7 text-sm text-muted">
+        <a href="#open" class="hover:text-cream transition">What we open</a>
+        <a href="#how" class="hover:text-cream transition">How it works</a>
+        <a href="#investment" class="hover:text-cream transition">Investment</a>
+        <a href="#advisors" class="hover:text-cream transition">Advisors</a>
+        <a href="#faq" class="hover:text-cream transition">FAQ</a>
+      </nav>
+      <a href="#enquire" class="text-sm font-medium px-4 py-2 rounded-full bg-ember text-ink hover:bg-ember2 transition">Enquire</a>
+    </div>
+  </header>
+
+  <!-- HERO -->
+  <section id="top" class="relative min-h-[100svh] flex items-center glow pt-16">
+    <div class="absolute inset-0 photo p-hero"></div>
+    <div class="relative z-10 max-w-6xl mx-auto px-5 py-20">
+      <p class="text-ember tracking-[0.25em] text-xs uppercase mb-5">Private concierge · Tokyo · Kyoto · Beyond</p>
+      <h1 class="font-display text-5xl sm:text-6xl md:text-7xl leading-[1.02] max-w-3xl">
+        The Japan you can't book <span class="italic text-ember2">on your own.</span>
+      </h1>
+      <p class="mt-6 text-lg md:text-xl text-cream/85 max-w-2xl">
+        An English-speaking concierge for hard-to-reserve dining, private cultural &amp; craft access, and
+        bespoke multi-day journeys — designed, reserved, and hosted for you, end to end.
+      </p>
+      <div class="mt-9 flex flex-col sm:flex-row gap-3">
+        <a href="#enquire" class="text-center px-7 py-3.5 rounded-full bg-ember text-ink font-semibold hover:bg-ember2 transition">Request an introduction</a>
+        <a href="#advisors" class="text-center px-7 py-3.5 rounded-full border hairline text-cream hover:bg-white/5 transition">For travel advisors</a>
+      </div>
+      <p class="mt-7 text-sm text-muted">By introduction · Discreet · In partnership with licensed travel agents</p>
+    </div>
+  </section>
+
+  <!-- WHAT WE OPEN -->
+  <section id="open" class="relative z-10 max-w-6xl mx-auto px-5 py-24">
+    <div class="mb-12">
+      <p class="text-ember tracking-[0.2em] text-xs uppercase mb-3">What we open</p>
+      <h2 class="font-display text-4xl md:text-5xl max-w-2xl">Three doors most travelers never reach</h2>
+    </div>
+    <div class="grid md:grid-cols-3 gap-6">
+      <!-- Pillar 1 -->
+      <div class="rounded-2xl border hairline bg-ink2/60 overflow-hidden flex flex-col">
+        <div class="photo p-dining h-44"></div>
+        <div class="p-7 flex flex-col flex-1">
+          <div class="text-ember font-display text-3xl mb-2">01</div>
+          <h3 class="font-display text-2xl text-cream">Impossible reservations</h3>
+          <p class="text-cream/80 text-[15px] mt-3 flex-1">
+            Counter omakase, chef's tables, and members-only rooms that don't take outside bookings —
+            secured, in English, with the context to enjoy them like a regular.
+          </p>
+          <p class="text-muted text-xs mt-5">Sushi &amp; kaiseki counters · Reservation-only rooms · Same-night bar &amp; whisky pairings</p>
+        </div>
+      </div>
+      <!-- Pillar 2 -->
+      <div class="rounded-2xl border hairline bg-ink2/60 overflow-hidden flex flex-col">
+        <div class="photo p-culture h-44"></div>
+        <div class="p-7 flex flex-col flex-1">
+          <div class="text-ember font-display text-3xl mb-2">02</div>
+          <h3 class="font-display text-2xl text-cream">Private cultural &amp; craft access</h3>
+          <p class="text-cream/80 text-[15px] mt-3 flex-1">
+            Ryotei, ateliers, makers and temples opened privately — a tea master, a sword polisher,
+            a sake brewer, an evening with geiko — translated and hosted, not just ticketed.
+          </p>
+          <p class="text-muted text-xs mt-5">Artisans &amp; makers · Ryotei &amp; temples · Behind-the-scenes, in your language</p>
+        </div>
+      </div>
+      <!-- Pillar 3 -->
+      <div class="rounded-2xl border hairline bg-ink2/60 overflow-hidden flex flex-col">
+        <div class="photo p-journey h-44"></div>
+        <div class="p-7 flex flex-col flex-1">
+          <div class="text-ember font-display text-3xl mb-2">03</div>
+          <h3 class="font-display text-2xl text-cream">Bespoke multi-day journeys</h3>
+          <p class="text-cream/80 text-[15px] mt-3 flex-1">
+            Tokyo and Kyoto, plus one regional hero route you couldn't assemble yourself —
+            Kanazawa craft &amp; sake, the Setouchi islands, or the snow of Hakuba &amp; Niseko.
+          </p>
+          <p class="text-muted text-xs mt-5">Stays · Transfers · Access — woven into one seamless itinerary</p>
+        </div>
+      </div>
+    </div>
+    <p class="text-center text-muted text-sm mt-7">Most clients begin with a single evening, then ask us to design the rest of the trip.</p>
+  </section>
+
+  <!-- HOW IT WORKS -->
+  <section id="how" class="relative z-10 border-y hairline bg-ink2/40">
+    <div class="max-w-6xl mx-auto px-5 py-24">
+      <div class="mb-12">
+        <p class="text-ember tracking-[0.2em] text-xs uppercase mb-3">How it works</p>
+        <h2 class="font-display text-4xl md:text-5xl max-w-2xl">One window, from first message to last night</h2>
+      </div>
+      <div class="grid md:grid-cols-4 gap-10">
+        <div>
+          <div class="text-ember font-display text-3xl mb-3">01</div>
+          <h3 class="font-display text-xl mb-2">Design</h3>
+          <p class="text-cream/80 text-[15px]">A private brief — your tastes, pace and occasion. We propose, you refine.</p>
+        </div>
+        <div>
+          <div class="text-ember font-display text-3xl mb-3">02</div>
+          <h3 class="font-display text-xl mb-2">Reserve &amp; access</h3>
+          <p class="text-cream/80 text-[15px]">We secure the tables, rooms and makers — and handle the Japanese, the calls and the deposits.</p>
+        </div>
+        <div>
+          <div class="text-ember font-display text-3xl mb-3">03</div>
+          <h3 class="font-display text-xl mb-2">Hosted on the ground</h3>
+          <p class="text-cream/80 text-[15px]">A native-English host accompanies the moments that matter, with translation and the stories behind them.</p>
+        </div>
+        <div>
+          <div class="text-ember font-display text-3xl mb-3">04</div>
+          <h3 class="font-display text-xl mb-2">Beyond</h3>
+          <p class="text-cream/80 text-[15px]">Bottles shipped, the next visit planned, introductions made. The best trips become the next ones.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- INVESTMENT -->
+  <section id="investment" class="relative z-10 max-w-6xl mx-auto px-5 py-24">
+    <div class="mb-12">
+      <p class="text-ember tracking-[0.2em] text-xs uppercase mb-3">Investment</p>
+      <h2 class="font-display text-4xl md:text-5xl max-w-2xl">Three ways to work with us</h2>
+    </div>
+    <div class="grid md:grid-cols-3 gap-6">
+      <div class="rounded-2xl border hairline bg-ink2/60 p-7 flex flex-col">
+        <h3 class="font-display text-2xl text-cream">Access</h3>
+        <p class="text-sm text-muted mt-1">À la carte reservations &amp; introductions</p>
+        <p class="text-cream/80 text-[15px] mt-5 flex-1">Single hard-to-book dinners, bars or makers — reserved and briefed, with optional host.</p>
+        <div class="mt-6"><span class="text-muted text-sm">from</span> <span class="font-display text-3xl text-cream">¥15,000</span> <span class="text-muted text-sm">/ reservation</span></div>
+        <p class="text-muted text-xs mt-2">On-site host from ¥40,000</p>
+      </div>
+      <div class="rounded-2xl border border-ember/40 bg-ink2/80 p-7 flex flex-col relative">
+        <span class="absolute -top-3 left-7 text-[11px] uppercase tracking-widest bg-ember text-ink px-3 py-1 rounded-full">Most chosen</span>
+        <h3 class="font-display text-2xl text-cream">A Day, Curated</h3>
+        <p class="text-sm text-muted mt-1">A private day or evening, fully hosted</p>
+        <p class="text-cream/80 text-[15px] mt-5 flex-1">Dining, a private cultural moment and a members-only nightcap — designed, reserved and accompanied.</p>
+        <div class="mt-6"><span class="text-muted text-sm">from</span> <span class="font-display text-3xl text-cream">¥200,000</span> <span class="text-muted text-sm">/ day</span></div>
+        <p class="text-muted text-xs mt-2">2 guests · +¥50,000 each · dining &amp; transport at cost</p>
+      </div>
+      <div class="rounded-2xl border hairline bg-ink2/60 p-7 flex flex-col">
+        <h3 class="font-display text-2xl text-cream">The Bespoke Journey</h3>
+        <p class="text-sm text-muted mt-1">Multi-day, multi-city, end to end</p>
+        <p class="text-cream/80 text-[15px] mt-5 flex-1">Tokyo–Kyoto plus one regional hero route — stays, transfers and private access woven into one itinerary.</p>
+        <div class="mt-6"><span class="text-muted text-sm">from</span> <span class="font-display text-3xl text-cream">¥500,000</span> <span class="text-muted text-sm">· by enquiry</span></div>
+        <p class="text-muted text-xs mt-2">Planning &amp; management · ~20% of trip · stays at cost</p>
+      </div>
+    </div>
+    <p class="text-center text-muted text-xs mt-7">Our fee is for our service; dining, stays, access &amp; transport are billed at cost. Indicative starting points — every brief is quoted privately.</p>
+  </section>
+
+  <!-- WHY US -->
+  <section class="relative z-10 border-y hairline bg-ink2/40">
+    <div class="max-w-6xl mx-auto px-5 py-24">
+      <div class="mb-12">
+        <p class="text-ember tracking-[0.2em] text-xs uppercase mb-3">Why us</p>
+        <h2 class="font-display text-4xl md:text-5xl max-w-2xl">Relationships and language — the two things money alone can't book</h2>
+      </div>
+      <div class="grid md:grid-cols-3 gap-10">
+        <div>
+          <div class="text-ember font-display text-3xl mb-3">01</div>
+          <h3 class="font-display text-2xl mb-2">Native-English insiders</h3>
+          <p class="text-cream/80 text-[15px]">We read your expectations and tell the story — the nuance, the etiquette, the why behind each room.</p>
+        </div>
+        <div>
+          <div class="text-ember font-display text-3xl mb-3">02</div>
+          <h3 class="font-display text-2xl mb-2">Doors held by trust</h3>
+          <p class="text-cream/80 text-[15px]">Reservation-only counters, members' rooms and makers open because of relationships, not requests.</p>
+        </div>
+        <div>
+          <div class="text-ember font-display text-3xl mb-3">03</div>
+          <h3 class="font-display text-2xl mb-2">Discreet &amp; quality-vetted</h3>
+          <p class="text-cream/80 text-[15px]">Privacy by default. We curate a short list we'd stake our name on — and host it ourselves.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOR ADVISORS -->
+  <section id="advisors" class="relative z-10 max-w-6xl mx-auto px-5 py-24">
+    <div class="rounded-2xl border hairline bg-ink2/60 p-8 md:p-12">
+      <div class="grid md:grid-cols-2 gap-10 items-center">
+        <div>
+          <p class="text-ember tracking-[0.2em] text-xs uppercase mb-3">For the trade</p>
+          <h2 class="font-display text-3xl md:text-4xl mb-4">Travel advisors &amp; concierge desks</h2>
+          <p class="text-cream/80 text-[15px]">
+            We partner with luxury travel advisors, network members and hotel concierge desks as your
+            on-the-ground Japan specialist — net rates, white-glove handling and a single point of contact.
+            Your clients stay yours.
+          </p>
+        </div>
+        <div class="md:text-right">
+          <a href="mailto:concierge@tokyoinsider.example?subject=Travel%20Advisor%20Partnership" class="inline-block px-7 py-3.5 rounded-full bg-ember text-ink font-semibold hover:bg-ember2 transition">Request the trade deck</a>
+          <p class="text-muted text-xs mt-4">Virtuoso · ILTM · Serandipians · independent advisors welcome</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section id="faq" class="relative z-10 max-w-3xl mx-auto px-5 py-24">
+    <p class="text-ember tracking-[0.2em] text-xs uppercase mb-3">FAQ</p>
+    <h2 class="font-display text-4xl md:text-5xl mb-10">Good to know</h2>
+    <div class="divide-y hairline border-y hairline">
+      <details class="group py-5">
+        <summary class="flex items-center justify-between gap-4"><span class="text-lg text-cream">How do bookings and payments work?</span><span class="chev text-ember transition-transform">+</span></summary>
+        <p class="text-cream/75 text-[15px] mt-3">After a short brief we send a private proposal and a single, transparent quote. Travel and accommodation are contracted through our licensed travel partners; experiences and concierge services are arranged and hosted by us.</p>
+      </details>
+      <details class="group py-5">
+        <summary class="flex items-center justify-between gap-4"><span class="text-lg text-cream">Are you licensed?</span><span class="chev text-ember transition-transform">+</span></summary>
+        <p class="text-cream/75 text-[15px] mt-3">We design and host experiences, and arrange regulated travel services in partnership with registered Japanese travel agents, so everything is handled correctly and accountably.</p>
+      </details>
+      <details class="group py-5">
+        <summary class="flex items-center justify-between gap-4"><span class="text-lg text-cream">Who will host us?</span><span class="chev text-ember transition-transform">+</span></summary>
+        <p class="text-cream/75 text-[15px] mt-3">A native-English host who knows the venue, the craft and the etiquette — accompanied by accredited guides where required for a given site or region.</p>
+      </details>
+      <details class="group py-5">
+        <summary class="flex items-center justify-between gap-4"><span class="text-lg text-cream">Which regions do you cover?</span><span class="chev text-ember transition-transform">+</span></summary>
+        <p class="text-cream/75 text-[15px] mt-3">Tokyo and Kyoto in depth, plus a curated set of regional "hero routes" — Kanazawa, the Setouchi islands, Hakuba &amp; Niseko and others — where we can guarantee quality.</p>
+      </details>
+      <details class="group py-5">
+        <summary class="flex items-center justify-between gap-4"><span class="text-lg text-cream">Cancellations &amp; privacy?</span><span class="chev text-ember transition-transform">+</span></summary>
+        <p class="text-cream/75 text-[15px] mt-3">Terms are confirmed in writing with your proposal; reservation-only venues may carry their own deposit terms. Discretion is the default for every client.</p>
+      </details>
+    </div>
+  </section>
+
+  <!-- ENQUIRE / CTA -->
+  <section id="enquire" class="relative z-10 glow border-t hairline">
+    <div class="max-w-3xl mx-auto px-5 py-24 text-center">
+      <h2 class="font-display text-4xl md:text-6xl leading-tight">Tell us the trip you have in mind.</h2>
+      <p class="text-cream/80 mt-5">Share your dates, party and what you'd love to experience. We'll reply with a private proposal — no obligation.</p>
+      <div class="mt-8 flex flex-col sm:flex-row gap-3 justify-center">
+        <a href="mailto:concierge@tokyoinsider.example?subject=Private%20Concierge%20Enquiry" class="px-7 py-3.5 rounded-full bg-ember text-ink font-semibold hover:bg-ember2 transition">Request an introduction</a>
+        <a href="https://tokyo-sake-whisky-lp.vercel.app/" class="px-7 py-3.5 rounded-full border hairline text-cream hover:bg-white/5 transition">See our Sake &amp; Whisky nights</a>
+      </div>
+      <p class="text-muted text-sm mt-8">Serving discerning travelers from the US, Australia, the UK &amp; Canada.</p>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="relative z-10 border-t hairline">
+    <div class="max-w-6xl mx-auto px-5 py-12 text-sm text-muted">
+      <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+        <div class="font-display text-lg text-cream">Tokyo <span class="text-ember">Insider</span> · Private Concierge</div>
+        <p>Tokyo, Japan · concierge@tokyoinsider.example</p>
+      </div>
+      <p class="mt-6 text-xs leading-relaxed text-muted/80">
+        Travel and accommodation arrangements are contracted through licensed Japanese travel agents; concierge and
+        experience services are provided by Tokyo Insider. Access to specific venues, makers and bottles is subject to
+        availability and is never guaranteed. You must be 20 or older to take part in tastings (as required by Japanese law).
+        特定商取引法に基づく表記（準備中）。 © 2026 Tokyo Insider. All rights reserved.
+      </p>
+    </div>
+  </footer>
+
+</body>
+</html>
