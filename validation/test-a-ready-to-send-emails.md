@@ -8,6 +8,31 @@
 
 ---
 
+## 宛先（連絡ルート）— 2026年6月時点の調査結果
+
+> 高級ホテルは**コンシェルジュのメールを公開していない**ことが多い。直メールが出てるのは2件のみ。残りは**公式フォームに本文を貼る or 電話で「コンシェルジュデスクのメールを教えて」**が正攻法。電話番号は本文と一緒にメモしておくと早い。
+
+| # | ホテル | ルート | 宛先 / フォームURL | 電話 |
+|---|---|---|---|---|
+| 1 | Aman Tokyo | フォーム/電話 | https://www.aman.com/hotels/aman-tokyo/contact-us | +81 3 5224 3333 |
+| 2 | Aman Kyoto | フォーム/電話 | https://www.aman.com/resorts/aman-kyoto/contact-us | +81 75 496 1333 |
+| 3 | Bulgari Hotel Tokyo | 電話/フォーム | 予約: bhr.tyobt.reservation@bulgarihotels.com（※予約宛・要コンシェルジュ転送依頼） | +81 3 6262 3333 |
+| 4 | Four Seasons 大手町 | フォーム/電話 | https://www.fourseasons.com/otemachi/contact-us/ | +81 3 6810 0600 |
+| 5 | Four Seasons 丸の内 | フォーム/電話 | https://www.fourseasons.com/tokyo/contact-us/ | +81 3 5222 7222 |
+| 6 | Janu Tokyo | フォーム/電話 | https://www.janu.com/contact/ | +81 3 6731 2333 |
+| 7 | 星のや東京 | 電話/フォーム | https://hoshinoresorts.com/en/hotels/hoshinoyatokyo/contact/ | +81 50 3134 8096 |
+| 8 | **The Tokyo EDITION 虎ノ門** | **直メール ✅** | **info.tokyo@editionhotels.com**（総合/コンシェルジュ） | +81 3 5422 1600 |
+| 9 | Park Hyatt Tokyo | 電話/フォーム | https://www.hyatt.com/.../tyoph-park-hyatt-tokyo/hotel-info | +81 3 5322 1234 |
+| 10 | **Mandarin Oriental Tokyo** | **直メール ✅**（予約宛） | **motyo-reservations@mohg.com**（要コンシェルジュ転送依頼） | +81 3 3270 8800 |
+
+**送り方の現実解：**
+- **EDITION虎ノ門（#8）**：`info.tokyo@editionhotels.com` に**そのままメール送信**＝一番ラク。まずここから。
+- **Mandarin / Bulgari（#10/#3）**：予約宛メールに送り、冒頭に「Could you kindly forward this to your Concierge desk?」を一文足す。
+- **その他（#1,2,4,5,6,7,9）**：公式**問い合わせフォームに本文を貼り付け**て送信。氏名・メール欄はあなたの連絡先。
+- メール非公開のホテルは、**電話して「コンシェルジュデスクのメールアドレスを教えてください（英語可）」**と聞くのが最速。
+
+---
+
 ## 1. Aman Tokyo
 **Subject:** On-call private access partner for your guests — Tokyo
 
