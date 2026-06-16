@@ -50,6 +50,33 @@
       content: attr(data-label); position: absolute; left: 14px; bottom: 12px;
       font-size: 11px; letter-spacing:.12em; text-transform: uppercase; color: rgba(179,164,143,.6);
     }
+    /* Real photography slots (royalty-free, Pexels). A dark overlay keeps text
+       legible; a base gradient is the LAST layer so it shows if a photo fails. */
+    .photo { background-size: cover; background-position: center; }
+    .p-hero {
+      background-image:
+        linear-gradient(180deg, rgba(11,9,7,.32) 0%, rgba(11,9,7,.62) 62%, rgba(11,9,7,.9) 100%),
+        url('https://images.pexels.com/photos/31579895/pexels-photo-31579895.jpeg?auto=compress&cs=tinysrgb&w=1920'),
+        linear-gradient(180deg, #1a130d, #0b0907);
+    }
+    .p-host {
+      background-image:
+        linear-gradient(180deg, rgba(11,9,7,.12), rgba(11,9,7,.55)),
+        url('https://images.pexels.com/photos/27500232/pexels-photo-27500232.jpeg?auto=compress&cs=tinysrgb&w=900'),
+        linear-gradient(135deg, #1a130d, #0b0907);
+    }
+    .p-private {
+      background-image:
+        linear-gradient(180deg, rgba(11,9,7,.12), rgba(11,9,7,.55)),
+        url('https://images.pexels.com/photos/20064336/pexels-photo-20064336.jpeg?auto=compress&cs=tinysrgb&w=900'),
+        linear-gradient(135deg, #1a130d, #0b0907);
+    }
+    .p-taste {
+      background-image:
+        linear-gradient(180deg, rgba(11,9,7,.06), rgba(11,9,7,.34)),
+        url('https://images.pexels.com/photos/7254755/pexels-photo-7254755.jpeg?auto=compress&cs=tinysrgb&w=1000'),
+        linear-gradient(135deg, #1a130d, #0b0907);
+    }
     .hairline { border-color: rgba(216,162,58,.18); }
     details > summary { list-style: none; cursor: pointer; }
     details > summary::-webkit-details-marker { display: none; }
@@ -75,7 +102,7 @@
   <!-- HERO -->
   <section id="top" class="relative min-h-[100svh] flex items-center glow pt-16">
     <!-- IMAGE SLOT: drop assets/img-02-private-night.jpg here as full-bleed background -->
-    <div class="absolute inset-0 imgslot opacity-90" data-label="img-02 · private night"></div>
+    <div class="absolute inset-0 photo p-hero"></div>
     <div class="absolute inset-0 bg-gradient-to-t from-ink via-ink/70 to-ink/30"></div>
     <div class="relative z-10 max-w-6xl mx-auto px-5 py-20">
       <p class="text-ember tracking-[0.25em] text-xs uppercase mb-5">Tokyo · Night experiences</p>
@@ -103,7 +130,7 @@
     <div class="grid md:grid-cols-2 gap-6">
       <!-- Product A -->
       <div class="rounded-2xl border hairline bg-ink2/60 overflow-hidden flex flex-col">
-        <div class="imgslot h-44" data-label="img-03 · small-group host"></div>
+        <div class="photo p-host h-44"></div>
         <div class="p-7 flex flex-col flex-1">
           <h3 class="font-display text-2xl text-cream">Tokyo Sake &amp; Whisky Insider Night</h3>
           <p class="text-sm text-muted mt-1">Small group · 4–8 guests · 3–3.5 hrs · evening</p>
@@ -121,7 +148,7 @@
       </div>
       <!-- Product B -->
       <div id="private" class="rounded-2xl border hairline bg-ink2/60 overflow-hidden flex flex-col">
-        <div class="imgslot h-44" data-label="img-02 · private night"></div>
+        <div class="photo p-private h-44"></div>
         <div class="p-7 flex flex-col flex-1">
           <h3 class="font-display text-2xl text-cream">Private Whisky &amp; Sake Pilgrimage</h3>
           <p class="text-sm text-muted mt-1">Fully private · 1–4 guests · 3–4 hrs / half-day</p>
@@ -171,7 +198,7 @@
   <!-- WHAT YOU'LL TASTE -->
   <section id="taste" class="relative z-10 max-w-6xl mx-auto px-5 py-24">
     <div class="grid md:grid-cols-2 gap-12 items-center">
-      <div class="imgslot rounded-2xl aspect-[4/5] border hairline" data-label="img-01 · tasting flight"></div>
+      <div class="photo p-taste rounded-2xl aspect-[4/5] border hairline"></div>
       <div>
         <p class="text-ember tracking-[0.2em] text-xs uppercase mb-3">What you'll taste</p>
         <h2 class="font-display text-4xl md:text-5xl mb-5">A flight built around the night — and your palate</h2>
