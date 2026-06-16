@@ -1,0 +1,9 @@
+node_modules/
+.env
+.env.local
+.DS_Store
+data/fortune-outputs/*.md
+data/fortune-inputs/*.jpg
+data/fortune-inputs/*.jpeg
+data/fortune-inputs/*.png
+data/fortune-inputs/*.webp

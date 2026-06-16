@@ -2,6 +2,8 @@
 
 地方中小企業向けに、古いWebサイトをモダンにリニューアルした営業デモサイトを半自動生成するプロジェクト。
 
+> 🔮 **四柱推命×手相 自動鑑定サービス**（ココナラ向け）も同梱しています。詳細は [`docs/coconala-fortune-service.md`](docs/coconala-fortune-service.md) と下記「占い鑑定サービス」セクションを参照。
+
 ## 目的
 
 - 営業時に見せるデモサイトURLを量産する
@@ -93,3 +95,42 @@ npm run run:one -- data/inputs/sample.json
 ```bash
 npm run run:one -- data/inputs/memorial-sample.json
 ```
+
+---
+
+## 占い鑑定サービス（四柱推命 × 手相）
+
+手のひらの写真と生年月日から、**四柱推命の命式を土台に手相を重ねた複合鑑定書**を自動生成する。ココナラでの個人サービス運用を想定。事業設計は [`docs/coconala-fortune-service.md`](docs/coconala-fortune-service.md)。
+
+### 構成
+
+- `scripts/fortune/bazi.js` … 四柱推命の命式計算（年/月/日/時の干支・日主・通変星・五行）。決定論的でAPIキー不要。日柱は `(JDN+49) mod 60`、年柱・月柱は太陽黄経で節入りを判定。
+- `scripts/fortune/palm.js` … 手相画像をClaude Visionで観察（`prompts/palm-vision.md`）。
+- `scripts/fortune/generate-reading.js` … 命式＋手相を統合し鑑定書を生成（`prompts/fortune-reading.md`）。
+- `scripts/run-fortune.js` … CLIエントリ。
+- `fortune/index.html` … 集客用LP。
+
+### 使い方
+
+```bash
+# 命式だけ確認（APIキー不要・節入り境界の検証に便利）
+npm run fortune -- data/fortune-inputs/sample.json --bazi-only
+
+# 鑑定書を生成（要 ANTHROPIC_API_KEY）
+npm run fortune -- data/fortune-inputs/sample.json
+# → data/fortune-outputs/<日付>-<ニックネーム>.md
+
+# エンジンの検算（日柱・年柱・時柱）
+npm run fortune:test
+```
+
+依頼1件 = `data/fortune-inputs/*.json` 1ファイル（`birth`＋`palmImage`＋`concern`）。フォーマットは `data/fortune-inputs/sample.json` を参照。
+
+### 自動化の範囲
+
+命式計算・手相読み取り・鑑定文生成は全自動。ココナラは自動納品APIを公開していないため、**受注・納品（トークへのコピペ）のみ手作業**（1件5分以内が目標）。
+
+### 注意
+
+- エンタメ・自己理解目的。健康・病気・寿命の診断や断定はしない（`prompts/fortune-reading.md` にルール内蔵）。
+- 節入り当日生まれ・出生時刻不明のケースは精度が下がるため、命式を `--bazi-only` で確認してから鑑定する。

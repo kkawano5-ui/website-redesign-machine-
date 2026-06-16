@@ -1,0 +1,14 @@
+{
+  "id": "sample-001",
+  "nickname": "ゆい",
+  "birth": {
+    "year": 1992,
+    "month": 7,
+    "day": 23,
+    "hour": 14,
+    "minute": 30,
+    "tzOffsetHours": 9
+  },
+  "palmImage": "data/fortune-inputs/palm-sample.jpg",
+  "concern": "仕事運（転職を考えています）"
+}
