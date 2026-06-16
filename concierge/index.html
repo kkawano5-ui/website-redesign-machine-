@@ -260,7 +260,7 @@
           </p>
         </div>
         <div class="md:text-right">
-          <a href="mailto:concierge@tokyoinsider.example?subject=Travel%20Advisor%20Partnership" class="inline-block px-7 py-3.5 rounded-full bg-ember text-ink font-semibold hover:bg-ember2 transition">Request the trade deck</a>
+          <a href="#enquire" class="inline-block px-7 py-3.5 rounded-full bg-ember text-ink font-semibold hover:bg-ember2 transition">Request the trade deck</a>
           <p class="text-muted text-xs mt-4">Virtuoso · ILTM · Serandipians · independent advisors welcome</p>
         </div>
       </div>
@@ -297,14 +297,81 @@
 
   <!-- ENQUIRE / CTA -->
   <section id="enquire" class="relative z-10 glow border-t hairline">
-    <div class="max-w-3xl mx-auto px-5 py-24 text-center">
-      <h2 class="font-display text-4xl md:text-6xl leading-tight">Tell us the trip you have in mind.</h2>
-      <p class="text-cream/80 mt-5">Share your dates, party and what you'd love to experience. We'll reply with a private proposal — no obligation.</p>
-      <div class="mt-8 flex flex-col sm:flex-row gap-3 justify-center">
-        <a href="mailto:concierge@tokyoinsider.example?subject=Private%20Concierge%20Enquiry" class="px-7 py-3.5 rounded-full bg-ember text-ink font-semibold hover:bg-ember2 transition">Request an introduction</a>
-        <a href="https://tokyo-sake-whisky-lp.vercel.app/" class="px-7 py-3.5 rounded-full border hairline text-cream hover:bg-white/5 transition">See our Sake &amp; Whisky nights</a>
+    <div class="max-w-xl mx-auto px-5 py-24">
+      <div class="text-center">
+        <h2 class="font-display text-4xl md:text-6xl leading-tight">Tell us the trip you have in mind.</h2>
+        <p class="text-cream/80 mt-5">Share your dates, party and what you'd love to experience. We'll reply privately with a proposal — no obligation.</p>
       </div>
-      <p class="text-muted text-sm mt-8">Serving discerning travelers from the US, Australia, the UK &amp; Canada.</p>
+
+      <!-- Formspree: replace YOUR_FORM_ID with your form id from formspree.io -->
+      <form id="enquiry-form" action="https://formspree.io/f/YOUR_FORM_ID" method="POST" class="mt-10 text-left space-y-4">
+        <input type="text" name="_gotcha" tabindex="-1" autocomplete="off" class="hidden" aria-hidden="true" />
+        <div class="grid sm:grid-cols-2 gap-4">
+          <label class="block">
+            <span class="text-muted text-sm">Full name</span>
+            <input required name="name" type="text" autocomplete="name" class="mt-1 w-full rounded-xl bg-white/5 border hairline px-4 py-3 text-cream placeholder-muted/60 focus:outline-none focus:ring-1 focus:ring-ember" placeholder="Your name" />
+          </label>
+          <label class="block">
+            <span class="text-muted text-sm">Email</span>
+            <input required name="email" type="email" autocomplete="email" class="mt-1 w-full rounded-xl bg-white/5 border hairline px-4 py-3 text-cream placeholder-muted/60 focus:outline-none focus:ring-1 focus:ring-ember" placeholder="you@email.com" />
+          </label>
+          <label class="block">
+            <span class="text-muted text-sm">Country</span>
+            <input name="country" type="text" autocomplete="country-name" class="mt-1 w-full rounded-xl bg-white/5 border hairline px-4 py-3 text-cream placeholder-muted/60 focus:outline-none focus:ring-1 focus:ring-ember" placeholder="e.g. United States" />
+          </label>
+          <label class="block">
+            <span class="text-muted text-sm">Travel dates</span>
+            <input name="travel_dates" type="text" class="mt-1 w-full rounded-xl bg-white/5 border hairline px-4 py-3 text-cream placeholder-muted/60 focus:outline-none focus:ring-1 focus:ring-ember" placeholder="e.g. Oct 2026, ~5 days" />
+          </label>
+          <label class="block">
+            <span class="text-muted text-sm">Party size</span>
+            <input name="party_size" type="number" min="1" class="mt-1 w-full rounded-xl bg-white/5 border hairline px-4 py-3 text-cream placeholder-muted/60 focus:outline-none focus:ring-1 focus:ring-ember" placeholder="2" />
+          </label>
+          <label class="block">
+            <span class="text-muted text-sm">Budget (optional)</span>
+            <select name="budget" class="mt-1 w-full rounded-xl bg-white/5 border hairline px-4 py-3 text-cream focus:outline-none focus:ring-1 focus:ring-ember">
+              <option value="" class="bg-ink">Prefer not to say</option>
+              <option class="bg-ink">Under ¥500,000</option>
+              <option class="bg-ink">¥500,000–1,500,000</option>
+              <option class="bg-ink">¥1,500,000–3,000,000</option>
+              <option class="bg-ink">¥3,000,000+</option>
+            </select>
+          </label>
+        </div>
+        <label class="block">
+          <span class="text-muted text-sm">I'm most interested in</span>
+          <select name="interest" class="mt-1 w-full rounded-xl bg-white/5 border hairline px-4 py-3 text-cream focus:outline-none focus:ring-1 focus:ring-ember">
+            <option class="bg-ink">Hard-to-book dining</option>
+            <option class="bg-ink">Private cultural &amp; craft access</option>
+            <option class="bg-ink">A hosted day, curated</option>
+            <option class="bg-ink">A bespoke multi-day journey</option>
+            <option class="bg-ink">After-dinner &amp; private nightlife</option>
+            <option class="bg-ink">Travel advisor / trade partnership</option>
+          </select>
+        </label>
+        <label class="block">
+          <span class="text-muted text-sm">Tell us more</span>
+          <textarea name="message" rows="4" class="mt-1 w-full rounded-xl bg-white/5 border hairline px-4 py-3 text-cream placeholder-muted/60 focus:outline-none focus:ring-1 focus:ring-ember" placeholder="What would make this trip unforgettable?"></textarea>
+        </label>
+
+        <!-- hidden tracking fields, auto-filled by script -->
+        <input type="hidden" name="utm_source" />
+        <input type="hidden" name="utm_medium" />
+        <input type="hidden" name="utm_campaign" />
+        <input type="hidden" name="utm_term" />
+        <input type="hidden" name="utm_content" />
+        <input type="hidden" name="referrer" />
+        <input type="hidden" name="landing_page" />
+        <input type="hidden" name="_subject" value="New private concierge enquiry" />
+
+        <button type="submit" class="w-full px-7 py-3.5 rounded-full bg-ember text-ink font-semibold hover:bg-ember2 transition">Request an introduction</button>
+        <p id="form-status" class="text-sm text-center text-muted" role="status" aria-live="polite"></p>
+      </form>
+
+      <div class="mt-6 text-center">
+        <a href="https://tokyo-sake-whisky-lp.vercel.app/" class="text-muted text-sm underline underline-offset-4 hover:text-cream transition">See our Sake &amp; Whisky nights →</a>
+      </div>
+      <p class="text-muted text-sm mt-8 text-center">Serving discerning travelers from the US, Australia, the UK &amp; Canada.</p>
     </div>
   </section>
 
@@ -313,7 +380,7 @@
     <div class="max-w-6xl mx-auto px-5 py-12 text-sm text-muted">
       <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
         <div class="font-display text-lg text-cream">Tokyo <span class="text-ember">Insider</span> · Private Concierge</div>
-        <p>Tokyo, Japan · concierge@tokyoinsider.example</p>
+        <p>Tokyo, Japan · Enquiries by form</p>
       </div>
       <p class="mt-6 text-xs leading-relaxed text-muted/80">
         Travel and accommodation arrangements are contracted through licensed Japanese travel agents; concierge and
@@ -323,6 +390,52 @@
       </p>
     </div>
   </footer>
+
+  <script>
+    (function () {
+      var form = document.getElementById('enquiry-form');
+      if (!form) return;
+
+      // Capture & persist UTM / source so it survives across pages in the session
+      var params = new URLSearchParams(window.location.search);
+      var keys = ['utm_source', 'utm_medium', 'utm_campaign', 'utm_term', 'utm_content'];
+      var stored = {};
+      try { stored = JSON.parse(localStorage.getItem('ti_utm') || '{}'); } catch (e) {}
+      var hasNew = false;
+      keys.forEach(function (k) { if (params.get(k)) { stored[k] = params.get(k); hasNew = true; } });
+      if (hasNew) { try { localStorage.setItem('ti_utm', JSON.stringify(stored)); } catch (e) {} }
+      keys.forEach(function (k) {
+        var el = form.querySelector('[name="' + k + '"]');
+        if (el) el.value = stored[k] || '';
+      });
+      var ref = form.querySelector('[name="referrer"]'); if (ref) ref.value = document.referrer || '';
+      var lp = form.querySelector('[name="landing_page"]'); if (lp) lp.value = window.location.href;
+
+      // AJAX submit: keeps tracking fields and shows an inline thank-you
+      var status = document.getElementById('form-status');
+      form.addEventListener('submit', function (e) {
+        e.preventDefault();
+        if (form.action.indexOf('YOUR_FORM_ID') !== -1) {
+          status.textContent = 'Form not configured yet — add your Formspree ID to go live.';
+          return;
+        }
+        status.textContent = 'Sending…';
+        fetch(form.action, {
+          method: 'POST',
+          body: new FormData(form),
+          headers: { 'Accept': 'application/json' }
+        }).then(function (r) {
+          if (r.ok) {
+            form.innerHTML = '<div class="text-center py-10"><p class="font-display text-3xl text-cream">Thank you.</p><p class="text-cream/80 mt-3">We\'ve received your note and will reply privately, usually within a day.</p></div>';
+          } else {
+            status.textContent = 'Something went wrong — please try again in a moment.';
+          }
+        }).catch(function () {
+          status.textContent = 'Network error — please try again.';
+        });
+      });
+    })();
+  </script>
 
 </body>
 </html>

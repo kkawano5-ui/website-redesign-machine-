@@ -12,14 +12,21 @@
 
 ## Step 0（pre-flight）｜計測できる状態にする ★テスト前の必須
 
-このフォルダの実体テストは、**問い合わせを受けて数えられない限り無意味**。先に整える：
+このフォルダの実体テストは、**問い合わせを受けて数えられない限り無意味**。
 
-- [ ] **本物の問い合わせ先**を用意（`concierge@tokyoinsider.example` はダミー。実メール or 独自ドメインのメール）。
-- [ ] LPに**問い合わせフォーム**を設置（Tally / Formspree / Typeform 等・無料可）。質問：氏名・国・旅行予定月・人数・関心(食/文化/夜/多日程)・予算感・連絡先。
-- [ ] **UTM＋簡易解析**（Plausible/GA4）で「どの経路から来たか」を区別。
-- [ ] **リード台帳**（`validation/leads-tracker.csv`）に全リードを1行ずつ記録。
+✅ **実装済み**（`concierge/index.html`）：
+- ネイティブ問い合わせフォーム（氏名・email・国・旅行月・人数・予算・関心・自由記述）。
+- **UTM自動記録**：`utm_source/medium/campaign/term/content` をURLから隠しフィールドへ。`referrer`・`landing_page` も記録。localStorageで回遊中も保持。
+- Ajax送信＋その場でThank you表示。スパム避けのhoneypot付き。
 
-> ここはコードに手を入れる話なので、言ってくれれば**LPに実フォーム＋UTM計測を私が実装**する。
+🔲 **あなたの残作業（2分・無料）**：
+- [ ] **Formspree**（formspree.io）で無料アカウント→フォーム1つ作成→**Form ID**取得。
+- [ ] `concierge/index.html` の `action="https://formspree.io/f/YOUR_FORM_ID"` の **`YOUR_FORM_ID`を差し替え**（私が代行も可）。
+- [ ] 受信先メール（Formspreeに登録したメール）に届くか**テスト送信1回**で確認。
+- [ ] （任意）Plausible/GA4を入れて流入を可視化。
+- [ ] リードは全件 `validation/leads-tracker.csv` に1行ずつ記録。
+
+> Formspreeのフォームを作ってIDをくれれば、**差し替えも私がやる**。
 
 ---
 
