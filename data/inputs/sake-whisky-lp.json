@@ -1,0 +1,66 @@
+{
+  "companySlug": "sake-whisky-night",
+  "companyName": "Tokyo Sake & Whisky Insider (Night Experiences)",
+  "industry": "インバウンド体験（酒・ナイトライフ）",
+  "website": "https://（新規ブランド・予約LP / 既存サイトなし）",
+  "targetLanguages": ["en", "zh-Hant", "zh-Hans"],
+  "companyOverview": [
+    "英語ネイティブの日本人家族が運営する、訪日外国人向けの夜の酒・ウイスキー体験ブランド",
+    "一人では入れない酒場・会員制バー・蔵元/ボトラーへのアクセスを、英語ネイティブの“利き手”が案内",
+    "小グループの体験ツアーと、完全貸切のプライベート体験を提供。購入代行・海外発送までサポート"
+  ],
+  "currentSiteIssues": [
+    "新規ブランドで予約導線・信頼要素がゼロの状態からLPを立ち上げる必要がある",
+    "OTA(Viator/GetYourGuide/Klook)・SNS・広告の全流入を1枚のLPに集約し、予約とCPA計測を成立させたい",
+    "英語ファーストで、酒類体験ゆえの法令・表現上の注意（誇大/未成年訴求NG）を満たす必要がある"
+  ],
+  "targetCustomers": [
+    "欧米豪・英語圏のアッパーミドル層の訪日客（30代以上、食と酒に積極的）",
+    "ジャパニーズウイスキー/日本酒に関心があり“本物・内側”を体験したいリピーター/カップル",
+    "一人では予約できない・言語の壁がある店に、英語で安心して入りたい層"
+  ],
+  "siteConcept": [
+    "Drink Japan from the inside — in English（英語で“内側の日本の酒”を体験できる、と10秒で伝える）",
+    "差別化3点を明確に：①英語ネイティブの本物の解説 ②一人では入れない店へのアクセス ③購入/海外発送サポート",
+    "小グループ(数で回す)とプライベート(単価)の2商品を明快に提示し、直予約とOTAの両方に着地させる"
+  ],
+  "recommendedPages": [
+    "トップ（ヒーロー：夜の酒場のシネマティック動画＋Book tonight）",
+    "体験プラン（A:小グループ Sake & Whisky Insider Night / B:プライベート Pilgrimage）",
+    "私たちが選ばれる理由（英語ネイティブ／入れない店アクセス／購入・海外発送）",
+    "テイスティング内容・銘柄例（希少ウイスキー・地酒の具体）",
+    "お客様の声・レビュー（★と件数を予約直前に常掲）",
+    "よくある質問（ノンアル/アレルギー/家族/事前決済/キャンセル規定）",
+    "予約・お問い合わせ（直予約＋OTAディープリンク＋イベント計測）"
+  ],
+  "firstViewIdeas": [
+    "Drink Japan from the inside — in English.（メインコピー）",
+    "Native-English experts take you inside Tokyo's hidden sake & whisky bars you can't enter alone.（サブコピー）",
+    "一次CTA: Book a Sake & Whisky Night（小グループ）／二次CTA: Request a Private Pilgrimage（貸切）"
+  ],
+  "ctaIdeas": [
+    "Book a Sake & Whisky Night（小グループ ¥18,000〜25,000/人）",
+    "Request a Private Pilgrimage（プライベート ¥90,000〜150,000/組）",
+    "Add a private photographer（家族/カップル撮影アドオン）",
+    "Ask about buying & shipping rare bottles home"
+  ],
+  "designTone": [
+    "ダーク＆シネマティック（夜の酒場の質感）、プレミアムだが排他的すぎない（アッパーミドル）",
+    "英語ファースト、写真/動画は実写の臨場感重視（瓶の高精細・テイスティングの接写）",
+    "予約ボタンは一貫した1色で全ページ統一、価格と所要時間を常に明示"
+  ],
+  "avoidExpressions": [
+    "酒類の効能・健康効果を断定する表現",
+    "未成年や過度な飲酒を助長する表現",
+    "「必ず入れる」「日本一」等の根拠なき断定・誇大表現",
+    "入手不可の銘柄を確約する表現（在庫・入荷は変動する前提で記載）"
+  ],
+  "buildInstruction": [
+    "英語ファースト＋多言語(en/zh-Hant/zh-Hans)の切替を前提に実装（targetLanguages）",
+    "各体験LPに『直予約フォーム』＋『OTAディープリンク(Viator/GetYourGuide/Klook)』を標準ブロックで設置",
+    "予約クリック・問い合わせ・OTA遷移をイベント計測（CPA算出用のタグ）を全CTAに付与",
+    "Astro + Tailwindで実装、モバイルファースト、Lighthouse各90点以上を目標",
+    "信頼要素（レビュー★/件数・メディア掲載・ゲスト写真）を予約直前に必ず差し込めるコンポーネント化",
+    "酒類・通訳案内・特商法の必要記載（特定商取引法に基づく表記、キャンセルポリシー、年齢確認）を雛形で用意"
+  ]
+}
