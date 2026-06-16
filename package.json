@@ -5,12 +5,13 @@
   "scripts": {
     "run:one": "node scripts/run-one.js",
     "fortune": "node scripts/run-fortune.js",
-    "fortune:test": "node scripts/fortune/bazi.test.js"
+    "fortune:pdf": "node scripts/md-to-pdf.js",
+    "fortune:test": "node scripts/fortune/bazi.test.js && node scripts/fortune/pdf.test.js"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.39.0",
+    "dotenv": "^16.4.5",
     "openai": "^4.0.0",
-    "dotenv": "^16.4.5"
-  },
-  "devDependencies": {}
+    "pdfkit": "^0.15.2"
+  }
 }

@@ -107,6 +107,7 @@ npm run run:one -- data/inputs/memorial-sample.json
 - `scripts/fortune/bazi.js` … 四柱推命の命式計算（年/月/日/時の干支・日主・通変星・五行）。決定論的でAPIキー不要。日柱は `(JDN+49) mod 60`、年柱・月柱は太陽黄経で節入りを判定。
 - `scripts/fortune/palm.js` … 手相画像をClaude Visionで観察（`prompts/palm-vision.md`）。
 - `scripts/fortune/generate-reading.js` … 命式＋手相を統合し鑑定書を生成（`prompts/fortune-reading.md`）。
+- `scripts/fortune/pdf.js` … 鑑定書Markdown→納品用PDF（ブラウザ不要・日本語フォント埋め込み）。
 - `scripts/run-fortune.js` … CLIエントリ。
 - `fortune/index.html` … 集客用LP。
 
@@ -116,13 +117,19 @@ npm run run:one -- data/inputs/memorial-sample.json
 # 命式だけ確認（APIキー不要・節入り境界の検証に便利）
 npm run fortune -- data/fortune-inputs/sample.json --bazi-only
 
-# 鑑定書を生成（要 ANTHROPIC_API_KEY）
+# 鑑定書を生成（要 ANTHROPIC_API_KEY）。Markdownと納品用PDFを両方出力
 npm run fortune -- data/fortune-inputs/sample.json
-# → data/fortune-outputs/<日付>-<ニックネーム>.md
+# → data/fortune-outputs/<日付>-<ニックネーム>.md（＋ .pdf）
+#   PDFが不要なときは --no-pdf
 
-# エンジンの検算（日柱・年柱・時柱）
+# 人が手直ししたMarkdownをPDFに再変換
+npm run fortune:pdf -- data/fortune-outputs/<ファイル>.md
+
+# 検算（命式エンジン＋PDF生成）
 npm run fortune:test
 ```
+
+PDFの日本語フォントは環境変数 `FORTUNE_PDF_FONT` に `.ttf/.otf` のパスを指定して差し替え可能（未指定時はIPA等の一般的フォントを自動探索）。
 
 依頼1件 = `data/fortune-inputs/*.json` 1ファイル（`birth`＋`palmImage`＋`concern`）。フォーマットは `data/fortune-inputs/sample.json` を参照。
 

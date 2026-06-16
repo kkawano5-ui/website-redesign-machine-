@@ -1,11 +1,13 @@
-// CLIエントリ：依頼JSON -> 鑑定書Markdown
+// CLIエントリ：依頼JSON -> 鑑定書Markdown + PDF
 //   npm run fortune -- data/fortune-inputs/sample.json
+//   オプション: --bazi-only(命式のみ) / --no-pdf(PDF出力を省略)
 import 'dotenv/config';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import { readJsonFile, writeMarkdownFile, createSafeSlug } from './utils.js';
 import { generateReading, formatBaziTable } from './fortune/generate-reading.js';
 import { computeBazi } from './fortune/bazi.js';
+import { renderReadingPdf } from './fortune/pdf.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(__dirname, '..');
@@ -45,7 +47,13 @@ async function main() {
 
   console.log('\n--- 命式 ---');
   console.log(formatBaziTable(bazi));
-  console.log(`\n✅ 鑑定書を出力しました: ${path.relative(ROOT, outPath)}`);
+  console.log(`\n✅ 鑑定書(Markdown): ${path.relative(ROOT, outPath)}`);
+
+  if (!process.argv.includes('--no-pdf')) {
+    const pdfPath = outPath.replace(/\.md$/, '.pdf');
+    await renderReadingPdf(markdown, pdfPath);
+    console.log(`✅ 鑑定書(PDF・納品用): ${path.relative(ROOT, pdfPath)}`);
+  }
 }
 
 main().catch((err) => {
