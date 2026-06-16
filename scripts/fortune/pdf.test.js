@@ -3,6 +3,7 @@ import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import { renderReadingPdf } from './pdf.js';
+import { computeBazi } from './bazi.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const out = path.join(__dirname, '..', '..', 'data', 'fortune-outputs', '_pdf-selftest.pdf');
@@ -10,7 +11,7 @@ const out = path.join(__dirname, '..', '..', 'data', 'fortune-outputs', '_pdf-se
 const md = `# あなたの鑑定書 〜四柱推命 × 手相〜
 
 ## 1. あなたの本質（四柱推命より）
-あなたの日主は **乙（きのと）＝陰の木**。大樹ではなく、草花や蔓のような「しなやかな木」です。力でねじ伏せるより、環境を読み、人との繋がりの中で伸びていく適応力と気配りの人。月柱の戊寅（正財）は堅実さを示します。
+あなたの日主は **乙（きのと）＝陰の木**。大樹ではなく、草花や蔓のような「しなやかな木」です。力でねじ伏せるより、環境を読み、人との繋がりの中で伸びていく適応力と気配りの人。
 
 ## 2. いまのあなた（手相より）
 生命線は金星丘を大きく回り、体力・愛情の土台は豊か。知能線はゆるやかに下降するバランス型です。
@@ -20,10 +21,11 @@ const md = `# あなたの鑑定書 〜四柱推命 × 手相〜
 - 休息を予定に書き込む：乙木は根を休ませると伸びる木。
 
 ---
-※本鑑定は自己理解を深めるためのエンターテインメントです。健康・寿命に関する診断ではありません。
+※本鑑定は自己理解を深めるためのエンターテインメントです。
 `;
 
-const p = await renderReadingPdf(md, out);
+const bazi = computeBazi({ year: 1990, month: 2, day: 9 });
+const p = await renderReadingPdf(md, out, { bazi, nickname: 'ゆい', brand: 'Luna Mano 鑑定室' });
 const size = fs.statSync(p).size;
 const head = fs.readFileSync(p).slice(0, 5).toString();
 console.log(`生成: ${path.relative(process.cwd(), p)}  size=${size}B  header=${head}`);

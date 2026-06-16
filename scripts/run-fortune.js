@@ -51,7 +51,11 @@ async function main() {
 
   if (!process.argv.includes('--no-pdf')) {
     const pdfPath = outPath.replace(/\.md$/, '.pdf');
-    await renderReadingPdf(markdown, pdfPath);
+    await renderReadingPdf(markdown, pdfPath, {
+      bazi,
+      nickname: input.nickname || '',
+      brand: input.brand || process.env.FORTUNE_BRAND || 'Luna Mano 鑑定室',
+    });
     console.log(`✅ 鑑定書(PDF・納品用): ${path.relative(ROOT, pdfPath)}`);
   }
 }
