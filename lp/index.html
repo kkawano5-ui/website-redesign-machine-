@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Tokyo Sake &amp; Whisky Insider — Hidden bars, in English</title>
+  <meta name="description" content="Native-English experts take you inside Tokyo's hidden sake & whisky bars you can't book alone. Small-group nights & private pilgrimages. Tasting, stories, and bottles to ship home." />
+  <meta property="og:title" content="Tokyo Sake & Whisky Insider" />
+  <meta property="og:description" content="Drink Japan from the inside — in English. Hidden bars, guided tastings, private nights." />
+  <meta property="og:type" content="website" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            ink: '#0b0907',
+            ink2: '#120d0a',
+            ember: '#d8a23a',
+            ember2: '#e7c06a',
+            cream: '#f4ece0',
+            muted: '#b3a48f',
+          },
+          fontFamily: {
+            display: ['"Cormorant Garamond"', 'serif'],
+            sans: ['Inter', 'system-ui', 'sans-serif'],
+          },
+        },
+      },
+    };
+  </script>
+  <style>
+    body { background-color: #0b0907; }
+    .grain::before {
+      content: ""; position: fixed; inset: 0; pointer-events: none; z-index: 1; opacity: .05;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    }
+    .glow { background: radial-gradient(60% 50% at 50% 0%, rgba(216,162,58,.18), transparent 70%); }
+    .imgslot {
+      background:
+        linear-gradient(135deg, rgba(216,162,58,.10), rgba(11,9,7,.0)),
+        radial-gradient(80% 80% at 70% 20%, rgba(231,192,106,.16), transparent 60%),
+        linear-gradient(180deg, #1a130d, #0b0907);
+      position: relative; overflow: hidden;
+    }
+    .imgslot::after {
+      content: attr(data-label); position: absolute; left: 14px; bottom: 12px;
+      font-size: 11px; letter-spacing:.12em; text-transform: uppercase; color: rgba(179,164,143,.6);
+    }
+    .hairline { border-color: rgba(216,162,58,.18); }
+    details > summary { list-style: none; cursor: pointer; }
+    details > summary::-webkit-details-marker { display: none; }
+    details[open] .chev { transform: rotate(45deg); }
+  </style>
+</head>
+<body class="grain font-sans text-cream antialiased selection:bg-ember/30">
+
+  <!-- NAV -->
+  <header class="fixed top-0 inset-x-0 z-50 backdrop-blur-md bg-ink/70 border-b hairline">
+    <div class="max-w-6xl mx-auto px-5 h-16 flex items-center justify-between">
+      <a href="#top" class="font-display text-lg tracking-wide text-cream">Tokyo Sake &amp; Whisky <span class="text-ember">Insider</span></a>
+      <nav class="hidden md:flex items-center gap-7 text-sm text-muted">
+        <a href="#experiences" class="hover:text-cream transition">Experiences</a>
+        <a href="#why" class="hover:text-cream transition">Why us</a>
+        <a href="#taste" class="hover:text-cream transition">What you'll taste</a>
+        <a href="#faq" class="hover:text-cream transition">FAQ</a>
+      </nav>
+      <a href="#book" class="text-sm font-medium px-4 py-2 rounded-full bg-ember text-ink hover:bg-ember2 transition">Book a night</a>
+    </div>
+  </header>
+
+  <!-- HERO -->
+  <section id="top" class="relative min-h-[100svh] flex items-center glow pt-16">
+    <!-- IMAGE SLOT: drop assets/img-02-private-night.jpg here as full-bleed background -->
+    <div class="absolute inset-0 imgslot opacity-90" data-label="img-02 · private night"></div>
+    <div class="absolute inset-0 bg-gradient-to-t from-ink via-ink/70 to-ink/30"></div>
+    <div class="relative z-10 max-w-6xl mx-auto px-5 py-20">
+      <p class="text-ember tracking-[0.25em] text-xs uppercase mb-5">Tokyo · Night experiences</p>
+      <h1 class="font-display text-5xl sm:text-6xl md:text-7xl leading-[1.02] max-w-3xl">
+        Drink Japan from the inside — <span class="italic text-ember2">in English.</span>
+      </h1>
+      <p class="mt-6 text-lg md:text-xl text-cream/85 max-w-2xl">
+        Native-English experts take you into Tokyo's hidden sake &amp; whisky bars you can't book alone —
+        a guided tasting, the stories behind each pour, and the bottles you'll want to ship home.
+      </p>
+      <div class="mt-9 flex flex-col sm:flex-row gap-3">
+        <a href="#book" class="text-center px-7 py-3.5 rounded-full bg-ember text-ink font-semibold hover:bg-ember2 transition">Book a Sake &amp; Whisky Night</a>
+        <a href="#private" class="text-center px-7 py-3.5 rounded-full border hairline text-cream hover:bg-white/5 transition">Request a Private Pilgrimage</a>
+      </div>
+      <p class="mt-7 text-sm text-muted">English-speaking guides · Hidden &amp; members-only bars · Buy &amp; ship rare bottles</p>
+    </div>
+  </section>
+
+  <!-- EXPERIENCES -->
+  <section id="experiences" class="relative z-10 max-w-6xl mx-auto px-5 py-24">
+    <div class="mb-12">
+      <p class="text-ember tracking-[0.2em] text-xs uppercase mb-3">Two ways in</p>
+      <h2 class="font-display text-4xl md:text-5xl">Choose your night</h2>
+    </div>
+    <div class="grid md:grid-cols-2 gap-6">
+      <!-- Product A -->
+      <div class="rounded-2xl border hairline bg-ink2/60 overflow-hidden flex flex-col">
+        <div class="imgslot h-44" data-label="img-03 · small-group host"></div>
+        <div class="p-7 flex flex-col flex-1">
+          <h3 class="font-display text-2xl text-cream">Tokyo Sake &amp; Whisky Insider Night</h3>
+          <p class="text-sm text-muted mt-1">Small group · 4–8 guests · 3–3.5 hrs · evening</p>
+          <ul class="mt-5 space-y-2.5 text-cream/85 text-[15px] flex-1">
+            <li class="flex gap-2"><span class="text-ember">—</span> 2–3 hidden bars you couldn't find on your own</li>
+            <li class="flex gap-2"><span class="text-ember">—</span> A guided flight of sake &amp; Japanese whisky</li>
+            <li class="flex gap-2"><span class="text-ember">—</span> Food pairings along the way</li>
+            <li class="flex gap-2"><span class="text-ember">—</span> A native-English host who knows the craft</li>
+          </ul>
+          <div class="mt-6 flex items-center justify-between">
+            <span class="text-cream"><span class="text-muted text-sm">from</span> <span class="font-display text-2xl">¥18,000</span> <span class="text-muted text-sm">/ person</span></span>
+            <a href="#book" class="px-5 py-2.5 rounded-full bg-ember text-ink text-sm font-semibold hover:bg-ember2 transition">Book a night</a>
+          </div>
+        </div>
+      </div>
+      <!-- Product B -->
+      <div id="private" class="rounded-2xl border hairline bg-ink2/60 overflow-hidden flex flex-col">
+        <div class="imgslot h-44" data-label="img-02 · private night"></div>
+        <div class="p-7 flex flex-col flex-1">
+          <h3 class="font-display text-2xl text-cream">Private Whisky &amp; Sake Pilgrimage</h3>
+          <p class="text-sm text-muted mt-1">Fully private · 1–4 guests · 3–4 hrs / half-day</p>
+          <ul class="mt-5 space-y-2.5 text-cream/85 text-[15px] flex-1">
+            <li class="flex gap-2"><span class="text-ember">—</span> Members-only &amp; appointment-only bars and makers</li>
+            <li class="flex gap-2"><span class="text-ember">—</span> A rare tasting flight chosen for you</li>
+            <li class="flex gap-2"><span class="text-ember">—</span> Help buying &amp; shipping bottles home</li>
+            <li class="flex gap-2"><span class="text-ember">—</span> One-to-one with your guide</li>
+          </ul>
+          <div class="mt-6 flex items-center justify-between">
+            <span class="text-cream"><span class="text-muted text-sm">from</span> <span class="font-display text-2xl">¥90,000</span> <span class="text-muted text-sm">/ group</span></span>
+            <a href="#book" class="px-5 py-2.5 rounded-full border hairline text-cream text-sm font-semibold hover:bg-white/5 transition">Request a pilgrimage</a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <p class="text-center text-muted text-sm mt-7">Add a private photographer, or extend into a multi-day food &amp; drink itinerary.</p>
+  </section>
+
+  <!-- WHY US -->
+  <section id="why" class="relative z-10 border-y hairline bg-ink2/40">
+    <div class="max-w-6xl mx-auto px-5 py-24">
+      <div class="mb-12">
+        <p class="text-ember tracking-[0.2em] text-xs uppercase mb-3">Why us</p>
+        <h2 class="font-display text-4xl md:text-5xl max-w-2xl">The bar you'd never find — opened in your language</h2>
+      </div>
+      <div class="grid md:grid-cols-3 gap-10">
+        <div>
+          <div class="text-ember font-display text-3xl mb-3">01</div>
+          <h3 class="font-display text-2xl mb-2">We speak your language — really</h3>
+          <p class="text-cream/80 text-[15px]">Native-English guides who explain the nuance, the history, and how to order like a regular.</p>
+        </div>
+        <div>
+          <div class="text-ember font-display text-3xl mb-3">02</div>
+          <h3 class="font-display text-2xl mb-2">Doors that don't open alone</h3>
+          <p class="text-cream/80 text-[15px]">We bring you into hidden, members-only and appointment-only bars and makers — curated, not crowded.</p>
+        </div>
+        <div>
+          <div class="text-ember font-display text-3xl mb-3">03</div>
+          <h3 class="font-display text-2xl mb-2">Take the bottles home</h3>
+          <p class="text-cream/80 text-[15px]">We help you find rare sake &amp; Japanese whisky and arrange shipping where permitted.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- WHAT YOU'LL TASTE -->
+  <section id="taste" class="relative z-10 max-w-6xl mx-auto px-5 py-24">
+    <div class="grid md:grid-cols-2 gap-12 items-center">
+      <div class="imgslot rounded-2xl aspect-[4/5] border hairline" data-label="img-01 · tasting flight"></div>
+      <div>
+        <p class="text-ember tracking-[0.2em] text-xs uppercase mb-3">What you'll taste</p>
+        <h2 class="font-display text-4xl md:text-5xl mb-5">A flight built around the night — and your palate</h2>
+        <p class="text-cream/80 text-[15px] mb-6">
+          From crisp junmai daiginjo to cask-strength Japanese whisky, your tasting is chosen for the room you're in
+          and the way you like to drink. A few of the pours we love:
+        </p>
+        <div class="flex flex-wrap gap-2.5">
+          <span class="px-3.5 py-1.5 rounded-full border hairline text-sm text-cream/85">Junmai Daiginjo</span>
+          <span class="px-3.5 py-1.5 rounded-full border hairline text-sm text-cream/85">Aged Koshu</span>
+          <span class="px-3.5 py-1.5 rounded-full border hairline text-sm text-cream/85">Single-cask Japanese whisky</span>
+          <span class="px-3.5 py-1.5 rounded-full border hairline text-sm text-cream/85">Sparkling sake</span>
+          <span class="px-3.5 py-1.5 rounded-full border hairline text-sm text-cream/85">Regional jizake</span>
+          <span class="px-3.5 py-1.5 rounded-full border hairline text-sm text-cream/85">Mizunara-aged drams</span>
+        </div>
+        <p class="text-muted text-xs mt-5">Examples only — exact pours vary by venue, season and availability.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- TRUST -->
+  <section class="relative z-10 border-y hairline bg-ink2/40">
+    <div class="max-w-6xl mx-auto px-5 py-20">
+      <div class="text-center mb-12">
+        <div class="text-ember text-2xl tracking-widest mb-2">★★★★★</div>
+        <h2 class="font-display text-3xl md:text-4xl">Made for travelers who hate tourist traps</h2>
+        <p class="text-muted text-sm mt-2">Guest reviews go live as we launch — real photos &amp; words from real nights.</p>
+      </div>
+      <div class="grid md:grid-cols-3 gap-6">
+        <figure class="rounded-2xl border hairline p-6 bg-ink/40">
+          <blockquote class="text-cream/85 text-[15px] italic">"Places we'd have walked straight past — and someone who could actually tell us what we were drinking."</blockquote>
+          <figcaption class="text-muted text-sm mt-4">— Guest · placeholder</figcaption>
+        </figure>
+        <figure class="rounded-2xl border hairline p-6 bg-ink/40">
+          <blockquote class="text-cream/85 text-[15px] italic">"The private night was the highlight of our whole trip. We even shipped a bottle home."</blockquote>
+          <figcaption class="text-muted text-sm mt-4">— Guest · placeholder</figcaption>
+        </figure>
+        <figure class="rounded-2xl border hairline p-6 bg-ink/40">
+          <blockquote class="text-cream/85 text-[15px] italic">"Felt like being taken around by a friend who happens to know every bartender in Tokyo."</blockquote>
+          <figcaption class="text-muted text-sm mt-4">— Guest · placeholder</figcaption>
+        </figure>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section id="faq" class="relative z-10 max-w-3xl mx-auto px-5 py-24">
+    <p class="text-ember tracking-[0.2em] text-xs uppercase mb-3">FAQ</p>
+    <h2 class="font-display text-4xl md:text-5xl mb-10">Good to know</h2>
+    <div class="divide-y hairline border-y hairline">
+      <details class="group py-5">
+        <summary class="flex items-center justify-between gap-4"><span class="text-lg text-cream">Do I have to drink alcohol?</span><span class="chev text-ember transition-transform">+</span></summary>
+        <p class="text-cream/75 text-[15px] mt-3">No — we offer non-alcoholic options and tea pairings. The experience is about the places and stories as much as the pour.</p>
+      </details>
+      <details class="group py-5">
+        <summary class="flex items-center justify-between gap-4"><span class="text-lg text-cream">Allergies, halal or dietary needs?</span><span class="chev text-ember transition-transform">+</span></summary>
+        <p class="text-cream/75 text-[15px] mt-3">Tell us in advance and we'll plan around it wherever possible.</p>
+      </details>
+      <details class="group py-5">
+        <summary class="flex items-center justify-between gap-4"><span class="text-lg text-cream">Is it good for beginners or couples?</span><span class="chev text-ember transition-transform">+</span></summary>
+        <p class="text-cream/75 text-[15px] mt-3">Absolutely. We tailor the depth to you — newcomers and seasoned drinkers both leave with something new.</p>
+      </details>
+      <details class="group py-5">
+        <summary class="flex items-center justify-between gap-4"><span class="text-lg text-cream">Do I pay at each bar?</span><span class="chev text-ember transition-transform">+</span></summary>
+        <p class="text-cream/75 text-[15px] mt-3">Your tasting and food are pre-paid online — no fumbling with cash on the night.</p>
+      </details>
+      <details class="group py-5">
+        <summary class="flex items-center justify-between gap-4"><span class="text-lg text-cream">What if a bar is full?</span><span class="chev text-ember transition-transform">+</span></summary>
+        <p class="text-cream/75 text-[15px] mt-3">We always plan backups. Access is curated for the night rather than tied to a single venue.</p>
+      </details>
+      <details class="group py-5">
+        <summary class="flex items-center justify-between gap-4"><span class="text-lg text-cream">Cancellations?</span><span class="chev text-ember transition-transform">+</span></summary>
+        <p class="text-cream/75 text-[15px] mt-3">Free cancellation up to 48 hours before your night (details confirmed at booking).</p>
+      </details>
+    </div>
+  </section>
+
+  <!-- BOOK / CTA -->
+  <section id="book" class="relative z-10 glow border-t hairline">
+    <div class="max-w-3xl mx-auto px-5 py-24 text-center">
+      <h2 class="font-display text-4xl md:text-6xl leading-tight">Ready for a night you couldn't book on your own?</h2>
+      <p class="text-cream/80 mt-5">Tell us your dates and we'll hold your spots. Small groups fill fast.</p>
+      <div class="mt-8 flex flex-col sm:flex-row gap-3 justify-center">
+        <a href="mailto:hello@tokyoinsider.example?subject=Sake%20%26%20Whisky%20Night" class="px-7 py-3.5 rounded-full bg-ember text-ink font-semibold hover:bg-ember2 transition">Book a Sake &amp; Whisky Night</a>
+        <a href="mailto:hello@tokyoinsider.example?subject=Private%20Pilgrimage" class="px-7 py-3.5 rounded-full border hairline text-cream hover:bg-white/5 transition">Request a Private Pilgrimage</a>
+      </div>
+      <p class="text-muted text-sm mt-8">Also bookable on
+        <a href="#" class="text-cream/80 underline underline-offset-4 hover:text-ember">Viator</a> ·
+        <a href="#" class="text-cream/80 underline underline-offset-4 hover:text-ember">GetYourGuide</a> ·
+        <a href="#" class="text-cream/80 underline underline-offset-4 hover:text-ember">Klook</a>
+      </p>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="relative z-10 border-t hairline">
+    <div class="max-w-6xl mx-auto px-5 py-12 text-sm text-muted">
+      <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+        <div class="font-display text-lg text-cream">Tokyo Sake &amp; Whisky <span class="text-ember">Insider</span></div>
+        <p>Tokyo, Japan · hello@tokyoinsider.example</p>
+      </div>
+      <p class="mt-6 text-xs leading-relaxed text-muted/80">
+        You must be 20 or older to join (as required by Japanese law). Please drink responsibly.
+        Specific venues and rare bottles are subject to availability and are never guaranteed.
+        特定商取引法に基づく表記（準備中）。 © 2026 Tokyo Sake &amp; Whisky Insider. All rights reserved.
+      </p>
+    </div>
+  </footer>
+
+</body>
+</html>
