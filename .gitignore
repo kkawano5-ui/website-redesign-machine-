@@ -7,3 +7,7 @@ data/fortune-inputs/*.jpg
 data/fortune-inputs/*.jpeg
 data/fortune-inputs/*.png
 data/fortune-inputs/*.webp
+
+# 顧客の依頼データ（生年月日・写真など個人情報）はコミットしない。sample.json のみ追跡。
+data/fortune-inputs/*.json
+!data/fortune-inputs/sample.json
