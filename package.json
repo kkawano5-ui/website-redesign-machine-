@@ -6,7 +6,9 @@
     "run:one": "node scripts/run-one.js",
     "fortune": "node scripts/run-fortune.js",
     "fortune:pdf": "node scripts/md-to-pdf.js",
-    "fortune:test": "node scripts/fortune/bazi.test.js && node scripts/fortune/pdf.test.js"
+    "fortune:test": "node scripts/fortune/bazi.test.js && node scripts/fortune/pdf.test.js",
+    "social:post": "node social/run.js",
+    "social:preview": "node social/run.js --dry-run"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.39.0",

@@ -1,0 +1,55 @@
+name: Social auto-post
+
+on:
+  schedule:
+    # 毎日 01:00 UTC = 10:00 JST に実行
+    - cron: '0 1 * * *'
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: '投稿せずログだけ出す (true/false)'
+        required: false
+        default: 'false'
+
+permissions:
+  contents: write
+
+jobs:
+  post:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Run scheduler
+        env:
+          X_API_KEY: ${{ secrets.X_API_KEY }}
+          X_API_SECRET: ${{ secrets.X_API_SECRET }}
+          X_ACCESS_TOKEN: ${{ secrets.X_ACCESS_TOKEN }}
+          X_ACCESS_SECRET: ${{ secrets.X_ACCESS_SECRET }}
+          IG_ACCESS_TOKEN: ${{ secrets.IG_ACCESS_TOKEN }}
+          IG_USER_ID: ${{ secrets.IG_USER_ID }}
+          SOCIAL_IMAGE_BASE_URL: ${{ vars.SOCIAL_IMAGE_BASE_URL }}
+        run: |
+          if [ "${{ github.event.inputs.dry_run }}" = "true" ]; then
+            node social/run.js --dry-run
+          else
+            node social/run.js
+          fi
+
+      - name: Commit updated queue state
+        run: |
+          if [ -n "$(git status --porcelain social/queue.json)" ]; then
+            git config user.name "github-actions[bot]"
+            git config user.email "github-actions[bot]@users.noreply.github.com"
+            git add social/queue.json
+            git commit -m "chore(social): mark posted items [skip ci]"
+            git push
+          else
+            echo "投稿状態に変更なし。"
+          fi
