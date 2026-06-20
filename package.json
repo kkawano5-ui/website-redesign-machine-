@@ -5,7 +5,8 @@
   "scripts": {
     "run:one": "node scripts/run-one.js",
     "find:leads": "node scripts/find-leads.js",
-    "combine:leads": "node scripts/combine-leads.js"
+    "combine:leads": "node scripts/combine-leads.js",
+    "make:sample": "node scripts/make-sample.js"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.39.0",
