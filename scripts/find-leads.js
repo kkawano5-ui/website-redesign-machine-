@@ -3,6 +3,7 @@ import path from 'path';
 import 'dotenv/config';
 
 import { ensureDir } from './utils.js';
+import { resolveRegion, listRegions, SAITAMA_WARDS, SAITAMA_CITY } from './regions.js';
 
 /**
  * さいたま市の飲食店を Google Places API (New) で走査し、
@@ -10,21 +11,15 @@ import { ensureDir } from './utils.js';
  *
  * 使い方:
  *   GOOGLE_MAPS_API_KEY=xxxx npm run find:leads
- *   npm run find:leads -- --max-reviews=5 --step=500 --types=restaurant,cafe
+ *   npm run find:leads -- --region=urawa --max-reviews=5
+ *   npm run find:leads -- --all-regions          # 10区を順に走査＋サマリー
+ *   npm run find:leads -- --list-regions         # 利用可能な地域プリセット一覧
  *
  * 環境変数:
  *   GOOGLE_MAPS_API_KEY  必須。Places API (New) を有効化したキー。
  */
 
 const NEARBY_SEARCH_URL = 'https://places.googleapis.com/v1/places:searchNearby';
-
-// さいたま市のおおよその外接矩形（10区をカバー）。必要に応じて絞り込む。
-const DEFAULT_BBOX = {
-  south: 35.82,
-  west: 139.55,
-  north: 35.99,
-  east: 139.73
-};
 
 const FIELD_MASK = [
   'places.id',
@@ -47,7 +42,10 @@ function parseArgs(argv) {
     step: 600, // グリッド間隔(m)。小さいほど網羅的・高コスト。
     radius: 500, // 各セルの検索半径(m)。
     types: ['restaurant'],
-    bbox: { ...DEFAULT_BBOX },
+    bboxOverride: {}, // south/north/west/east の手動指定があれば格納
+    regionKeys: [], // --region=a,b で指定したプリセットkey
+    allRegions: false,
+    listRegionsOnly: false,
     delayMs: 120,
     dryRun: false
   };
@@ -67,17 +65,20 @@ function parseArgs(argv) {
       case 'types':
         args.types = value.split(',').map((t) => t.trim()).filter(Boolean);
         break;
+      case 'region':
+        args.regionKeys = value.split(',').map((t) => t.trim()).filter(Boolean);
+        break;
+      case 'all-regions':
+        args.allRegions = true;
+        break;
+      case 'list-regions':
+        args.listRegionsOnly = true;
+        break;
       case 'south':
-        args.bbox.south = Number(value);
-        break;
-      case 'west':
-        args.bbox.west = Number(value);
-        break;
       case 'north':
-        args.bbox.north = Number(value);
-        break;
+      case 'west':
       case 'east':
-        args.bbox.east = Number(value);
+        args.bboxOverride[key] = Number(value);
         break;
       case 'delay':
         args.delayMs = Number(value);
@@ -91,6 +92,29 @@ function parseArgs(argv) {
   }
 
   return args;
+}
+
+// 実行対象の地域リストを決定する。
+//   --all-regions     → さいたま市10区
+//   --region=a,b      → 指定プリセット
+//   --south等のbbox   → 手動範囲（単一）
+//   既定              → さいたま市全域
+function resolveTargets(args) {
+  if (args.allRegions) {
+    return Object.entries(SAITAMA_WARDS).map(([key, r]) => ({ key, ...r }));
+  }
+  if (args.regionKeys.length > 0) {
+    return args.regionKeys.map((key) => {
+      const region = resolveRegion(key);
+      if (!region) throw new Error(`未知の地域プリセット: ${key}（--list-regions で確認）`);
+      return { key, ...region };
+    });
+  }
+  const hasManualBbox = Object.keys(args.bboxOverride).length > 0;
+  if (hasManualBbox) {
+    return [{ key: 'custom', label: 'カスタム範囲', ...SAITAMA_CITY, ...args.bboxOverride }];
+  }
+  return [{ key: 'saitama', ...SAITAMA_CITY }];
 }
 
 // 緯度経度のグリッド点を生成する。stepはメートル。
@@ -202,26 +226,19 @@ function toCsv(leads, maxReviews) {
 
 const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
-async function main() {
-  const args = parseArgs(process.argv.slice(2));
-  const apiKey = process.env.GOOGLE_MAPS_API_KEY;
+// 概算コスト（Nearby Search Enterprise: 約$0.035/リクエスト, 為替¥155/$想定）
+const COST_PER_REQUEST_JPY = 0.035 * 155;
 
-  if (!apiKey) {
-    console.error('環境変数 GOOGLE_MAPS_API_KEY が未設定です。.env に設定してください。');
-    process.exit(1);
-  }
-
-  const grid = buildGrid(args.bbox, args.step);
-  console.log(`検索条件: types=${args.types.join(',')} / 口コミ${args.maxReviews}件以下 or website無し`);
-  console.log(`グリッド: ${grid.length} セル (step=${args.step}m, radius=${args.radius}m)`);
-  console.log(`推定リクエスト数: ${grid.length} 回\n`);
+// 1地域を走査してリードを返す。
+async function scanRegion(apiKey, target, args, stamp) {
+  const grid = buildGrid(target, args.step);
+  console.log(`\n[${target.label}] グリッド ${grid.length}セル (step=${args.step}m) / 推定 ¥${Math.round(grid.length * COST_PER_REQUEST_JPY).toLocaleString()}`);
 
   if (args.dryRun) {
-    console.log('--dry-run 指定のため、API呼び出しは行いません。');
-    return;
+    return { ...target, requestCount: grid.length, allCount: 0, leadCount: 0, csvPath: null };
   }
 
-  const seen = new Map(); // place_id -> place
+  const seen = new Map();
   let requestCount = 0;
 
   for (const point of grid) {
@@ -229,14 +246,10 @@ async function main() {
     try {
       const places = await searchCell(apiKey, point, args.radius, args.types);
       for (const place of places) {
-        if (place.id && !seen.has(place.id)) {
-          seen.set(place.id, place);
-        }
+        if (place.id && !seen.has(place.id)) seen.set(place.id, place);
       }
       if (requestCount % 10 === 0) {
-        process.stdout.write(
-          `  ...${requestCount}/${grid.length} セル走査済 / ユニーク店舗 ${seen.size}件\n`
-        );
+        process.stdout.write(`  ...${requestCount}/${grid.length}セル / ユニーク${seen.size}件\n`);
       }
     } catch (error) {
       console.warn(`  セル(${point.latitude},${point.longitude}) スキップ: ${error.message}`);
@@ -251,16 +264,61 @@ async function main() {
     .sort((a, b) => (a.userRatingCount || 0) - (b.userRatingCount || 0));
 
   const csv = toCsv(leads, args.maxReviews);
-  const stamp = new Date().toISOString().slice(0, 10);
-  const outputPath = path.resolve('data/leads', `saitama-restaurants-${stamp}.csv`);
-  await ensureDir(path.dirname(outputPath));
-  await fs.writeFile(outputPath, csv, 'utf-8');
+  const csvPath = path.resolve('data/leads', `saitama-${target.key}-${stamp}.csv`);
+  await ensureDir(path.dirname(csvPath));
+  await fs.writeFile(csvPath, csv, 'utf-8');
 
-  console.log(`\n完了:`);
-  console.log(`  走査セル数      : ${requestCount}`);
-  console.log(`  ユニーク店舗数  : ${allPlaces.length}`);
-  console.log(`  営業リード数    : ${leads.length}`);
-  console.log(`  出力            : ${outputPath}`);
+  console.log(`  → ${target.label}: 店舗${allPlaces.length}件 / リード${leads.length}件 → ${path.basename(csvPath)}`);
+  return { ...target, requestCount, allCount: allPlaces.length, leadCount: leads.length, csvPath };
+}
+
+function printSummary(results, args) {
+  const totalReq = results.reduce((s, r) => s + r.requestCount, 0);
+  const totalLeads = results.reduce((s, r) => s + r.leadCount, 0);
+  const ranked = [...results].sort((a, b) => b.leadCount - a.leadCount);
+
+  console.log('\n==== サマリー（リード多い順 = 営業優先エリア） ====');
+  for (const r of ranked) {
+    const bar = '█'.repeat(Math.min(40, Math.round(r.leadCount / 5)));
+    console.log(`  ${r.label.padEnd(8, '　')} リード${String(r.leadCount).padStart(4)}件  ${bar}`);
+  }
+  console.log('  --------------------------------------------------');
+  console.log(`  合計リクエスト: ${totalReq}回  /  推定コスト: ¥${Math.round(totalReq * COST_PER_REQUEST_JPY).toLocaleString()}`);
+  if (!args.dryRun) console.log(`  合計リード数  : ${totalLeads}件`);
+}
+
+async function main() {
+  const args = parseArgs(process.argv.slice(2));
+
+  if (args.listRegionsOnly) {
+    console.log('利用可能な地域プリセット:');
+    for (const { key, label } of listRegions()) {
+      console.log(`  --region=${key.padEnd(10)} ${label}`);
+    }
+    console.log('\n例: npm run find:leads -- --all-regions');
+    return;
+  }
+
+  const apiKey = process.env.GOOGLE_MAPS_API_KEY;
+  if (!apiKey && !args.dryRun) {
+    console.error('環境変数 GOOGLE_MAPS_API_KEY が未設定です。.env に設定してください。');
+    process.exit(1);
+  }
+
+  const targets = resolveTargets(args);
+  const stamp = new Date().toISOString().slice(0, 10);
+
+  console.log(`検索条件: types=${args.types.join(',')} / 口コミ${args.maxReviews}件以下 or website無し`);
+  console.log(`対象地域: ${targets.map((t) => t.label).join(', ')}`);
+
+  const results = [];
+  for (const target of targets) {
+    results.push(await scanRegion(apiKey, target, args, stamp));
+  }
+
+  if (targets.length > 1 || args.dryRun) {
+    printSummary(results, args);
+  }
 }
 
 main().catch((error) => {

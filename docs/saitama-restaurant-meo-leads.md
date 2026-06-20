@@ -37,12 +37,45 @@ npm run find:leads -- --dry-run
 npm run find:leads -- --max-reviews=5 --types=restaurant,cafe,bar --step=400
 ```
 
+### 地域ごとに回す（おすすめ）
+
+区単位で回すと、コストを小さく刻めて「どのエリアにターゲットが多いか」が一目で分かる。
+
+```bash
+# 利用可能な地域プリセット一覧（さいたま市10区）
+npm run find:leads -- --list-regions
+
+# 1区だけ（浦和区）
+npm run find:leads -- --region=urawa
+
+# 複数区
+npm run find:leads -- --region=omiya,urawa,minami
+
+# 10区を順に走査 → 区ごとCSV + 「営業優先エリア」サマリー表
+npm run find:leads -- --all-regions
+```
+
+`--all-regions` の出力例（リード多い順に並ぶので、上から営業に回ると効率が良い）:
+
+```
+==== サマリー（リード多い順 = 営業優先エリア） ====
+  岩槻区   リード 180件  ████████████████████████████████████
+  緑区     リード 120件  ████████████████████████
+  ...
+  合計リクエスト: 1074回 / 推定コスト: ¥5,826
+```
+
+区ごとに `data/leads/saitama-<区key>-YYYY-MM-DD.csv` が出力される。
+
 ### 主なオプション
 
 | オプション | 既定 | 説明 |
 | --- | --- | --- |
 | `--max-reviews=N` | 10 | 口コミ件数の上限しきい値 |
 | `--types=a,b,c` | restaurant | Places の店舗タイプ（restaurant, cafe, bar, bakery など） |
+| `--region=key` | － | 地域プリセットを指定（`--list-regions` で一覧）。カンマ区切りで複数可 |
+| `--all-regions` | － | さいたま市10区を順に走査し、区ごとCSV＋サマリーを出力 |
+| `--list-regions` | － | 地域プリセット一覧を表示して終了 |
 | `--step=M` | 600 | グリッド間隔(m)。小さいほど網羅的・高コスト |
 | `--radius=M` | 500 | 各セルの検索半径(m) |
 | `--south/--north/--west/--east` | さいたま市 | 検索範囲の矩形を区単位などに絞る |
