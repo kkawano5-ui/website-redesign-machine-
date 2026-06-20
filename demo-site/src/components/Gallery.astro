@@ -21,10 +21,10 @@ const r = radii(theme);
     <!-- スマホは横スクロール、PCはグリッド -->
     <div class="no-scrollbar mt-6 flex gap-3 overflow-x-auto sm:grid sm:grid-cols-3 sm:gap-4 sm:overflow-visible">
       {
-        shop.gallery.map((g, i) => (
+        shop.media.galleryImages.map((g, i) => (
           <Frame
             src={g}
-            alt={`${shop.name}の写真 ${i + 1}`}
+            alt={`${shop.name}の写真 ${i + 1}（イメージ）`}
             ratio="aspect-[3/4] sm:aspect-square"
             rounded={r.img}
             class="w-56 shrink-0 sm:w-auto"

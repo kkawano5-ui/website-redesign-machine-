@@ -1,28 +1,40 @@
 ---
+import Frame from './Frame.astro';
 import type { Shop } from '../data/shops';
-import type { RestaurantTheme } from '../themes/restaurantThemes';
+import { radii, type RestaurantTheme } from '../themes/restaurantThemes';
 
 interface Props {
   shop: Shop;
   theme: RestaurantTheme;
 }
 const { shop, theme } = Astro.props;
+const r = radii(theme);
+const imgs = shop.media.interiorImages;
 ---
 
 <section class="mx-auto max-w-content px-5 py-12 sm:py-16">
   <p class="text-xs tracking-[0.3em] text-accent">ABOUT</p>
   <h2 class="mt-2 font-heading text-2xl text-ink sm:text-3xl" style="letter-spacing:var(--tracking)">
-    {shop.name}について
+    {shop.name}のこだわり
   </h2>
-  <div class="mt-8 grid gap-6 sm:grid-cols-3 sm:gap-8">
-    {
-      shop.about.map((a, i) => (
-        <div class="border-t border-line pt-5">
-          <span class="font-heading text-sm text-accent">0{i + 1}</span>
-          <h3 class="mt-2 font-heading text-lg text-ink">{a.title}</h3>
-          <p class="mt-2 text-sm leading-relaxed text-muted">{a.body}</p>
-        </div>
-      ))
-    }
+
+  <div class="mt-8 grid gap-8 sm:grid-cols-2 sm:items-center">
+    <div class="grid grid-cols-2 gap-3">
+      <Frame src={imgs[0] ?? ''} alt={`${shop.name}の店内（イメージ）`} ratio="aspect-[3/4]" rounded={r.img} class="row-span-2" />
+      <Frame src={imgs[1] ?? imgs[0] ?? ''} alt={`${shop.name}の料理（イメージ）`} ratio="aspect-square" rounded={r.img} />
+      <Frame src={imgs[2] ?? imgs[0] ?? ''} alt={`${shop.name}の雰囲気（イメージ）`} ratio="aspect-square" rounded={r.img} />
+    </div>
+
+    <div class="space-y-6">
+      {
+        shop.about.map((a, i) => (
+          <div class="border-l-2 border-accent pl-4">
+            <span class="font-heading text-sm text-accent">0{i + 1}</span>
+            <h3 class="mt-1 font-heading text-lg text-ink">{a.title}</h3>
+            <p class="mt-1.5 text-sm leading-relaxed text-muted">{a.body}</p>
+          </div>
+        ))
+      }
+    </div>
   </div>
 </section>

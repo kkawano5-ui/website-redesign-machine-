@@ -10,6 +10,7 @@ interface Props {
 const { shop, theme } = Astro.props;
 const r = radii(theme);
 const h = shop.hero;
+const m = shop.media;
 const reserveHref = shop.cta.reserve || '#access';
 const isOverlay = theme.hero === 'overlay' || theme.hero === 'poster';
 const isPoster = theme.hero === 'poster';
@@ -17,23 +18,39 @@ const isPoster = theme.hero === 'poster';
 
 {
   isOverlay && (
-    <section class="relative flex min-h-[80vh] items-end overflow-hidden sm:min-h-[88vh]">
-      <Frame src={h.image} alt={`${shop.name}の店内・料理イメージ`} ratio="" class="absolute inset-0" />
-      <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/35 to-black/10" />
-      <div class="relative z-10 mx-auto w-full max-w-content px-5 pb-12 sm:pb-20">
-        <p class="mb-3 text-xs tracking-[0.3em] text-white/80">{theme.accentWord}</p>
+    <section class="relative flex min-h-[82vh] items-end overflow-hidden sm:min-h-[90vh]">
+      {/* 背景動画（本番動画が無ければ poster=heroImage を表示） */}
+      <video
+        class="absolute inset-0 h-full w-full object-cover"
+        autoplay
+        muted
+        loop
+        playsinline
+        preload="metadata"
+        poster={m.heroImage}
+      >
+        <source src={m.heroVideo} type="video/mp4" />
+      </video>
+      {/* 文字を読みやすくする黒のグラデーション */}
+      <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/55 to-black/20" />
+      <div class="relative z-10 mx-auto w-full max-w-content px-5 pb-14 sm:pb-24">
+        <p class="mb-4 flex items-center gap-2.5 text-white">
+          <span class="h-px w-7 bg-accent"></span>
+          <span class="font-heading text-base sm:text-lg">{shop.name}</span>
+          <span class="text-xs text-white/65">{shop.genre}</span>
+        </p>
         <h1
-          class="font-heading text-4xl font-extrabold leading-[1.25] text-white sm:text-6xl"
-          style={`letter-spacing:var(--tracking);${isPoster ? 'text-shadow:0 2px 18px rgba(0,0,0,.5)' : ''}`}
+          class="font-heading text-[2.6rem] font-extrabold leading-[1.18] text-white sm:text-6xl"
+          style={`letter-spacing:var(--tracking);text-shadow:0 2px 22px rgba(0,0,0,.55)`}
         >
           <span class="whitespace-pre-line">{h.catch}</span>
         </h1>
         <p class="mt-4 max-w-md text-sm text-white/85 sm:text-base">{h.sub}</p>
-        <div class="mt-6 flex flex-wrap items-center gap-2.5">
-          <a href={reserveHref} class={`bg-accent px-6 py-3 text-sm font-bold text-accentInk ${r.btn}`}>
+        <div class="mt-7 flex flex-wrap items-center gap-2.5">
+          <a href={reserveHref} class={`bg-accent px-6 py-3.5 text-sm font-bold text-accentInk ${r.btn}`}>
             ご予約・お問い合わせ
           </a>
-          <span class={`border border-white/30 px-4 py-3 text-xs text-white/80 ${r.btn}`}>{h.nearest}</span>
+          <span class={`border border-white/30 px-4 py-3.5 text-xs text-white/85 ${r.btn}`}>{h.nearest}</span>
         </div>
       </div>
     </section>
@@ -44,7 +61,11 @@ const isPoster = theme.hero === 'poster';
   theme.hero === 'split' && (
     <section class="mx-auto grid max-w-content items-center gap-6 px-5 py-8 sm:grid-cols-2 sm:gap-10 sm:py-14">
       <div class="order-2 sm:order-1">
-        <p class="mb-3 text-xs tracking-[0.3em] text-accent">{theme.accentWord}</p>
+        <p class="mb-3 flex items-center gap-2.5">
+          <span class="h-px w-7 bg-accent"></span>
+          <span class="font-heading text-base text-ink">{shop.name}</span>
+          <span class="text-xs text-muted">{shop.genre}</span>
+        </p>
         <h1
           class="font-heading text-4xl font-semibold leading-[1.3] text-ink sm:text-5xl"
           style="letter-spacing:var(--tracking)"
@@ -63,7 +84,7 @@ const isPoster = theme.hero === 'poster';
         </div>
       </div>
       <div class="order-1 sm:order-2">
-        <Frame src={h.image} alt={`${shop.name}のイメージ`} ratio="aspect-[4/5]" rounded={r.img} />
+        <Frame src={m.heroImage} alt={`${shop.name}のイメージ`} ratio="aspect-[4/5]" rounded={r.img} />
       </div>
     </section>
   )
@@ -74,7 +95,11 @@ const isPoster = theme.hero === 'poster';
     <section class="mx-auto max-w-content px-5 pb-8 pt-6 sm:pt-10">
       <div class="mb-5 flex items-end justify-between border-b border-line pb-4">
         <div>
-          <p class="text-xs tracking-[0.3em] text-accent">{theme.accentWord}</p>
+          <p class="flex items-center gap-2.5">
+            <span class="h-px w-7 bg-accent"></span>
+            <span class="font-heading text-base text-ink">{shop.name}</span>
+            <span class="text-xs text-muted">{shop.genre}</span>
+          </p>
           <h1
             class="mt-2 font-heading text-4xl font-bold leading-[1.3] text-ink sm:text-5xl"
             style="letter-spacing:var(--tracking)"
@@ -83,7 +108,7 @@ const isPoster = theme.hero === 'poster';
           </h1>
         </div>
       </div>
-      <Frame src={h.image} alt={`${shop.name}の店内イメージ`} ratio="aspect-[16/10]" rounded={r.img} />
+      <Frame src={m.heroImage} alt={`${shop.name}の店内イメージ`} ratio="aspect-[16/10]" rounded={r.img} />
       <div class="mt-5 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <p class="text-sm text-muted">{h.sub}　／　{h.nearest}</p>
         <a href={reserveHref} class={`inline-block bg-accent px-6 py-3 text-center text-sm font-bold text-accentInk ${r.btn}`}>

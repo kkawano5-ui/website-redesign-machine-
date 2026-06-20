@@ -45,8 +45,9 @@ const mapHref = `https://maps.google.com/maps?q=${encodeURIComponent(shop.access
   <div class="mx-auto max-w-content px-5 py-8 text-center">
     <p class="font-heading text-lg text-ink" style="letter-spacing:var(--tracking)">{shop.name}</p>
     <p class="mt-1 text-xs text-muted">{shop.genre}</p>
-    <p class="mt-4 text-[11px] text-muted">
-      ※本ページは営業ご提案用のデモサンプルです。掲載情報の一部はサンプル・要確認です。
+    <p class="mx-auto mt-4 max-w-xl text-[11px] leading-relaxed text-muted">
+      {shop.demoNotice}
     </p>
+    <p class="mt-2 text-[11px] text-muted">※本ページは営業ご提案用のデモです。営業時間・価格等の一部はサンプル・要確認です。</p>
   </div>
 </footer>

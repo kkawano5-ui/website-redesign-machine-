@@ -4,18 +4,28 @@ export interface MenuItem {
   name: string;
   price?: string;
   desc?: string;
-  image?: string;
   recommend?: boolean;
 }
 
 export interface SceneItem {
-  label: string; // 例: ひとりで / 仕事帰りに
+  label: string;
   body: string;
 }
 
 export interface AboutItem {
   title: string;
   body: string;
+}
+
+/** 画像・動画は media にまとめ、後から差し替えやすくする。 */
+export interface ShopMedia {
+  /** 本番動画の配置先（ローカルパス）。未配置時は heroImage が poster として表示される。 */
+  heroVideo?: string;
+  heroImage: string;
+  exteriorImage: string;
+  interiorImages: string[];
+  menuImages: string[];
+  galleryImages: string[];
 }
 
 /** 実在確認の状態。false の項目は画面に「要確認/サンプル」を表示する。 */
@@ -42,21 +52,20 @@ export interface Shop {
   hero: {
     catch: string;
     sub: string;
-    image: string;
     nearest: string;
   };
 
-  about: AboutItem[]; // 3つ
-  menu: MenuItem[]; // 3〜6
+  about: AboutItem[];
+  menu: MenuItem[];
   scenes: SceneItem[];
-  gallery: string[];
+  media: ShopMedia;
 
   access: {
     address: string;
     hours: string[];
     holiday: string;
     phone: string;
-    mapQuery: string; // Googleマップ埋め込み用のクエリ
+    mapQuery: string;
   };
 
   cta: {
@@ -66,10 +75,20 @@ export interface Shop {
   };
 
   verify: VerifyFlags;
+  /** 画面下部/上部に控えめに出す注記。 */
+  demoNotice: string;
 }
 
-/** 画像のベースパス。public/shops/{slug}/ に配置する前提。 */
-const img = (slug: string, file: string) => `/shops/${slug}/${file}`;
+/** 営業デモの共通注記。 */
+export const DEMO_NOTICE =
+  '掲載写真はご提案用のイメージです。ご契約後、貴店の料理写真・店内写真・外観写真に差し替えて制作いたします。';
+
+/**
+ * 仮素材（B案）。loremflickr はキーワード＋lockで安定して実写真を返す。
+ * 本番納品時は public/media/{slug}/ の店舗提供写真に差し替える前提。
+ */
+const lf = (w: number, h: number, tags: string, lock: number) =>
+  `https://loremflickr.com/${w}/${h}/${tags}?lock=${lock}`;
 
 export const shops: Shop[] = [
   {
@@ -82,12 +101,11 @@ export const shops: Shop[] = [
       title: '喫茶 山鳩｜昔ながらの珈琲とナポリタン｜さいたま市',
       description:
         'さいたま市の老舗喫茶店「山鳩」。深煎りのネルドリップ珈琲と、昔ながらのナポリタン・プリン。静かに流れる時間をどうぞ。',
-      ogImage: img('kissa-yamabato', 'ogp.jpg')
+      ogImage: lf(1200, 630, 'coffee,cafe,vintage', 101)
     },
     hero: {
       catch: '変わらない一杯が、\nここにある。',
       sub: '深煎りネルドリップ珈琲と、昔ながらの喫茶メニュー。',
-      image: img('kissa-yamabato', 'hero.jpg'),
       nearest: '最寄り：北浦和駅 徒歩6分（要確認）'
     },
     about: [
@@ -96,23 +114,36 @@ export const shops: Shop[] = [
       { title: '静かに流れる時間。', body: '低い照明と木のテーブル。読書にも、商談前のひと息にも。' }
     ],
     menu: [
-      { name: 'ブレンド珈琲', price: '¥520', desc: '深煎り・ネルドリップ', image: img('kissa-yamabato', 'menu-1.jpg'), recommend: true },
-      { name: '鉄板ナポリタン', price: '¥880', desc: '熱々の鉄板で', image: img('kissa-yamabato', 'menu-2.jpg'), recommend: true },
-      { name: '自家製プリン', price: '¥480', desc: '固めの昔ながら', image: img('kissa-yamabato', 'menu-3.jpg') },
-      { name: '玉子サンド', price: '¥680', desc: 'ふんわり厚焼き', image: img('kissa-yamabato', 'menu-4.jpg') },
-      { name: 'クリームソーダ', price: '¥600', desc: 'メロンの緑が映える', image: img('kissa-yamabato', 'menu-5.jpg') }
+      { name: 'ブレンド珈琲', price: '¥520', desc: '深煎り・ネルドリップ', recommend: true },
+      { name: '鉄板ナポリタン', price: '¥880', desc: '熱々の鉄板で', recommend: true },
+      { name: '自家製プリン', price: '¥480', desc: '固めの昔ながら' },
+      { name: '玉子サンド', price: '¥680', desc: 'ふんわり厚焼き' },
+      { name: 'クリームソーダ', price: '¥600', desc: 'メロンの緑が映える' }
     ],
     scenes: [
       { label: 'ひとりで', body: '読書や考えごとに。長居しても気づかい不要の静けさ。' },
       { label: '商談前に', body: '落ち着いた席で、打ち合わせ前のひと息を。' },
       { label: '昔を懐かしむ', body: '変わらない味と空間。昭和の喫茶の記憶そのままに。' }
     ],
-    gallery: [
-      img('kissa-yamabato', 'gallery-1.jpg'),
-      img('kissa-yamabato', 'gallery-2.jpg'),
-      img('kissa-yamabato', 'gallery-3.jpg'),
-      img('kissa-yamabato', 'gallery-4.jpg')
-    ],
+    media: {
+      heroVideo: '/media/kissa-yamabato/hero.mp4',
+      heroImage: lf(1600, 1000, 'coffee,cafe,vintage', 102),
+      exteriorImage: lf(1200, 900, 'cafe,storefront', 103),
+      interiorImages: [lf(1200, 800, 'cafe,interior,vintage', 104), lf(1200, 800, 'coffee,counter', 105)],
+      menuImages: [
+        lf(800, 800, 'coffee,cup', 111),
+        lf(800, 800, 'napolitan,pasta', 112),
+        lf(800, 800, 'pudding,dessert', 113),
+        lf(800, 800, 'sandwich,egg', 114),
+        lf(800, 800, 'melon,soda', 115)
+      ],
+      galleryImages: [
+        lf(900, 900, 'coffee,cafe', 121),
+        lf(900, 900, 'cafe,interior', 122),
+        lf(900, 900, 'coffee,beans', 123),
+        lf(900, 900, 'dessert,cafe', 124)
+      ]
+    },
     access: {
       address: 'さいたま市浦和区（住所はサンプル・要確認）',
       hours: ['平日 8:00 - 19:00', '土日 8:00 - 18:00'],
@@ -120,12 +151,9 @@ export const shops: Shop[] = [
       phone: '048-000-0000',
       mapQuery: 'さいたま市浦和区 喫茶店'
     },
-    cta: {
-      phone: '048-000-0000',
-      instagram: 'https://instagram.com/',
-      reserve: ''
-    },
-    verify: { phone: false, address: false, hours: false, menu: false }
+    cta: { phone: '048-000-0000', instagram: 'https://instagram.com/', reserve: '' },
+    verify: { phone: false, address: false, hours: false, menu: false },
+    demoNotice: DEMO_NOTICE
   },
   {
     slug: 'cafe-ao',
@@ -137,12 +165,11 @@ export const shops: Shop[] = [
       title: 'CAFE AO｜自家焙煎スペシャルティと焼き菓子｜さいたま市',
       description:
         'さいたま市のカフェ「CAFE AO」。自家焙煎のスペシャルティコーヒーと、季節の焼き菓子・ランチプレート。明るく心地よい時間を。',
-      ogImage: img('cafe-ao', 'ogp.jpg')
+      ogImage: lf(1200, 630, 'cafe,coffee,latte', 201)
     },
     hero: {
       catch: 'いい一日は、\nいい一杯から。',
       sub: '自家焙煎スペシャルティコーヒーと、季節の焼き菓子。',
-      image: img('cafe-ao', 'hero.jpg'),
       nearest: '最寄り：さいたま新都心駅 徒歩8分（要確認）'
     },
     about: [
@@ -151,24 +178,37 @@ export const shops: Shop[] = [
       { title: '明るい、心地よい席。', body: '大きな窓と白い壁。ひとりでも、誰かとでも過ごしやすい空間。' }
     ],
     menu: [
-      { name: '本日のドリップ', price: '¥520', desc: '日替わりの自家焙煎', image: img('cafe-ao', 'menu-1.jpg'), recommend: true },
-      { name: 'カフェラテ', price: '¥580', desc: 'なめらかなミルク', image: img('cafe-ao', 'menu-2.jpg'), recommend: true },
-      { name: '季節のタルト', price: '¥620', desc: '旬のフルーツで', image: img('cafe-ao', 'menu-3.jpg') },
-      { name: 'AO ランチプレート', price: '¥1,180', desc: '週替わりの一皿', image: img('cafe-ao', 'menu-4.jpg'), recommend: true },
-      { name: 'スコーン（2種）', price: '¥420', desc: '焼きたてを', image: img('cafe-ao', 'menu-5.jpg') }
+      { name: '本日のドリップ', price: '¥520', desc: '日替わりの自家焙煎', recommend: true },
+      { name: 'カフェラテ', price: '¥580', desc: 'なめらかなミルク', recommend: true },
+      { name: '季節のタルト', price: '¥620', desc: '旬のフルーツで' },
+      { name: 'AO ランチプレート', price: '¥1,180', desc: '週替わりの一皿', recommend: true },
+      { name: 'スコーン（2種）', price: '¥420', desc: '焼きたてを' }
     ],
     scenes: [
       { label: 'ひとりで', body: '窓際の席でゆっくり。仕事や読書のお供に。' },
       { label: '友人と', body: '気取らず話せる、明るい雰囲気。' },
       { label: '休日の朝に', body: 'モーニングからの一日のはじまりに。' }
     ],
-    gallery: [
-      img('cafe-ao', 'gallery-1.jpg'),
-      img('cafe-ao', 'gallery-2.jpg'),
-      img('cafe-ao', 'gallery-3.jpg'),
-      img('cafe-ao', 'gallery-4.jpg'),
-      img('cafe-ao', 'gallery-5.jpg')
-    ],
+    media: {
+      heroVideo: '/media/cafe-ao/hero.mp4',
+      heroImage: lf(1600, 1000, 'cafe,coffee,latte', 202),
+      exteriorImage: lf(1200, 900, 'cafe,storefront,modern', 203),
+      interiorImages: [lf(1200, 800, 'cafe,interior,bright', 204), lf(1200, 800, 'coffee,barista', 205)],
+      menuImages: [
+        lf(800, 800, 'coffee,drip', 211),
+        lf(800, 800, 'cafe,latte', 212),
+        lf(800, 800, 'tart,fruit', 213),
+        lf(800, 800, 'lunch,plate', 214),
+        lf(800, 800, 'scone,bakery', 215)
+      ],
+      galleryImages: [
+        lf(900, 900, 'cafe,coffee', 221),
+        lf(900, 900, 'cafe,interior', 222),
+        lf(900, 900, 'latte,art', 223),
+        lf(900, 900, 'cake,cafe', 224),
+        lf(900, 900, 'coffee,beans', 225)
+      ]
+    },
     access: {
       address: 'さいたま市大宮区（住所はサンプル・要確認）',
       hours: ['9:00 - 19:00'],
@@ -176,12 +216,9 @@ export const shops: Shop[] = [
       phone: '048-000-0000',
       mapQuery: 'さいたま市大宮区 カフェ'
     },
-    cta: {
-      phone: '048-000-0000',
-      instagram: 'https://instagram.com/',
-      reserve: 'https://example.com/reserve'
-    },
-    verify: { phone: false, address: false, hours: false, menu: false }
+    cta: { phone: '048-000-0000', instagram: 'https://instagram.com/', reserve: 'https://example.com/reserve' },
+    verify: { phone: false, address: false, hours: false, menu: false },
+    demoNotice: DEMO_NOTICE
   },
   {
     slug: 'yakiniku-daidomon',
@@ -193,12 +230,11 @@ export const shops: Shop[] = [
       title: '焼肉 大同門｜炭火で味わう厳選和牛｜さいたま市大宮',
       description:
         'さいたま市大宮の焼肉店「大同門」。厳選した和牛を炭火で。希少部位から名物のタレまで、特別な一夜を炭火とともに。',
-      ogImage: img('yakiniku-daidomon', 'ogp.jpg')
+      ogImage: lf(1200, 630, 'yakiniku,grilled,meat', 301)
     },
     hero: {
       catch: '炭火が、\nいちばんのごちそう。',
       sub: '厳選和牛を炭火で。希少部位と、受け継いだタレ。',
-      image: img('yakiniku-daidomon', 'hero.jpg'),
       nearest: '最寄り：大宮駅 徒歩12分（要確認）'
     },
     about: [
@@ -207,37 +243,52 @@ export const shops: Shop[] = [
       { title: '受け継いだタレ。', body: '長年つぎ足してきた自家製のタレが、肉の味を引き立てる。' }
     ],
     menu: [
-      { name: '特選カルビ', price: '¥1,680', desc: 'その日の厳選', image: img('yakiniku-daidomon', 'menu-1.jpg'), recommend: true },
-      { name: '本日の希少部位', price: '時価', desc: '入荷次第', image: img('yakiniku-daidomon', 'menu-2.jpg'), recommend: true },
-      { name: '上タン塩', price: '¥1,480', desc: '厚切りで', image: img('yakiniku-daidomon', 'menu-3.jpg') },
-      { name: '大同門ハラミ', price: '¥1,280', desc: '自家製タレ', image: img('yakiniku-daidomon', 'menu-4.jpg'), recommend: true },
-      { name: '〆の冷麺', price: '¥880', desc: 'さっぱりと', image: img('yakiniku-daidomon', 'menu-5.jpg') }
+      { name: '特選カルビ', price: '¥1,680', desc: 'その日の厳選', recommend: true },
+      { name: '本日の希少部位', price: '時価', desc: '入荷次第', recommend: true },
+      { name: '上タン塩', price: '¥1,480', desc: '厚切りで' },
+      { name: '大同門ハラミ', price: '¥1,280', desc: '自家製タレ', recommend: true },
+      { name: '〆の冷麺', price: '¥880', desc: 'さっぱりと' }
     ],
     scenes: [
       { label: '家族で', body: '広めの席で、囲んでゆっくり。ハレの日のごちそうに。' },
       { label: '仲間と', body: '炭火を囲んで盛り上がる、特別な一夜。' },
       { label: '接待・記念日', body: '落ち着いた席で、大切な人と特別な時間を。' }
     ],
-    gallery: [
-      img('yakiniku-daidomon', 'gallery-1.jpg'),
-      img('yakiniku-daidomon', 'gallery-2.jpg'),
-      img('yakiniku-daidomon', 'gallery-3.jpg'),
-      img('yakiniku-daidomon', 'gallery-4.jpg')
-    ],
+    media: {
+      heroVideo: '/media/yakiniku-daidomon/hero-grill.mp4',
+      heroImage: lf(1600, 1000, 'yakiniku,grilled,meat', 302),
+      exteriorImage: lf(1200, 900, 'restaurant,exterior,night', 303),
+      interiorImages: [
+        lf(1200, 800, 'restaurant,interior,dark', 304),
+        lf(1200, 800, 'charcoal,grill', 305),
+        lf(1200, 800, 'wagyu,beef', 306)
+      ],
+      menuImages: [
+        lf(800, 800, 'grilled,beef', 311),
+        lf(800, 800, 'wagyu,steak', 312),
+        lf(800, 800, 'beef,tongue', 313),
+        lf(800, 800, 'barbecue,meat', 314),
+        lf(800, 800, 'naengmyeon,noodle', 315)
+      ],
+      galleryImages: [
+        lf(900, 900, 'yakiniku,grill', 321),
+        lf(900, 900, 'charcoal,fire', 322),
+        lf(900, 900, 'wagyu,beef', 323),
+        lf(900, 900, 'restaurant,interior,dark', 324),
+        lf(900, 900, 'barbecue,smoke', 325),
+        lf(900, 900, 'meat,platter', 326)
+      ]
+    },
     access: {
-      // 実在リード由来だが未確認のためサンプル表記
       address: 'さいたま市大宮区北袋町2丁目（住所はサンプル・要確認）',
       hours: ['17:00 - 23:00（サンプル）'],
       holiday: '月曜定休（サンプル）',
       phone: '048-644-4609',
       mapQuery: 'さいたま市大宮区北袋町 焼肉'
     },
-    cta: {
-      phone: '048-644-4609',
-      instagram: 'https://instagram.com/',
-      reserve: 'https://example.com/reserve'
-    },
-    verify: { phone: false, address: false, hours: false, menu: false }
+    cta: { phone: '048-644-4609', instagram: 'https://instagram.com/', reserve: 'https://example.com/reserve' },
+    verify: { phone: false, address: false, hours: false, menu: false },
+    demoNotice: DEMO_NOTICE
   }
 ];
 

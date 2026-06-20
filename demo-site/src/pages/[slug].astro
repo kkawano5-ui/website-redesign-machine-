@@ -24,6 +24,13 @@ const theme = getTheme(shop.theme);
 
 <BaseLayout shop={shop}>
   <div id="top"></div>
+  {/* 控えめな注記の帯（PCは写真注記も表示・スマホは「ご提案用デモ」のみ） */}
+  <div class="border-b border-line bg-surfaceAlt">
+    <div class="mx-auto flex max-w-content items-center justify-center gap-2 px-5 py-1.5 text-center text-[10.5px] text-muted">
+      <span class="shrink-0 rounded-full border border-line px-2 py-0.5">ご提案用デモ</span>
+      <span class="hidden sm:inline">{shop.demoNotice}</span>
+    </div>
+  </div>
   <Header shop={shop} theme={theme} />
   <main>
     <Hero shop={shop} theme={theme} />

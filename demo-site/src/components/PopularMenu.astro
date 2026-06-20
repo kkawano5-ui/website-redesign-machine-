@@ -20,18 +20,23 @@ const r = radii(theme);
           おすすめメニュー
         </h2>
       </div>
-      {!shop.verify.menu && <span class="chip-sample">メニュー・価格はサンプル</span>}
+      {!shop.verify.menu && <span class="chip-sample">メニュー・価格はサンプル（実際の内容に差し替え）</span>}
     </div>
 
     <div class="mt-8 grid grid-cols-2 gap-4 sm:grid-cols-3 sm:gap-6">
       {
-        shop.menu.map((m) => (
+        shop.menu.map((m, i) => (
           <article class={`overflow-hidden border border-line bg-surface ${r.card}`}>
-            <Frame src={m.image ?? ''} alt={m.name} ratio="aspect-square" />
+            <Frame src={shop.media.menuImages[i] ?? ''} alt={`${m.name}（イメージ）`} ratio="aspect-square" />
             <div class="p-3 sm:p-4">
               <div class="flex items-baseline justify-between gap-2">
                 <h3 class="font-heading text-sm text-ink sm:text-base">{m.name}</h3>
-                {m.price && <span class="shrink-0 text-sm text-accent">{m.price}</span>}
+                {m.price && (
+                  <span class="shrink-0 text-sm text-muted">
+                    {!shop.verify.menu && <span class="text-[10px] text-muted">目安 </span>}
+                    {m.price}
+                  </span>
+                )}
               </div>
               {m.desc && <p class="mt-1 text-xs text-muted">{m.desc}</p>}
               {m.recommend && (

@@ -1,4 +1,5 @@
 ---
+import Frame from './Frame.astro';
 import type { Shop } from '../data/shops';
 import { radii, type RestaurantTheme } from '../themes/restaurantThemes';
 
@@ -18,6 +19,14 @@ const mapSrc = `https://maps.google.com/maps?q=${encodeURIComponent(a.mapQuery)}
     <h2 class="mt-2 font-heading text-2xl text-ink sm:text-3xl" style="letter-spacing:var(--tracking)">
       店舗情報・アクセス
     </h2>
+
+    <div class="relative mt-6">
+      <Frame src={shop.media.exteriorImage} alt={`${shop.name}の外観（イメージ）`} ratio="aspect-[16/9] sm:aspect-[21/9]" rounded={r.img} />
+      <div class={`pointer-events-none absolute inset-0 bg-gradient-to-t from-black/55 to-transparent ${r.img}`} />
+      <p class="absolute bottom-4 left-4 font-heading text-lg text-white sm:text-xl" style="text-shadow:0 2px 14px rgba(0,0,0,.6)">
+        {shop.name}
+      </p>
+    </div>
 
     <div class="mt-8 grid gap-8 sm:grid-cols-2">
       <dl class="space-y-4 text-sm">
