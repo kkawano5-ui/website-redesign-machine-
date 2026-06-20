@@ -1,7 +1,7 @@
 // 営業デモ用の「承認済み素材パック」マニフェスト。
 //
 // 重要な方針:
-// - 画像はランダム取得しない（loremflickr / unsplash random / クエリ自動取得は禁止）
+// - 画像は外部からランダム取得しない（クエリ自動取得・ランダムURLは禁止）
 // - サイトで使うのは approved: true の素材だけ
 // - 画像URLをHTMLや shop データに直接ベタ書きしない（必ずこの manifest 経由）
 // - 素材は public/demo-assets/{category}/{role}/ に配置する前提（本番は店舗写真へ差し替え）
@@ -189,4 +189,16 @@ export function pickAsset(
 /** OGP は hero と同じ世界観の横長を1枚。なければ null。 */
 export function pickOgp(category: AssetCategory, mood: string[] = []): DemoAsset | null {
   return pickAsset(category, 'ogp', 0, mood) ?? pickAsset(category, 'hero', 0, mood);
+}
+
+/** 承認OGPが無いときに使うローカルの汎用OGP（外部URLは使わない）。 */
+export const FALLBACK_OGP = '/demo-assets/og-default.png';
+
+/**
+ * OGP画像のローカルパスを返す。
+ * 1) approved な ogp 素材 → 2) approved な hero 素材 → 3) ローカル汎用OGP。
+ * 外部ランダムURLは絶対に返さない。
+ */
+export function resolveOgpSrc(category: AssetCategory, mood: string[] = []): string {
+  return pickOgp(category, mood)?.src ?? FALLBACK_OGP;
 }
