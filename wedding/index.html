@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Yukari — Heritage Weddings in Japan | Marry where your roots began</title>
+  <meta name="description" content="A private, English-speaking wedding house for Japanese-heritage couples marrying in Japan. Shrine and traditional ceremonies, venues, kimono, cuisine and family travel — designed, reserved and hosted for you, end to end." />
+  <meta property="og:title" content="Yukari — Heritage Weddings in Japan" />
+  <meta property="og:description" content="Marry where your roots began. A private English-speaking wedding house for Japanese-heritage couples — ceremony, venue, kimono, cuisine and family travel, fully handled." />
+  <meta property="og:type" content="website" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            sumi: '#14100e', sumi2: '#1d1714',
+            kin: '#c9a24b', kin2: '#e3c97f',
+            sakura: '#e6c2bd', cream: '#f6efe6', muted: '#b6a591',
+          },
+          fontFamily: {
+            display: ['"Cormorant Garamond"', 'serif'],
+            sans: ['Inter', 'system-ui', 'sans-serif'],
+          },
+        },
+      },
+    };
+  </script>
+  <style>
+    body { background-color: #14100e; }
+    .grain::before {
+      content: ""; position: fixed; inset: 0; pointer-events: none; z-index: 1; opacity: .045;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    }
+    .glow { background: radial-gradient(60% 50% at 50% 0%, rgba(201,162,75,.16), transparent 70%); }
+    .hairline { border-color: rgba(201,162,75,.18); }
+    .photo { background-size: cover; background-position: center; }
+    /* Photo slots: drop real portfolio photos into /wedding (hero.jpg, ceremony.jpg, kimono.jpg, family.jpg).
+       If a photo is missing, the gradient fallback below still renders cleanly. */
+    .p-hero {
+      background-image:
+        linear-gradient(180deg, rgba(20,16,14,.34) 0%, rgba(20,16,14,.62) 60%, rgba(20,16,14,.94) 100%),
+        url('hero.jpg'),
+        linear-gradient(150deg, #2a1d18 0%, #160f0c 60%, #14100e 100%);
+    }
+    .p-ceremony {
+      background-image:
+        linear-gradient(180deg, rgba(20,16,14,.12), rgba(20,16,14,.55)),
+        url('ceremony.jpg'),
+        linear-gradient(135deg, #2a1d18, #14100e);
+    }
+    .p-kimono {
+      background-image:
+        linear-gradient(180deg, rgba(20,16,14,.12), rgba(20,16,14,.55)),
+        url('kimono.jpg'),
+        linear-gradient(135deg, #3a2622, #14100e);
+    }
+    .p-family {
+      background-image:
+        linear-gradient(180deg, rgba(20,16,14,.12), rgba(20,16,14,.55)),
+        url('family.jpg'),
+        linear-gradient(135deg, #2a1d18, #14100e);
+    }
+    details > summary { list-style: none; cursor: pointer; }
+    details > summary::-webkit-details-marker { display: none; }
+    details[open] .chev { transform: rotate(45deg); }
+  </style>
+</head>
+<body class="grain font-sans text-cream antialiased selection:bg-kin/30">
+
+  <!-- NAV -->
+  <header class="fixed top-0 inset-x-0 z-50 backdrop-blur-md bg-sumi/70 border-b hairline">
+    <div class="max-w-6xl mx-auto px-5 h-16 flex items-center justify-between">
+      <a href="#top" class="font-display text-xl tracking-wide text-cream">Yukari <span class="text-muted text-sm tracking-[0.3em] uppercase ml-1">縁</span></a>
+      <nav class="hidden md:flex items-center gap-7 text-sm text-muted">
+        <a href="#why" class="hover:text-cream transition">Why Japan</a>
+        <a href="#what" class="hover:text-cream transition">What we handle</a>
+        <a href="#how" class="hover:text-cream transition">How it works</a>
+        <a href="#planner" class="hover:text-cream transition">Your planner</a>
+        <a href="#faq" class="hover:text-cream transition">FAQ</a>
+      </nav>
+      <a href="#enquire" class="text-sm font-medium px-4 py-2 rounded-full bg-kin text-sumi hover:bg-kin2 transition">Begin</a>
+    </div>
+  </header>
+
+  <!-- HERO -->
+  <section id="top" class="relative min-h-[100svh] flex items-center glow pt-16">
+    <div class="absolute inset-0 photo p-hero"></div>
+    <div class="relative z-10 max-w-6xl mx-auto px-5 py-20">
+      <p class="text-kin tracking-[0.25em] text-xs uppercase mb-5">Heritage weddings in Japan · By private invitation</p>
+      <h1 class="font-display text-5xl sm:text-6xl md:text-7xl leading-[1.03] max-w-3xl">
+        Marry where your <span class="italic text-kin2">roots began.</span>
+      </h1>
+      <p class="mt-6 text-lg md:text-xl text-cream/85 max-w-2xl">
+        A private, English-speaking wedding house for couples with ties to Japan. Shrine and traditional
+        ceremonies, the venue, the kimono, the cuisine and your family's stay — designed, reserved and
+        hosted for you, from first message to the last toast.
+      </p>
+      <div class="mt-9 flex flex-col sm:flex-row gap-3">
+        <a href="#enquire" class="text-center px-7 py-3.5 rounded-full bg-kin text-sumi font-semibold hover:bg-kin2 transition">Request a consultation</a>
+        <a href="#planner" class="text-center px-7 py-3.5 rounded-full border hairline text-cream hover:bg-white/5 transition">Meet your planner</a>
+      </div>
+      <p class="mt-7 text-sm text-muted">In English, end to end · 50+ celebrations · Families from the US, Hong Kong &amp; Indonesia</p>
+    </div>
+  </section>
+
+  <!-- WHY JAPAN -->
+  <section id="why" class="relative z-10 max-w-6xl mx-auto px-5 py-24">
+    <div class="grid md:grid-cols-2 gap-12 items-center">
+      <div>
+        <p class="text-kin tracking-[0.2em] text-xs uppercase mb-3">Why Japan</p>
+        <h2 class="font-display text-4xl md:text-5xl leading-tight">More than a destination — it's where you come from.</h2>
+        <p class="text-cream/80 text-[15px] mt-6">
+          For families whose heritage runs back to Japan, marrying here isn't a backdrop. It's belonging —
+          a vow made in the country of your grandparents, before a shrine, in your family's language and rites.
+        </p>
+        <p class="text-cream/80 text-[15px] mt-4">
+          We exist for that couple: the one who wants their wedding to honor where they're from, and to give
+          relatives who travel from across the world a few unforgettable days in Japan. We carry the language,
+          the etiquette and the relationships, so all you carry is the meaning.
+        </p>
+      </div>
+      <div class="rounded-2xl border hairline overflow-hidden">
+        <div class="photo p-ceremony h-80 md:h-96"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- WHAT WE HANDLE -->
+  <section id="what" class="relative z-10 border-y hairline bg-sumi2/40">
+    <div class="max-w-6xl mx-auto px-5 py-24">
+      <div class="mb-12">
+        <p class="text-kin tracking-[0.2em] text-xs uppercase mb-3">What we handle</p>
+        <h2 class="font-display text-4xl md:text-5xl max-w-2xl">One house for the whole wedding</h2>
+      </div>
+      <div class="grid md:grid-cols-3 gap-6">
+        <div class="rounded-2xl border hairline bg-sumi2/60 overflow-hidden flex flex-col">
+          <div class="photo p-ceremony h-44"></div>
+          <div class="p-7 flex flex-col flex-1">
+            <div class="text-kin font-display text-3xl mb-2">01</div>
+            <h3 class="font-display text-2xl text-cream">Ceremony &amp; rites</h3>
+            <p class="text-cream/80 text-[15px] mt-3 flex-1">
+              Shinto shrine, temple or traditional Japanese ceremonies — arranged with the priests and
+              venues, explained in English, and choreographed so every guest understands the meaning.
+            </p>
+            <p class="text-muted text-xs mt-5">Shrine &amp; temple rites · San-san-kudo · Symbolic &amp; legal options</p>
+          </div>
+        </div>
+        <div class="rounded-2xl border hairline bg-sumi2/60 overflow-hidden flex flex-col">
+          <div class="photo p-kimono h-44"></div>
+          <div class="p-7 flex flex-col flex-1">
+            <div class="text-kin font-display text-3xl mb-2">02</div>
+            <h3 class="font-display text-2xl text-cream">Venue, attire &amp; table</h3>
+            <p class="text-cream/80 text-[15px] mt-3 flex-1">
+              The venue, the kimono and dressing, hair and make-up, kaiseki and pairings, flowers,
+              photography and film — curated from makers and houses we trust and oversee on the day.
+            </p>
+            <p class="text-muted text-xs mt-5">Kimono &amp; styling · Cuisine &amp; sake · Florals · Photo &amp; film</p>
+          </div>
+        </div>
+        <div class="rounded-2xl border hairline bg-sumi2/60 overflow-hidden flex flex-col">
+          <div class="photo p-family h-44"></div>
+          <div class="p-7 flex flex-col flex-1">
+            <div class="text-kin font-display text-3xl mb-2">03</div>
+            <h3 class="font-display text-2xl text-cream">Family &amp; guest journey</h3>
+            <p class="text-cream/80 text-[15px] mt-3 flex-1">
+              Stays, transfers, and a few private days around the wedding for the relatives who fly in —
+              so the trip becomes the reunion your family will talk about for years.
+            </p>
+            <p class="text-muted text-xs mt-5">Hotels &amp; ryokan · Transfers · Welcome dinners · Private experiences</p>
+          </div>
+        </div>
+      </div>
+      <p class="text-center text-muted text-sm mt-7">One planner, one point of contact, one transparent plan — in English, from engagement to send-off.</p>
+    </div>
+  </section>
+
+  <!-- HOW IT WORKS -->
+  <section id="how" class="relative z-10 max-w-6xl mx-auto px-5 py-24">
+    <div class="mb-12">
+      <p class="text-kin tracking-[0.2em] text-xs uppercase mb-3">How it works</p>
+      <h2 class="font-display text-4xl md:text-5xl max-w-2xl">From first message to the last toast</h2>
+    </div>
+    <div class="grid md:grid-cols-4 gap-10">
+      <div>
+        <div class="text-kin font-display text-3xl mb-3">01</div>
+        <h3 class="font-display text-xl mb-2">Consultation</h3>
+        <p class="text-cream/80 text-[15px]">A private call about your story, your family's roots, the season and the kind of wedding you picture.</p>
+      </div>
+      <div>
+        <div class="text-kin font-display text-3xl mb-3">02</div>
+        <h3 class="font-display text-xl mb-2">Design</h3>
+        <p class="text-cream/80 text-[15px]">A proposal — ceremony, venue, attire, cuisine and the family journey — with one clear, itemised plan.</p>
+      </div>
+      <div>
+        <div class="text-kin font-display text-3xl mb-3">03</div>
+        <h3 class="font-display text-xl mb-2">Plan &amp; reserve</h3>
+        <p class="text-cream/80 text-[15px]">We secure the shrine, venue and makers, handle the Japanese, the paperwork and the deposits — you approve.</p>
+      </div>
+      <div>
+        <div class="text-kin font-display text-3xl mb-3">04</div>
+        <h3 class="font-display text-xl mb-2">Celebrate, hosted</h3>
+        <p class="text-cream/80 text-[15px]">Your planner is with you on the day — translating, guiding family, and making sure nothing touches you but the moment.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- YOUR PLANNER / PROOF -->
+  <section id="planner" class="relative z-10 border-y hairline bg-sumi2/40">
+    <div class="max-w-6xl mx-auto px-5 py-24">
+      <div class="grid md:grid-cols-2 gap-12 items-center">
+        <div class="rounded-2xl border hairline overflow-hidden order-2 md:order-1">
+          <div class="photo p-kimono h-80 md:h-96"></div>
+        </div>
+        <div class="order-1 md:order-2">
+          <p class="text-kin tracking-[0.2em] text-xs uppercase mb-3">Your planner</p>
+          <h2 class="font-display text-4xl md:text-5xl leading-tight">A specialist who has done this 50+ times — in your language.</h2>
+          <p class="text-cream/80 text-[15px] mt-6">
+            Few people can plan a wedding in Japan in fluent English and in fluent Japanese, with the
+            relationships to open shrines and the experience to make the day flawless. Your planner has
+            led 50+ celebrations over the past three years for heritage families flying in from the US,
+            Hong Kong and Indonesia.
+          </p>
+          <ul class="mt-6 space-y-3 text-cream/85 text-[15px]">
+            <li class="flex gap-3"><span class="text-kin">—</span> 50+ weddings designed and hosted, end to end</li>
+            <li class="flex gap-3"><span class="text-kin">—</span> Native English, native Japanese — nothing is lost in translation</li>
+            <li class="flex gap-3"><span class="text-kin">—</span> Direct relationships with shrines, venues, makers and ryokan</li>
+            <li class="flex gap-3"><span class="text-kin">—</span> One point of contact for you and every travelling guest</li>
+          </ul>
+          <a href="#enquire" class="inline-block mt-8 px-7 py-3.5 rounded-full bg-kin text-sumi font-semibold hover:bg-kin2 transition">Request a consultation</a>
+        </div>
+      </div>
+      <!-- Testimonial slot: replace with a real quote + name/initial + city once collected -->
+      <figure class="max-w-3xl mx-auto text-center mt-20">
+        <blockquote class="font-display text-2xl md:text-3xl text-cream/90 italic leading-snug">
+          “She gave us the wedding our grandparents would have dreamed of — in Japan, in our language,
+          without us having to worry about a single detail.”
+        </blockquote>
+        <figcaption class="text-muted text-sm mt-5">— A recent couple, married in Kyoto <span class="text-muted/60">(testimonial to be confirmed)</span></figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <!-- INVESTMENT -->
+  <section id="investment" class="relative z-10 max-w-3xl mx-auto px-5 py-24 text-center">
+    <p class="text-kin tracking-[0.2em] text-xs uppercase mb-3">Investment</p>
+    <h2 class="font-display text-4xl md:text-5xl mb-6">A full-service heritage wedding</h2>
+    <p class="text-cream/80 text-[15px]">
+      Every wedding is bespoke and quoted privately. Most heritage celebrations we design — ceremony, venue,
+      attire, cuisine, photography and the family journey — fall in the range below. Our planning fee is for
+      our service; venues, ceremony, attire, cuisine and travel are arranged transparently at cost.
+    </p>
+    <div class="mt-9 inline-flex flex-col items-center rounded-2xl border border-kin/40 bg-sumi2/70 px-12 py-10">
+      <span class="text-muted text-sm uppercase tracking-widest">Typical celebration</span>
+      <span class="font-display text-5xl text-cream mt-2">¥5M – ¥12M</span>
+      <span class="text-muted text-sm mt-2">all-in · by private enquiry</span>
+    </div>
+    <p class="text-muted text-xs mt-7">Indicative range to help you plan. We'll prepare a precise, itemised proposal after your consultation.</p>
+  </section>
+
+  <!-- FAQ -->
+  <section id="faq" class="relative z-10 max-w-3xl mx-auto px-5 py-24">
+    <p class="text-kin tracking-[0.2em] text-xs uppercase mb-3">FAQ</p>
+    <h2 class="font-display text-4xl md:text-5xl mb-10">Good to know</h2>
+    <div class="divide-y hairline border-y hairline">
+      <details class="group py-5">
+        <summary class="flex items-center justify-between gap-4"><span class="text-lg text-cream">Can foreign nationals legally marry in Japan?</span><span class="chev text-kin transition-transform">+</span></summary>
+        <p class="text-cream/75 text-[15px] mt-3">Yes. Many couples hold a ceremony in Japan and complete the legal marriage either here or at home; we'll explain the options for your nationalities and guide the paperwork, in partnership with the appropriate licensed services. We don't provide legal advice, but we make the process clear and manageable.</p>
+      </details>
+      <details class="group py-5">
+        <summary class="flex items-center justify-between gap-4"><span class="text-lg text-cream">What kind of ceremony can we have?</span><span class="chev text-kin transition-transform">+</span></summary>
+        <p class="text-cream/75 text-[15px] mt-3">Shinto shrine, Buddhist temple, traditional Japanese, or a Western-style ceremony in a Japanese setting — symbolic or legal. We arrange it with the venue and officiant, and walk your family through each rite in English.</p>
+      </details>
+      <details class="group py-5">
+        <summary class="flex items-center justify-between gap-4"><span class="text-lg text-cream">Is everything handled in English?</span><span class="chev text-kin transition-transform">+</span></summary>
+        <p class="text-cream/75 text-[15px] mt-3">Entirely. Your planner is fluent in English and Japanese and is your single point of contact — for you and for every guest travelling in. Nothing important happens in a language you don't follow.</p>
+      </details>
+      <details class="group py-5">
+        <summary class="flex items-center justify-between gap-4"><span class="text-lg text-cream">Can you look after our travelling guests?</span><span class="chev text-kin transition-transform">+</span></summary>
+        <p class="text-cream/75 text-[15px] mt-3">Yes — hotels and ryokan, transfers, a welcome dinner and a few private days around the wedding. Many families turn the wedding into a multi-day reunion in Japan, and we design that journey alongside the ceremony.</p>
+      </details>
+      <details class="group py-5">
+        <summary class="flex items-center justify-between gap-4"><span class="text-lg text-cream">How far ahead should we plan, and how do payments work?</span><span class="chev text-kin transition-transform">+</span></summary>
+        <p class="text-cream/75 text-[15px] mt-3">Most couples begin 8–18 months out; the best shrines and seasons book early. After your consultation we send a written proposal and a single, transparent quote. A deposit secures your date, and venue, ceremony and supplier costs are arranged at cost with clear terms in writing.</p>
+      </details>
+    </div>
+  </section>
+
+  <!-- ENQUIRE / CTA -->
+  <section id="enquire" class="relative z-10 glow border-t hairline">
+    <div class="max-w-xl mx-auto px-5 py-24">
+      <div class="text-center">
+        <h2 class="font-display text-4xl md:text-6xl leading-tight">Tell us about your wedding.</h2>
+        <p class="text-cream/80 mt-5">Share your story, your roots and the season you have in mind. We'll reply privately to arrange your consultation — no obligation.</p>
+      </div>
+
+      <!-- Formspree: replace YOUR_FORM_ID with your form id from formspree.io (see validation/wedding-validation-plan.md, Step 0) -->
+      <form id="enquiry-form" action="https://formspree.io/f/YOUR_FORM_ID" method="POST" class="mt-10 text-left space-y-4">
+        <input type="text" name="_gotcha" tabindex="-1" autocomplete="off" class="hidden" aria-hidden="true" />
+        <div class="grid sm:grid-cols-2 gap-4">
+          <label class="block">
+            <span class="text-muted text-sm">Full name</span>
+            <input required name="name" type="text" autocomplete="name" class="mt-1 w-full rounded-xl bg-white/5 border hairline px-4 py-3 text-cream placeholder-muted/60 focus:outline-none focus:ring-1 focus:ring-kin" placeholder="Your name" />
+          </label>
+          <label class="block">
+            <span class="text-muted text-sm">Email</span>
+            <input required name="email" type="email" autocomplete="email" class="mt-1 w-full rounded-xl bg-white/5 border hairline px-4 py-3 text-cream placeholder-muted/60 focus:outline-none focus:ring-1 focus:ring-kin" placeholder="you@email.com" />
+          </label>
+          <label class="block">
+            <span class="text-muted text-sm">Where you live</span>
+            <input name="country" type="text" autocomplete="country-name" class="mt-1 w-full rounded-xl bg-white/5 border hairline px-4 py-3 text-cream placeholder-muted/60 focus:outline-none focus:ring-1 focus:ring-kin" placeholder="e.g. Los Angeles, USA" />
+          </label>
+          <label class="block">
+            <span class="text-muted text-sm">Your family's ties to Japan</span>
+            <input name="roots" type="text" class="mt-1 w-full rounded-xl bg-white/5 border hairline px-4 py-3 text-cream placeholder-muted/60 focus:outline-none focus:ring-1 focus:ring-kin" placeholder="e.g. grandparents from Hiroshima" />
+          </label>
+          <label class="block">
+            <span class="text-muted text-sm">Preferred date / season</span>
+            <input name="wedding_date" type="text" class="mt-1 w-full rounded-xl bg-white/5 border hairline px-4 py-3 text-cream placeholder-muted/60 focus:outline-none focus:ring-1 focus:ring-kin" placeholder="e.g. Spring 2027" />
+          </label>
+          <label class="block">
+            <span class="text-muted text-sm">Approx. guests</span>
+            <input name="guest_count" type="number" min="2" class="mt-1 w-full rounded-xl bg-white/5 border hairline px-4 py-3 text-cream placeholder-muted/60 focus:outline-none focus:ring-1 focus:ring-kin" placeholder="e.g. 30" />
+          </label>
+        </div>
+        <div class="grid sm:grid-cols-2 gap-4">
+          <label class="block">
+            <span class="text-muted text-sm">Ceremony you picture</span>
+            <select name="ceremony" class="mt-1 w-full rounded-xl bg-white/5 border hairline px-4 py-3 text-cream focus:outline-none focus:ring-1 focus:ring-kin">
+              <option class="bg-sumi">Shinto shrine ceremony</option>
+              <option class="bg-sumi">Buddhist temple ceremony</option>
+              <option class="bg-sumi">Traditional Japanese</option>
+              <option class="bg-sumi">Western-style in Japan</option>
+              <option class="bg-sumi">Not sure yet — guide us</option>
+            </select>
+          </label>
+          <label class="block">
+            <span class="text-muted text-sm">Budget range (optional)</span>
+            <select name="budget" class="mt-1 w-full rounded-xl bg-white/5 border hairline px-4 py-3 text-cream focus:outline-none focus:ring-1 focus:ring-kin">
+              <option value="" class="bg-sumi">Prefer not to say</option>
+              <option class="bg-sumi">Under ¥5M</option>
+              <option class="bg-sumi">¥5M – ¥8M</option>
+              <option class="bg-sumi">¥8M – ¥12M</option>
+              <option class="bg-sumi">¥12M+</option>
+            </select>
+          </label>
+        </div>
+        <label class="block">
+          <span class="text-muted text-sm">Tell us more</span>
+          <textarea name="message" rows="4" class="mt-1 w-full rounded-xl bg-white/5 border hairline px-4 py-3 text-cream placeholder-muted/60 focus:outline-none focus:ring-1 focus:ring-kin" placeholder="Your story, what matters most, who's travelling with you…"></textarea>
+        </label>
+
+        <!-- hidden tracking fields, auto-filled by script -->
+        <input type="hidden" name="utm_source" />
+        <input type="hidden" name="utm_medium" />
+        <input type="hidden" name="utm_campaign" />
+        <input type="hidden" name="utm_term" />
+        <input type="hidden" name="utm_content" />
+        <input type="hidden" name="referrer" />
+        <input type="hidden" name="landing_page" />
+        <input type="hidden" name="_subject" value="New heritage wedding enquiry" />
+
+        <button type="submit" class="w-full px-7 py-3.5 rounded-full bg-kin text-sumi font-semibold hover:bg-kin2 transition">Request a consultation</button>
+        <p id="form-status" class="text-sm text-center text-muted" role="status" aria-live="polite"></p>
+      </form>
+
+      <p class="text-muted text-sm mt-8 text-center">For heritage couples marrying in Japan · Families welcomed from the US, Hong Kong, Indonesia &amp; beyond.</p>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="relative z-10 border-t hairline">
+    <div class="max-w-6xl mx-auto px-5 py-12 text-sm text-muted">
+      <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+        <div class="font-display text-lg text-cream">Yukari · Heritage Weddings in Japan</div>
+        <p>Japan · Enquiries by form</p>
+      </div>
+      <p class="mt-6 text-xs leading-relaxed text-muted/80">
+        Yukari designs, coordinates and hosts wedding celebrations in Japan. Ceremony, venue, attire, cuisine,
+        photography and travel are arranged with independent venues and licensed partners; availability of specific
+        shrines, venues and dates is never guaranteed. We do not provide legal or immigration advice; legal marriage
+        registration is completed with the relevant authorities and licensed services. 特定商取引法に基づく表記（準備中）。
+        © 2026 Yukari. All rights reserved.
+      </p>
+    </div>
+  </footer>
+
+  <script>
+    (function () {
+      var form = document.getElementById('enquiry-form');
+      if (!form) return;
+
+      // Capture & persist UTM / source so it survives across pages in the session
+      var params = new URLSearchParams(window.location.search);
+      var keys = ['utm_source', 'utm_medium', 'utm_campaign', 'utm_term', 'utm_content'];
+      var stored = {};
+      try { stored = JSON.parse(localStorage.getItem('yukari_utm') || '{}'); } catch (e) {}
+      var hasNew = false;
+      keys.forEach(function (k) { if (params.get(k)) { stored[k] = params.get(k); hasNew = true; } });
+      if (hasNew) { try { localStorage.setItem('yukari_utm', JSON.stringify(stored)); } catch (e) {} }
+      keys.forEach(function (k) {
+        var el = form.querySelector('[name="' + k + '"]');
+        if (el) el.value = stored[k] || '';
+      });
+      var ref = form.querySelector('[name="referrer"]'); if (ref) ref.value = document.referrer || '';
+      var lp = form.querySelector('[name="landing_page"]'); if (lp) lp.value = window.location.href;
+
+      // AJAX submit: keeps tracking fields and shows an inline thank-you
+      var status = document.getElementById('form-status');
+      form.addEventListener('submit', function (e) {
+        e.preventDefault();
+        if (form.action.indexOf('YOUR_FORM_ID') !== -1) {
+          status.textContent = 'Form not configured yet — add your Formspree ID to go live.';
+          return;
+        }
+        status.textContent = 'Sending…';
+        fetch(form.action, {
+          method: 'POST',
+          body: new FormData(form),
+          headers: { 'Accept': 'application/json' }
+        }).then(function (r) {
+          if (r.ok) {
+            form.innerHTML = '<div class="text-center py-10"><p class="font-display text-3xl text-cream">Thank you.</p><p class="text-cream/80 mt-3">We\'ve received your note and will reply privately, usually within a day, to arrange your consultation.</p></div>';
+          } else {
+            status.textContent = 'Something went wrong — please try again in a moment.';
+          }
+        }).catch(function () {
+          status.textContent = 'Network error — please try again.';
+        });
+      });
+    })();
+  </script>
+
+</body>
+</html>
