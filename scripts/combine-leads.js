@@ -46,7 +46,7 @@ async function main() {
   const date = process.argv[2] || new Date().toISOString().slice(0, 10);
   const leadsDir = path.resolve('data/leads');
 
-  const header = ['区', '店名', '提案区分', '口コミ数', '評価', 'web有無', '電話', '住所', 'GoogleマップURL'];
+  const header = ['区', '店名', '業種', '提案区分', '口コミ数', '評価', 'web有無', '電話', '住所', 'GoogleマップURL'];
   const out = [header];
   const seen = new Set();
   const perWard = {};
@@ -64,7 +64,7 @@ async function main() {
       if (placeId && seen.has(placeId)) continue; // 区をまたぐ重複を除去
       if (placeId) seen.add(placeId);
       // name,reason,review,rating,has_website,website,phone,address,category,status,maps,place_id
-      out.push([info.label, r[0], r[1], r[2], r[3], r[4], r[6], r[7], cleanMapsUrl(r[10])]);
+      out.push([info.label, r[0], r[8], r[1], r[2], r[3], r[4], r[6], r[7], cleanMapsUrl(r[10])]);
       count += 1;
     }
     perWard[info.label] = count;
