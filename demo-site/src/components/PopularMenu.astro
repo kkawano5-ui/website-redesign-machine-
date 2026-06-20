@@ -1,5 +1,5 @@
 ---
-import Frame from './Frame.astro';
+import AssetImage from './AssetImage.astro';
 import type { Shop } from '../data/shops';
 import { radii, type RestaurantTheme } from '../themes/restaurantThemes';
 
@@ -9,6 +9,8 @@ interface Props {
 }
 const { shop, theme } = Astro.props;
 const r = radii(theme);
+const cat = shop.assetCategory;
+const mood = shop.mood;
 ---
 
 <section class={`relative tex-${theme.texture}`}>
@@ -27,7 +29,7 @@ const r = radii(theme);
       {
         shop.menu.map((m, i) => (
           <article class={`overflow-hidden border border-line bg-surface ${r.card}`}>
-            <Frame src={shop.media.menuImages[i] ?? ''} alt={`${m.name}（イメージ）`} ratio="aspect-square" />
+            <AssetImage category={cat} role="menu" index={i} mood={mood} ratio="aspect-square" label={m.name} />
             <div class="p-3 sm:p-4">
               <div class="flex items-baseline justify-between gap-2">
                 <h3 class="font-heading text-sm text-ink sm:text-base">{m.name}</h3>

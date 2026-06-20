@@ -1,0 +1,24 @@
+---
+// 承認素材が無いときに使う「デザインされた差し替え枠」。
+// 安っぽい NO IMAGE は出さず、サイトのトーンに馴染む枠として見せる。
+interface Props {
+  ratio?: string;
+  rounded?: string;
+  class?: string;
+  label?: string; // 例: 料理名（メニュー枠）。無ければ表示しない。
+  sub?: string; // 補助テキスト（外観枠の差し替え案内など）
+  big?: boolean;
+}
+const { ratio = 'aspect-[4/3]', rounded = '', class: klass = '', label, sub, big = false } = Astro.props;
+---
+
+<div class={`rf ${big ? 'rf-lg' : ''} ${ratio} ${rounded} ${klass}`}>
+  {
+    (label || sub) && (
+      <div class="rf-inner">
+        {label && <p class="rf-label">{label}</p>}
+        {sub && <p class="rf-sub">{sub}</p>}
+      </div>
+    )
+  }
+</div>

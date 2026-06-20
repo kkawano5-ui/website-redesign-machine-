@@ -115,6 +115,51 @@ h3 {
   background-image: none;
 }
 
+/* ===== 差し替え枠（承認素材が無いときの上質なプレースホルダー） ===== */
+.rf {
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  background:
+    linear-gradient(135deg, color-mix(in srgb, var(--c-accent) 13%, var(--c-surface)), var(--c-surface) 52%, var(--c-surface-alt));
+}
+.rf::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(45deg, color-mix(in srgb, var(--c-text) 3%, transparent) 0 1px, transparent 1px 13px);
+}
+.rf::after {
+  content: '';
+  position: absolute;
+  inset: 12px;
+  border: 1px solid color-mix(in srgb, var(--c-text) 14%, transparent);
+  border-radius: inherit;
+}
+.rf > .rf-inner {
+  position: relative;
+  z-index: 1;
+  padding: 0 16px;
+}
+.rf .rf-label {
+  font-family: var(--font-heading);
+  font-size: 15px;
+  letter-spacing: 0.04em;
+  color: color-mix(in srgb, var(--c-text) 78%, transparent);
+}
+.rf .rf-sub {
+  margin-top: 7px;
+  font-size: 11px;
+  line-height: 1.7;
+  color: var(--c-muted);
+}
+.rf.rf-lg .rf-label {
+  font-size: 22px;
+}
+
 /* hide scrollbar for horizontal scrollers */
 .no-scrollbar::-webkit-scrollbar {
   display: none;

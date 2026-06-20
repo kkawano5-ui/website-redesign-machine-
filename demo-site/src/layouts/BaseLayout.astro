@@ -2,6 +2,7 @@
 import '../styles/global.css';
 import type { Shop } from '../data/shops';
 import { getTheme } from '../themes/restaurantThemes';
+import { pickOgp } from '../data/demoAssets';
 
 interface Props {
   shop: Shop;
@@ -18,7 +19,9 @@ const rootVars = `:root{
   --font-heading:${theme.fontHeading};--font-body:${theme.fontBody};
   --tracking:${theme.headingTracking};
 }`;
-const og = new URL(shop.seo.ogImage, Astro.site ?? 'https://demo.example.com').toString();
+// OGP は承認済みの横長素材だけ。無ければ og:image は出さない（ランダム画像を使わない）。
+const ogpAsset = pickOgp(shop.assetCategory, shop.mood);
+const og = ogpAsset ? new URL(ogpAsset.src, Astro.site ?? 'https://demo.example.com').toString() : null;
 ---
 
 <!doctype html>
@@ -36,12 +39,12 @@ const og = new URL(shop.seo.ogImage, Astro.site ?? 'https://demo.example.com').t
     <meta property="og:type" content="website" />
     <meta property="og:title" content={shop.seo.title} />
     <meta property="og:description" content={shop.seo.description} />
-    <meta property="og:image" content={og} />
+    {og && <meta property="og:image" content={og} />}
     <meta property="og:locale" content="ja_JP" />
-    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:card" content={og ? 'summary_large_image' : 'summary'} />
     <meta name="twitter:title" content={shop.seo.title} />
     <meta name="twitter:description" content={shop.seo.description} />
-    <meta name="twitter:image" content={og} />
+    {og && <meta name="twitter:image" content={og} />}
 
     <style set:html={rootVars}></style>
   </head>

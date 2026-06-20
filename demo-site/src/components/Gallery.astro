@@ -1,6 +1,7 @@
 ---
-import Frame from './Frame.astro';
+import AssetImage from './AssetImage.astro';
 import type { Shop } from '../data/shops';
+import type { AssetRole } from '../data/demoAssets';
 import { radii, type RestaurantTheme } from '../themes/restaurantThemes';
 
 interface Props {
@@ -9,6 +10,18 @@ interface Props {
 }
 const { shop, theme } = Astro.props;
 const r = radii(theme);
+const cat = shop.assetCategory;
+const mood = shop.mood;
+
+// 同じ構図の連続を避けるため、役割を交互に並べる（atmosphere/detail/interior）。
+const slots: { role: AssetRole; index: number }[] = [
+  { role: 'atmosphere', index: 1 },
+  { role: 'detail', index: 1 },
+  { role: 'interior', index: 1 },
+  { role: 'detail', index: 2 },
+  { role: 'atmosphere', index: 2 },
+  { role: 'detail', index: 3 }
+];
 ---
 
 <section class={`relative tex-${theme.texture}`}>
@@ -21,10 +34,12 @@ const r = radii(theme);
     <!-- スマホは横スクロール、PCはグリッド -->
     <div class="no-scrollbar mt-6 flex gap-3 overflow-x-auto sm:grid sm:grid-cols-3 sm:gap-4 sm:overflow-visible">
       {
-        shop.media.galleryImages.map((g, i) => (
-          <Frame
-            src={g}
-            alt={`${shop.name}の写真 ${i + 1}（イメージ）`}
+        slots.map((s) => (
+          <AssetImage
+            category={cat}
+            role={s.role}
+            index={s.index}
+            mood={mood}
             ratio="aspect-[3/4] sm:aspect-square"
             rounded={r.img}
             class="w-56 shrink-0 sm:w-auto"

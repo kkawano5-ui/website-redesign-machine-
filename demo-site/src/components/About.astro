@@ -1,5 +1,5 @@
 ---
-import Frame from './Frame.astro';
+import AssetImage from './AssetImage.astro';
 import type { Shop } from '../data/shops';
 import { radii, type RestaurantTheme } from '../themes/restaurantThemes';
 
@@ -9,7 +9,8 @@ interface Props {
 }
 const { shop, theme } = Astro.props;
 const r = radii(theme);
-const imgs = shop.media.interiorImages;
+const cat = shop.assetCategory;
+const mood = shop.mood;
 ---
 
 <section class="mx-auto max-w-content px-5 py-12 sm:py-16">
@@ -20,9 +21,9 @@ const imgs = shop.media.interiorImages;
 
   <div class="mt-8 grid gap-8 sm:grid-cols-2 sm:items-center">
     <div class="grid grid-cols-2 gap-3">
-      <Frame src={imgs[0] ?? ''} alt={`${shop.name}の店内（イメージ）`} ratio="aspect-[3/4]" rounded={r.img} class="row-span-2" />
-      <Frame src={imgs[1] ?? imgs[0] ?? ''} alt={`${shop.name}の料理（イメージ）`} ratio="aspect-square" rounded={r.img} />
-      <Frame src={imgs[2] ?? imgs[0] ?? ''} alt={`${shop.name}の雰囲気（イメージ）`} ratio="aspect-square" rounded={r.img} />
+      <AssetImage category={cat} role="interior" index={0} mood={mood} ratio="aspect-[3/4]" rounded={r.img} class="row-span-2" />
+      <AssetImage category={cat} role="detail" index={0} mood={mood} ratio="aspect-square" rounded={r.img} />
+      <AssetImage category={cat} role="atmosphere" index={0} mood={mood} ratio="aspect-square" rounded={r.img} />
     </div>
 
     <div class="space-y-6">

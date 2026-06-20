@@ -1,5 +1,6 @@
 ---
-import Frame from './Frame.astro';
+import ReplacementFrame from './ReplacementFrame.astro';
+import { pickAsset } from '../data/demoAssets';
 import type { Shop } from '../data/shops';
 import { radii, type RestaurantTheme } from '../themes/restaurantThemes';
 
@@ -11,6 +12,8 @@ const { shop, theme } = Astro.props;
 const r = radii(theme);
 const a = shop.access;
 const mapSrc = `https://maps.google.com/maps?q=${encodeURIComponent(a.mapQuery)}&hl=ja&z=15&output=embed`;
+// 外観は実店舗写真がない限り仮写真を使わない（承認素材があればそれ、無ければ差し替え案内カード）。
+const exterior = pickAsset(shop.assetCategory, 'atmosphere', 0, shop.mood);
 ---
 
 <section id="access" class={`relative tex-${theme.texture}`}>
@@ -21,11 +24,21 @@ const mapSrc = `https://maps.google.com/maps?q=${encodeURIComponent(a.mapQuery)}
     </h2>
 
     <div class="relative mt-6">
-      <Frame src={shop.media.exteriorImage} alt={`${shop.name}の外観（イメージ）`} ratio="aspect-[16/9] sm:aspect-[21/9]" rounded={r.img} />
-      <div class={`pointer-events-none absolute inset-0 bg-gradient-to-t from-black/55 to-transparent ${r.img}`} />
-      <p class="absolute bottom-4 left-4 font-heading text-lg text-white sm:text-xl" style="text-shadow:0 2px 14px rgba(0,0,0,.6)">
-        {shop.name}
-      </p>
+      {
+        exterior ? (
+          <figure class={`frame aspect-[16/9] sm:aspect-[21/9] ${r.img}`}>
+            <img src={exterior.src} alt={`${shop.name}の外観イメージ`} />
+          </figure>
+        ) : (
+          <ReplacementFrame
+            ratio="aspect-[16/9] sm:aspect-[21/9]"
+            rounded={r.img}
+            big
+            label={shop.name}
+            sub="外観写真は、実際の制作時に貴店のお写真へ差し替えます"
+          />
+        )
+      }
     </div>
 
     <div class="mt-8 grid gap-8 sm:grid-cols-2">

@@ -1,4 +1,5 @@
 import type { ThemeKey } from '../themes/restaurantThemes';
+import type { AssetCategory } from './demoAssets';
 
 export interface MenuItem {
   name: string;
@@ -17,17 +18,6 @@ export interface AboutItem {
   body: string;
 }
 
-/** 画像・動画は media にまとめ、後から差し替えやすくする。 */
-export interface ShopMedia {
-  /** 本番動画の配置先（ローカルパス）。未配置時は heroImage が poster として表示される。 */
-  heroVideo?: string;
-  heroImage: string;
-  exteriorImage: string;
-  interiorImages: string[];
-  menuImages: string[];
-  galleryImages: string[];
-}
-
 /** 実在確認の状態。false の項目は画面に「要確認/サンプル」を表示する。 */
 export interface VerifyFlags {
   phone: boolean;
@@ -42,11 +32,14 @@ export interface Shop {
   kana?: string;
   genre: string;
   theme: ThemeKey;
+  /** 画像選定に使う業態（demoAssets のカテゴリ）。画像はここから承認素材のみ選ぶ。 */
+  assetCategory: AssetCategory;
+  /** 店舗の雰囲気タグ。承認素材の優先順位付けに使う。 */
+  mood: string[];
 
   seo: {
     title: string;
     description: string;
-    ogImage: string;
   };
 
   hero: {
@@ -58,7 +51,6 @@ export interface Shop {
   about: AboutItem[];
   menu: MenuItem[];
   scenes: SceneItem[];
-  media: ShopMedia;
 
   access: {
     address: string;
@@ -75,20 +67,13 @@ export interface Shop {
   };
 
   verify: VerifyFlags;
-  /** 画面下部/上部に控えめに出す注記。 */
+  /** 上部/下部に控えめに出す注記。 */
   demoNotice: string;
 }
 
 /** 営業デモの共通注記。 */
 export const DEMO_NOTICE =
   '掲載写真はご提案用のイメージです。ご契約後、貴店の料理写真・店内写真・外観写真に差し替えて制作いたします。';
-
-/**
- * 仮素材（B案）。loremflickr はキーワード＋lockで安定して実写真を返す。
- * 本番納品時は public/media/{slug}/ の店舗提供写真に差し替える前提。
- */
-const lf = (w: number, h: number, tags: string, lock: number) =>
-  `https://loremflickr.com/${w}/${h}/${tags}?lock=${lock}`;
 
 export const shops: Shop[] = [
   {
@@ -97,11 +82,12 @@ export const shops: Shop[] = [
     kana: 'きっさ やまばと',
     genre: '喫茶店',
     theme: 'kissaten-retro',
+    assetCategory: 'kissaten',
+    mood: ['retro', 'warm', 'dim', 'wood', 'calm'],
     seo: {
       title: '喫茶 山鳩｜昔ながらの珈琲とナポリタン｜さいたま市',
       description:
-        'さいたま市の老舗喫茶店「山鳩」。深煎りのネルドリップ珈琲と、昔ながらのナポリタン・プリン。静かに流れる時間をどうぞ。',
-      ogImage: lf(1200, 630, 'coffee,cafe,vintage', 101)
+        'さいたま市の老舗喫茶店「山鳩」。深煎りのネルドリップ珈琲と、昔ながらのナポリタン・プリン。静かに流れる時間をどうぞ。'
     },
     hero: {
       catch: '変わらない一杯が、\nここにある。',
@@ -125,25 +111,6 @@ export const shops: Shop[] = [
       { label: '商談前に', body: '落ち着いた席で、打ち合わせ前のひと息を。' },
       { label: '昔を懐かしむ', body: '変わらない味と空間。昭和の喫茶の記憶そのままに。' }
     ],
-    media: {
-      heroVideo: '/media/kissa-yamabato/hero.mp4',
-      heroImage: lf(1600, 1000, 'coffee,cafe,vintage', 102),
-      exteriorImage: lf(1200, 900, 'cafe,storefront', 103),
-      interiorImages: [lf(1200, 800, 'cafe,interior,vintage', 104), lf(1200, 800, 'coffee,counter', 105)],
-      menuImages: [
-        lf(800, 800, 'coffee,cup', 111),
-        lf(800, 800, 'napolitan,pasta', 112),
-        lf(800, 800, 'pudding,dessert', 113),
-        lf(800, 800, 'sandwich,egg', 114),
-        lf(800, 800, 'melon,soda', 115)
-      ],
-      galleryImages: [
-        lf(900, 900, 'coffee,cafe', 121),
-        lf(900, 900, 'cafe,interior', 122),
-        lf(900, 900, 'coffee,beans', 123),
-        lf(900, 900, 'dessert,cafe', 124)
-      ]
-    },
     access: {
       address: 'さいたま市浦和区（住所はサンプル・要確認）',
       hours: ['平日 8:00 - 19:00', '土日 8:00 - 18:00'],
@@ -161,11 +128,12 @@ export const shops: Shop[] = [
     kana: 'カフェ アオ',
     genre: 'カフェ',
     theme: 'modern-cafe',
+    assetCategory: 'cafe',
+    mood: ['bright', 'natural', 'soft', 'clean', 'daylight'],
     seo: {
       title: 'CAFE AO｜自家焙煎スペシャルティと焼き菓子｜さいたま市',
       description:
-        'さいたま市のカフェ「CAFE AO」。自家焙煎のスペシャルティコーヒーと、季節の焼き菓子・ランチプレート。明るく心地よい時間を。',
-      ogImage: lf(1200, 630, 'cafe,coffee,latte', 201)
+        'さいたま市のカフェ「CAFE AO」。自家焙煎のスペシャルティコーヒーと、季節の焼き菓子・ランチプレート。明るく心地よい時間を。'
     },
     hero: {
       catch: 'いい一日は、\nいい一杯から。',
@@ -189,26 +157,6 @@ export const shops: Shop[] = [
       { label: '友人と', body: '気取らず話せる、明るい雰囲気。' },
       { label: '休日の朝に', body: 'モーニングからの一日のはじまりに。' }
     ],
-    media: {
-      heroVideo: '/media/cafe-ao/hero.mp4',
-      heroImage: lf(1600, 1000, 'cafe,coffee,latte', 202),
-      exteriorImage: lf(1200, 900, 'cafe,storefront,modern', 203),
-      interiorImages: [lf(1200, 800, 'cafe,interior,bright', 204), lf(1200, 800, 'coffee,barista', 205)],
-      menuImages: [
-        lf(800, 800, 'coffee,drip', 211),
-        lf(800, 800, 'cafe,latte', 212),
-        lf(800, 800, 'tart,fruit', 213),
-        lf(800, 800, 'lunch,plate', 214),
-        lf(800, 800, 'scone,bakery', 215)
-      ],
-      galleryImages: [
-        lf(900, 900, 'cafe,coffee', 221),
-        lf(900, 900, 'cafe,interior', 222),
-        lf(900, 900, 'latte,art', 223),
-        lf(900, 900, 'cake,cafe', 224),
-        lf(900, 900, 'coffee,beans', 225)
-      ]
-    },
     access: {
       address: 'さいたま市大宮区（住所はサンプル・要確認）',
       hours: ['9:00 - 19:00'],
@@ -226,11 +174,12 @@ export const shops: Shop[] = [
     kana: 'やきにく だいどうもん',
     genre: '焼肉店',
     theme: 'yakiniku-premium',
+    assetCategory: 'yakiniku',
+    mood: ['dark', 'charcoal', 'premium', 'warm', 'appetizing'],
     seo: {
       title: '焼肉 大同門｜炭火で味わう厳選和牛｜さいたま市大宮',
       description:
-        'さいたま市大宮の焼肉店「大同門」。厳選した和牛を炭火で。希少部位から名物のタレまで、特別な一夜を炭火とともに。',
-      ogImage: lf(1200, 630, 'yakiniku,grilled,meat', 301)
+        'さいたま市大宮の焼肉店「大同門」。厳選した和牛を炭火で。希少部位から名物のタレまで、特別な一夜を炭火とともに。'
     },
     hero: {
       catch: '炭火が、\nいちばんのごちそう。',
@@ -254,31 +203,6 @@ export const shops: Shop[] = [
       { label: '仲間と', body: '炭火を囲んで盛り上がる、特別な一夜。' },
       { label: '接待・記念日', body: '落ち着いた席で、大切な人と特別な時間を。' }
     ],
-    media: {
-      heroVideo: '/media/yakiniku-daidomon/hero-grill.mp4',
-      heroImage: lf(1600, 1000, 'yakiniku,grilled,meat', 302),
-      exteriorImage: lf(1200, 900, 'restaurant,exterior,night', 303),
-      interiorImages: [
-        lf(1200, 800, 'restaurant,interior,dark', 304),
-        lf(1200, 800, 'charcoal,grill', 305),
-        lf(1200, 800, 'wagyu,beef', 306)
-      ],
-      menuImages: [
-        lf(800, 800, 'grilled,beef', 311),
-        lf(800, 800, 'wagyu,steak', 312),
-        lf(800, 800, 'beef,tongue', 313),
-        lf(800, 800, 'barbecue,meat', 314),
-        lf(800, 800, 'naengmyeon,noodle', 315)
-      ],
-      galleryImages: [
-        lf(900, 900, 'yakiniku,grill', 321),
-        lf(900, 900, 'charcoal,fire', 322),
-        lf(900, 900, 'wagyu,beef', 323),
-        lf(900, 900, 'restaurant,interior,dark', 324),
-        lf(900, 900, 'barbecue,smoke', 325),
-        lf(900, 900, 'meat,platter', 326)
-      ]
-    },
     access: {
       address: 'さいたま市大宮区北袋町2丁目（住所はサンプル・要確認）',
       hours: ['17:00 - 23:00（サンプル）'],

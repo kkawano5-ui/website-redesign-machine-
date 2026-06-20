@@ -1,0 +1,40 @@
+---
+import ReplacementFrame from './ReplacementFrame.astro';
+import { pickAsset, type AssetCategory, type AssetRole } from '../data/demoAssets';
+
+// 承認済み素材があれば <img> を、無ければデザインされた差し替え枠を表示する。
+// 画像URLのベタ書きはせず、必ず demoAssets manifest 経由で選定する。
+interface Props {
+  category: AssetCategory;
+  role: AssetRole;
+  index?: number;
+  mood?: string[];
+  ratio?: string;
+  rounded?: string;
+  class?: string;
+  /** 差し替え枠のときに出すラベル（メニューの料理名など） */
+  label?: string;
+}
+const {
+  category,
+  role,
+  index = 0,
+  mood = [],
+  ratio = 'aspect-[4/3]',
+  rounded = '',
+  class: klass = '',
+  label
+} = Astro.props;
+
+const asset = pickAsset(category, role, index, mood);
+---
+
+{
+  asset ? (
+    <figure class={`frame ${ratio} ${rounded} ${klass}`}>
+      <img src={asset.src} alt={asset.alt} loading="lazy" decoding="async" />
+    </figure>
+  ) : (
+    <ReplacementFrame ratio={ratio} rounded={rounded} class={klass} label={label} />
+  )
+}
