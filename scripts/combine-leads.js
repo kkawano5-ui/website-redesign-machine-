@@ -50,6 +50,7 @@ async function main() {
   const out = [header];
   const seen = new Set();
   const perWard = {};
+  let outsideCity = 0;
 
   for (const [key, info] of Object.entries(SAITAMA_WARDS)) {
     const filePath = path.join(leadsDir, `saitama-${key}-${date}.csv`);
@@ -62,6 +63,11 @@ async function main() {
     for (const r of rows) {
       const placeId = r[11];
       if (placeId && seen.has(placeId)) continue; // 区をまたぐ重複を除去
+      // さいたま市外（プリセットの箱が市境を越えて拾った店）を除外
+      if (!String(r[7] || '').includes('さいたま市')) {
+        outsideCity += 1;
+        continue;
+      }
       if (placeId) seen.add(placeId);
       // name,reason,review,rating,has_website,website,phone,address,category,status,maps,place_id
       out.push([info.label, r[0], r[8], r[1], r[2], r[3], r[4], r[6], r[7], cleanMapsUrl(r[10])]);
@@ -81,6 +87,7 @@ async function main() {
 
   console.log(`統合完了: ${outputPath}`);
   console.log(`ユニークリード数（重複除去後）: ${out.length - 1}`);
+  console.log(`さいたま市外として除外: ${outsideCity}件`);
   console.log('区別（リード多い順 = 営業優先エリア）:');
   for (const [label, n] of Object.entries(perWard).sort((a, b) => b[1] - a[1])) {
     console.log(`  ${label.padEnd(6, '　')} ${n}`);
