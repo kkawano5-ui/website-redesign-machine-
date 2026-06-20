@@ -8,13 +8,13 @@
 
 ## 0. 使うリンク（UTM付き・コピペ用）
 
-広告の **Final URL** にこれを使う（流入元が自動記録される）。デプロイ後の実URLに置き換える：
+広告の **Final URL** にこれを使う（**広告専用LP `/ads/`** ＝離脱口ゼロ・フォーム最上部の高CVR版）。デプロイ後の実URLに置き換える：
 ```
-https://YOUR-WEDDING-LP.vercel.app/?utm_source=google&utm_medium=cpc&utm_campaign=smoke_wed
+https://YOUR-WEDDING-LP.vercel.app/ads/?utm_source=google&utm_medium=cpc&utm_campaign=smoke_wed
 ```
-コミュニティ/SNS投稿用（参考）：
+コミュニティ/SNS投稿用（本サイトトップでもOK）：
 ```
-https://YOUR-WEDDING-LP.vercel.app/?utm_source=pinterest&utm_medium=social&utm_campaign=smoke_wed
+https://YOUR-WEDDING-LP.vercel.app/ads/?utm_source=pinterest&utm_medium=social&utm_campaign=smoke_wed
 https://YOUR-WEDDING-LP.vercel.app/?utm_source=community&utm_medium=referral&utm_campaign=smoke_wed
 ```
 
