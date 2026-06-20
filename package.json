@@ -3,7 +3,8 @@
   "version": "0.1.0",
   "type": "module",
   "scripts": {
-    "run:one": "node scripts/run-one.js"
+    "run:one": "node scripts/run-one.js",
+    "find:leads": "node scripts/find-leads.js"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.39.0",
