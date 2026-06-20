@@ -1,0 +1,81 @@
+<!doctype html><html lang="ja"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>さいたま市 飲食店 Webサンプル ギャラリー</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:"Hiragino Kaku Gothic ProN","Yu Gothic",system-ui,sans-serif;background:#f4f2ee;color:#2c2a26;line-height:1.7}
+header{padding:56px 24px;text-align:center;background:linear-gradient(180deg,#efe9df,#f4f2ee)}
+header h1{font-size:clamp(24px,5vw,40px);letter-spacing:.04em}
+header p{color:#7c766b;margin-top:10px}
+.grid{max-width:1040px;margin:32px auto;padding:0 20px;display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:20px}
+.card{display:block;background:#fff;border-radius:14px;overflow:hidden;text-decoration:none;color:inherit;box-shadow:0 4px 18px rgba(0,0,0,.06);transition:transform .15s}
+.card:hover{transform:translateY(-4px)}
+.thumb{height:130px}
+.thumb-izakaya{background:linear-gradient(135deg,#241c16,#d98b3a)}
+.thumb-bar{background:linear-gradient(135deg,#181820,#b08cff)}
+.thumb-yakiniku{background:linear-gradient(135deg,#221814,#e0533a)}
+.thumb-ramen{background:linear-gradient(135deg,#fff,#d1402f)}
+.thumb-chinese{background:linear-gradient(135deg,#2a1714,#e0b341)}
+.thumb-ethnic{background:linear-gradient(135deg,#fff,#e08a2b)}
+.thumb-washoku{background:linear-gradient(135deg,#fff,#7a8b5a)}
+.thumb-western{background:linear-gradient(135deg,#fff,#9a7b4f)}
+.thumb-cafe{background:linear-gradient(135deg,#fff,#c08552)}
+.thumb-coffee{background:linear-gradient(135deg,#fff,#6f4e37)}
+.thumb-takeout{background:linear-gradient(135deg,#fff,#f0901e)}
+.meta{padding:14px 16px;display:flex;flex-direction:column;gap:4px}
+.meta strong{font-size:16px}
+.meta span{font-size:12px;color:#857d70}
+footer{text-align:center;padding:40px 20px;color:#857d70;font-size:13px}
+</style></head><body>
+<header>
+  <h1>飲食店 Webサンプル ギャラリー</h1>
+  <p>店名＋業種で自動生成した営業デモサンプル（11テーマ）　|　Web制作：初期5万円・月額1万円</p>
+</header>
+<div class="grid">
+    <a class="card" href="./izakaya.html">
+      <div class="thumb thumb-izakaya"></div>
+      <div class="meta"><strong>居酒屋縁</strong><span>居酒屋　/　テーマ: izakaya</span></div>
+    </a>
+    <a class="card" href="./bar.html">
+      <div class="thumb thumb-bar"></div>
+      <div class="meta"><strong>コペンハーゲンズBAR</strong><span>バー　/　テーマ: bar</span></div>
+    </a>
+    <a class="card" href="./yakiniku.html">
+      <div class="thumb thumb-yakiniku"></div>
+      <div class="meta"><strong>焼肉 大同門</strong><span>焼肉店　/　テーマ: yakiniku</span></div>
+    </a>
+    <a class="card" href="./ramen.html">
+      <div class="thumb thumb-ramen"></div>
+      <div class="meta"><strong>百歩ラーメン 北浦和店</strong><span>ラーメン屋　/　テーマ: ramen</span></div>
+    </a>
+    <a class="card" href="./chinese.html">
+      <div class="thumb thumb-chinese"></div>
+      <div class="meta"><strong>銀華飯店</strong><span>中華料理店　/　テーマ: chinese</span></div>
+    </a>
+    <a class="card" href="./ethnic.html">
+      <div class="thumb thumb-ethnic"></div>
+      <div class="meta"><strong>アヴァス インドネパールレストラン</strong><span>インド料理店　/　テーマ: ethnic</span></div>
+    </a>
+    <a class="card" href="./washoku.html">
+      <div class="thumb thumb-washoku"></div>
+      <div class="meta"><strong>内藤流手打ちそば あさきや</strong><span>和食店　/　テーマ: washoku</span></div>
+    </a>
+    <a class="card" href="./western.html">
+      <div class="thumb thumb-western"></div>
+      <div class="meta"><strong>オステリア・ディアーナ</strong><span>イタリア料理店　/　テーマ: western</span></div>
+    </a>
+    <a class="card" href="./cafe.html">
+      <div class="thumb thumb-cafe"></div>
+      <div class="meta"><strong>オアシスカフェ</strong><span>カフェ・喫茶　/　テーマ: cafe</span></div>
+    </a>
+    <a class="card" href="./coffee.html">
+      <div class="thumb thumb-coffee"></div>
+      <div class="meta"><strong>伊豆田珈琲店</strong><span>コーヒーショップ・喫茶店　/　テーマ: coffee</span></div>
+    </a>
+    <a class="card" href="./takeout.html">
+      <div class="thumb thumb-takeout"></div>
+      <div class="meta"><strong>ほっかほか弁当 浦和別所店</strong><span>テイクアウト　/　テーマ: takeout</span></div>
+    </a>
+</div>
+<footer>各カードをタップ → 御社専用イメージのサンプルが開きます。<br>※メニュー等はプレースホルダです。</footer>
+</body></html>

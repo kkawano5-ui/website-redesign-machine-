@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>アヴァス インドネパールレストラン｜インド料理店</title>
+<style>
+  :root{
+    --bg:#fbf3e6; --panel:#ffffff; --text:#33271a;
+    --sub:#8a7458; --accent:#e08a2b;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:"Hiragino Kaku Gothic ProN","Yu Gothic",system-ui,sans-serif;
+    background:var(--bg);color:var(--text);line-height:1.8;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:960px;margin:0 auto;padding:0 24px}
+  header.hero{min-height:70vh;display:flex;flex-direction:column;justify-content:center;
+    align-items:center;text-align:center;padding:80px 24px;
+    background:linear-gradient(180deg,color-mix(in srgb,var(--accent) 12%,var(--bg)),var(--bg))}
+  .badge{font-size:13px;letter-spacing:.3em;color:var(--accent);margin-bottom:20px}
+  h1{font-size:clamp(34px,7vw,64px);font-weight:800;letter-spacing:.04em;margin-bottom:18px}
+  .tagline{font-size:clamp(15px,2.6vw,20px);color:var(--sub)}
+  .btn{display:inline-block;margin-top:34px;padding:14px 34px;border-radius:999px;
+    background:var(--accent);color:#fff;text-decoration:none;font-weight:700;letter-spacing:.08em}
+  section{padding:64px 0;border-top:1px solid color-mix(in srgb,var(--sub) 24%,transparent)}
+  h2{font-size:24px;letter-spacing:.12em;margin-bottom:24px;color:var(--accent)}
+  .intro{font-size:17px;color:var(--text);max-width:640px}
+  .menu-list{list-style:none;max-width:560px}
+  .menu-item{display:flex;align-items:baseline;gap:10px;padding:12px 0;
+    border-bottom:1px dashed color-mix(in srgb,var(--sub) 35%,transparent)}
+  .menu-item .dots{flex:1}
+  .price{color:var(--sub)}
+  .info{display:grid;grid-template-columns:120px 1fr;gap:12px 24px;max-width:560px}
+  .info dt{color:var(--accent);font-weight:700}
+  .info dd{color:var(--text)}
+  footer{padding:48px 24px;text-align:center;color:var(--sub);font-size:13px;
+    border-top:1px solid color-mix(in srgb,var(--sub) 24%,transparent)}
+  .demo-note{background:color-mix(in srgb,var(--accent) 14%,var(--bg));
+    color:var(--text);text-align:center;padding:10px;font-size:13px;letter-spacing:.05em}
+</style>
+</head>
+<body>
+  <div class="demo-note">★ これは営業ご提案用のデモサンプルです（アヴァス インドネパールレストラン 様専用イメージ）</div>
+  <header class="hero">
+    <div class="badge">インド料理店</div>
+    <h1>アヴァス インドネパールレストラン</h1>
+    <p class="tagline">スパイスが運ぶ、遠い国の食卓。</p>
+    <a class="btn" href="#contact">アクセス・営業時間</a>
+  </header>
+
+  <section>
+    <div class="wrap">
+      <h2>ABOUT</h2>
+      <p class="intro">本場のレシピと香り高いスパイス。日常にちょっとした旅気分を。ランチからディナーまでお楽しみください。</p>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap">
+      <h2>MENU</h2>
+      <ul class="menu-list">
+          <li class="menu-item"><span>日替わりカレー（ナン付き）</span><span class="dots"></span><span class="price">¥—</span></li>
+          <li class="menu-item"><span>タンドリーチキン</span><span class="dots"></span><span class="price">¥—</span></li>
+          <li class="menu-item"><span>本日のビリヤニ</span><span class="dots"></span><span class="price">¥—</span></li>
+          <li class="menu-item"><span>チーズナン</span><span class="dots"></span><span class="price">¥—</span></li>
+          <li class="menu-item"><span>ラッシー各種</span><span class="dots"></span><span class="price">¥—</span></li>
+      </ul>
+      <p style="margin-top:16px;color:var(--sub);font-size:13px">※メニュー・価格はサンプルです。実際の内容に差し替えできます。</p>
+    </div>
+  </section>
+
+  <section id="contact">
+    <div class="wrap">
+      <h2>INFORMATION</h2>
+      <dl class="info">
+        <dt>店名</dt><dd>アヴァス インドネパールレストラン</dd>
+        <dt>業種</dt><dd>インド料理店</dd>
+        <dt>営業時間</dt><dd>11:00 - 22:00（サンプル）</dd>
+        <dt>定休日</dt><dd>—</dd>
+        <dt>ご予約</dt><dd>お電話にて承ります</dd>
+      </dl>
+    </div>
+  </section>
+
+  <footer>
+    アヴァス インドネパールレストラン　|　インド料理店<br />
+    <span style="opacity:.8">Website sample created for proposal — 初期費用 5万円 / 月額 1万円</span>
+  </footer>
+</body>
+</html>
