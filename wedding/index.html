@@ -38,8 +38,9 @@
     .glow { background: radial-gradient(60% 50% at 50% 0%, rgba(201,162,75,.16), transparent 70%); }
     .hairline { border-color: rgba(201,162,75,.18); }
     .photo { background-size: cover; background-position: center; }
-    /* Photo slots: drop real portfolio photos into /wedding (hero.jpg, ceremony.jpg, kimono.jpg, family.jpg).
-       If a photo is missing, the gradient fallback below still renders cleanly. */
+    /* Photo slots — drop these 10 files into /wedding. Missing files fall back to the gradient cleanly.
+       hero.jpg · ceremony.jpg · shrine.jpg · kimono.jpg · family.jpg ·
+       showcase-sakura.jpg · showcase-ryokan.jpg · showcase-tokyo.jpg · planner.jpg · details.jpg */
     .p-hero {
       background-image:
         linear-gradient(180deg, rgba(20,16,14,.34) 0%, rgba(20,16,14,.62) 60%, rgba(20,16,14,.94) 100%),
@@ -62,6 +63,42 @@
       background-image:
         linear-gradient(180deg, rgba(20,16,14,.12), rgba(20,16,14,.55)),
         url('family.jpg'),
+        linear-gradient(135deg, #2a1d18, #14100e);
+    }
+    .p-shrine {
+      background-image:
+        linear-gradient(180deg, rgba(20,16,14,.12), rgba(20,16,14,.55)),
+        url('shrine.jpg'),
+        linear-gradient(135deg, #2a1d18, #14100e);
+    }
+    .p-sakura {
+      background-image:
+        linear-gradient(180deg, rgba(20,16,14,.10), rgba(20,16,14,.5)),
+        url('showcase-sakura.jpg'),
+        linear-gradient(135deg, #3a2622, #14100e);
+    }
+    .p-ryokan {
+      background-image:
+        linear-gradient(180deg, rgba(20,16,14,.10), rgba(20,16,14,.5)),
+        url('showcase-ryokan.jpg'),
+        linear-gradient(135deg, #2a1d18, #14100e);
+    }
+    .p-tokyo {
+      background-image:
+        linear-gradient(180deg, rgba(20,16,14,.10), rgba(20,16,14,.5)),
+        url('showcase-tokyo.jpg'),
+        linear-gradient(135deg, #1f1a17, #14100e);
+    }
+    .p-planner {
+      background-image:
+        linear-gradient(180deg, rgba(20,16,14,.12), rgba(20,16,14,.55)),
+        url('planner.jpg'),
+        linear-gradient(135deg, #3a2622, #14100e);
+    }
+    .p-details {
+      background-image:
+        linear-gradient(180deg, rgba(20,16,14,.55), rgba(20,16,14,.75)),
+        url('details.jpg'),
         linear-gradient(135deg, #2a1d18, #14100e);
     }
     details > summary { list-style: none; cursor: pointer; }
@@ -149,7 +186,7 @@
       </div>
       <div class="grid md:grid-cols-3 gap-6">
         <div class="rounded-2xl border hairline bg-sumi2/60 overflow-hidden flex flex-col">
-          <div class="photo p-ceremony h-44"></div>
+          <div class="photo p-shrine h-44"></div>
           <div class="p-7 flex flex-col flex-1">
             <div class="text-kin font-display text-3xl mb-2">01</div>
             <h3 class="font-display text-2xl text-cream">Ceremony &amp; rites</h3>
@@ -200,7 +237,7 @@
     </div>
     <div class="grid md:grid-cols-3 gap-6">
       <article class="group rounded-2xl border hairline overflow-hidden">
-        <div class="photo p-ceremony h-64 group-hover:scale-105 transition duration-700"></div>
+        <div class="photo p-sakura h-64 group-hover:scale-105 transition duration-700"></div>
         <div class="p-6">
           <p class="text-kin text-xs uppercase tracking-widest">Kyoto · Spring</p>
           <h3 class="font-display text-2xl text-cream mt-1">Shrine ceremony under sakura</h3>
@@ -208,7 +245,7 @@
         </div>
       </article>
       <article class="group rounded-2xl border hairline overflow-hidden">
-        <div class="photo p-kimono h-64 group-hover:scale-105 transition duration-700"></div>
+        <div class="photo p-ryokan h-64 group-hover:scale-105 transition duration-700"></div>
         <div class="p-6">
           <p class="text-kin text-xs uppercase tracking-widest">Hakone · Autumn</p>
           <h3 class="font-display text-2xl text-cream mt-1">An onsen-ryokan wedding</h3>
@@ -216,7 +253,7 @@
         </div>
       </article>
       <article class="group rounded-2xl border hairline overflow-hidden">
-        <div class="photo p-family h-64 group-hover:scale-105 transition duration-700"></div>
+        <div class="photo p-tokyo h-64 group-hover:scale-105 transition duration-700"></div>
         <div class="p-6">
           <p class="text-kin text-xs uppercase tracking-widest">Tokyo · City</p>
           <h3 class="font-display text-2xl text-cream mt-1">A modern celebration &amp; after-party</h3>
@@ -261,7 +298,7 @@
     <div class="max-w-6xl mx-auto px-5 py-24">
       <div class="grid md:grid-cols-2 gap-12 items-center">
         <div class="rounded-2xl border hairline overflow-hidden order-2 md:order-1">
-          <div class="photo p-kimono h-80 md:h-96"></div>
+          <div class="photo p-planner h-80 md:h-96"></div>
         </div>
         <div class="order-1 md:order-2">
           <p class="text-kin tracking-[0.2em] text-xs uppercase mb-3">Your planner</p>
@@ -289,6 +326,15 @@
         </blockquote>
         <figcaption class="text-muted text-sm mt-5">— A recent couple, married in Kyoto <span class="text-muted/60">(testimonial to be confirmed)</span></figcaption>
       </figure>
+    </div>
+  </section>
+
+  <!-- INTERLUDE BAND (details.jpg) -->
+  <section class="relative z-10 h-[42vh] min-h-[320px] flex items-center justify-center text-center overflow-hidden border-y hairline">
+    <div class="absolute inset-0 photo p-details"></div>
+    <div class="relative z-10 max-w-2xl mx-auto px-5">
+      <p class="text-kin tracking-[0.25em] text-xs uppercase mb-4">Craft &amp; care</p>
+      <h2 class="font-display text-3xl md:text-5xl text-cream leading-tight italic">Every detail, carried for you — down to the last fold.</h2>
     </div>
   </section>
 
