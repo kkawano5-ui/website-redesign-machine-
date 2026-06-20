@@ -1,0 +1,39 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Header from '../components/Header.astro';
+import Hero from '../components/Hero.astro';
+import About from '../components/About.astro';
+import PopularMenu from '../components/PopularMenu.astro';
+import Scene from '../components/Scene.astro';
+import Gallery from '../components/Gallery.astro';
+import ReviewsPreview from '../components/ReviewsPreview.astro';
+import Access from '../components/Access.astro';
+import FinalCTA from '../components/FinalCTA.astro';
+import StickyMobileCTA from '../components/StickyMobileCTA.astro';
+
+import { shops } from '../data/shops';
+import { getTheme } from '../themes/restaurantThemes';
+
+export function getStaticPaths() {
+  return shops.map((shop) => ({ params: { slug: shop.slug }, props: { shop } }));
+}
+
+const { shop } = Astro.props;
+const theme = getTheme(shop.theme);
+---
+
+<BaseLayout shop={shop}>
+  <div id="top"></div>
+  <Header shop={shop} theme={theme} />
+  <main>
+    <Hero shop={shop} theme={theme} />
+    <About shop={shop} theme={theme} />
+    <PopularMenu shop={shop} theme={theme} />
+    <Scene shop={shop} theme={theme} />
+    <Gallery shop={shop} theme={theme} />
+    <ReviewsPreview shop={shop} theme={theme} />
+    <Access shop={shop} theme={theme} />
+    <FinalCTA shop={shop} theme={theme} />
+  </main>
+  <StickyMobileCTA shop={shop} />
+</BaseLayout>

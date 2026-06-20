@@ -1,0 +1,24 @@
+---
+import type { Shop } from '../data/shops';
+import { radii, type RestaurantTheme } from '../themes/restaurantThemes';
+
+interface Props {
+  shop: Shop;
+  theme: RestaurantTheme;
+}
+const { shop, theme } = Astro.props;
+const r = radii(theme);
+const reserveHref = shop.cta.reserve || '#access';
+---
+
+<header class={`relative z-20 border-b border-line bg-bg/90 backdrop-blur tex-${theme.texture}`}>
+  <div class="mx-auto flex max-w-content items-center justify-between px-5 py-3.5">
+    <a href="#top" class="leading-none">
+      <span class="block font-heading text-lg text-ink sm:text-xl" style="letter-spacing:var(--tracking)">{shop.name}</span>
+      <span class="mt-1 block text-[11px] tracking-[0.2em] text-muted">{shop.genre}</span>
+    </a>
+    <a href={reserveHref} class={`bg-accent px-4 py-2 text-xs font-bold text-accentInk sm:text-sm ${r.btn}`}>
+      ご予約
+    </a>
+  </div>
+</header>

@@ -1,0 +1,60 @@
+---
+import type { Shop } from '../data/shops';
+import { radii, type RestaurantTheme } from '../themes/restaurantThemes';
+
+interface Props {
+  shop: Shop;
+  theme: RestaurantTheme;
+}
+const { shop, theme } = Astro.props;
+const r = radii(theme);
+const a = shop.access;
+const mapSrc = `https://maps.google.com/maps?q=${encodeURIComponent(a.mapQuery)}&hl=ja&z=15&output=embed`;
+---
+
+<section id="access" class={`relative tex-${theme.texture}`}>
+  <div class="mx-auto max-w-content px-5 py-12 sm:py-16">
+    <p class="text-xs tracking-[0.3em] text-accent">ACCESS</p>
+    <h2 class="mt-2 font-heading text-2xl text-ink sm:text-3xl" style="letter-spacing:var(--tracking)">
+      店舗情報・アクセス
+    </h2>
+
+    <div class="mt-8 grid gap-8 sm:grid-cols-2">
+      <dl class="space-y-4 text-sm">
+        <div class="border-b border-line pb-3">
+          <dt class="text-xs tracking-widest text-accent">住所 {!shop.verify.address && <span class="chip-sample">要確認</span>}</dt>
+          <dd class="mt-1 text-ink">{a.address}</dd>
+        </div>
+        <div class="border-b border-line pb-3">
+          <dt class="text-xs tracking-widest text-accent">営業時間 {!shop.verify.hours && <span class="chip-sample">サンプル</span>}</dt>
+          <dd class="mt-1 text-ink">
+            {a.hours.map((h) => <span class="block">{h}</span>)}
+          </dd>
+        </div>
+        <div class="border-b border-line pb-3">
+          <dt class="text-xs tracking-widest text-accent">定休日</dt>
+          <dd class="mt-1 text-ink">{a.holiday}</dd>
+        </div>
+        <div class="border-b border-line pb-3">
+          <dt class="text-xs tracking-widest text-accent">電話 {!shop.verify.phone && <span class="chip-sample">要確認</span>}</dt>
+          <dd class="mt-1">
+            <a href={`tel:${shop.cta.phone}`} class="text-ink underline-offset-4 hover:underline">{a.phone}</a>
+          </dd>
+        </div>
+      </dl>
+
+      <div class={`overflow-hidden border border-line ${r.img}`}>
+        <div class="aspect-[4/3] w-full">
+          <iframe
+            title={`${shop.name}の地図`}
+            src={mapSrc}
+            loading="lazy"
+            referrerpolicy="no-referrer-when-downgrade"
+            class="h-full w-full"
+            style="border:0"
+          ></iframe>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

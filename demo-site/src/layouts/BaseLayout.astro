@@ -1,0 +1,51 @@
+---
+import '../styles/global.css';
+import type { Shop } from '../data/shops';
+import { getTheme } from '../themes/restaurantThemes';
+
+interface Props {
+  shop: Shop;
+}
+const { shop } = Astro.props;
+const theme = getTheme(shop.theme);
+const c = theme.colors;
+
+// テーマ色とフォントを :root に注入（Tailwind の var(--c-*) と連動）
+const rootVars = `:root{
+  --c-bg:${c.bg};--c-surface:${c.surface};--c-surface-alt:${c.surfaceAlt};
+  --c-text:${c.text};--c-muted:${c.muted};--c-accent:${c.accent};
+  --c-accent-ink:${c.accentInk};--c-border:${c.border};
+  --font-heading:${theme.fontHeading};--font-body:${theme.fontBody};
+  --tracking:${theme.headingTracking};
+}`;
+const og = new URL(shop.seo.ogImage, Astro.site ?? 'https://demo.example.com').toString();
+---
+
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{shop.seo.title}</title>
+    <meta name="description" content={shop.seo.description} />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href={theme.fontHref} rel="stylesheet" />
+
+    <!-- OGP -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={shop.seo.title} />
+    <meta property="og:description" content={shop.seo.description} />
+    <meta property="og:image" content={og} />
+    <meta property="og:locale" content="ja_JP" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={shop.seo.title} />
+    <meta name="twitter:description" content={shop.seo.description} />
+    <meta name="twitter:image" content={og} />
+
+    <style set:html={rootVars}></style>
+  </head>
+  <body class="font-body text-ink">
+    <slot />
+  </body>
+</html>

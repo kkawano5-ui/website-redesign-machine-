@@ -1,0 +1,47 @@
+---
+import '../styles/global.css';
+import { shops } from '../data/shops';
+import { getTheme } from '../themes/restaurantThemes';
+---
+
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>飲食店デモサイト一覧（営業提案用）</title>
+    <meta name="description" content="営業提案用に生成した飲食店デモサイトの一覧。" />
+    <style set:html={':root{--c-bg:#14110e;--c-surface:#1d1813;--c-surface-alt:#272019;--c-text:#f3ece1;--c-muted:#a99c8a;--c-accent:#d9a441;--c-accent-ink:#14110e;--c-border:#3a3026;--font-heading:system-ui,sans-serif;--font-body:system-ui,sans-serif;--tracking:0.04em}'}></style>
+  </head>
+  <body class="bg-bg text-ink">
+    <div class="mx-auto max-w-content px-5 py-14">
+      <p class="text-xs tracking-[0.3em] text-accent">DEMO INDEX</p>
+      <h1 class="mt-2 text-3xl font-bold">飲食店 デモサイト一覧</h1>
+      <p class="mt-3 text-sm text-muted">営業ご提案用のデモ。各店舗ジャンルに合わせてデザインを出し分けています。</p>
+
+      <ul class="mt-10 grid gap-4 sm:grid-cols-3">
+        {
+          shops.map((shop) => {
+            const t = getTheme(shop.theme);
+            return (
+              <li>
+                <a
+                  href={`/${shop.slug}`}
+                  class="block overflow-hidden rounded-2xl border border-line bg-surface transition hover:-translate-y-1"
+                >
+                  <span class="block h-28" style={`background:linear-gradient(135deg, ${t.colors.accent}, ${t.colors.surfaceAlt})`}></span>
+                  <span class="block p-5">
+                    <span class="block text-lg font-bold text-ink">{shop.name}</span>
+                    <span class="mt-1 block text-xs text-muted">{shop.genre}　/　{t.label}</span>
+                  </span>
+                </a>
+              </li>
+            );
+          })
+        }
+      </ul>
+
+      <p class="mt-12 text-[11px] text-muted">※ 掲載情報の一部はサンプル・要確認です。</p>
+    </div>
+  </body>
+</html>

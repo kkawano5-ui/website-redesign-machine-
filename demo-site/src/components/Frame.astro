@@ -1,0 +1,24 @@
+---
+// 写真フレーム。実画像があれば表示、無ければ(404)上質なプレースホルダーに切替。
+interface Props {
+  src: string;
+  alt: string;
+  ratio?: string; // tailwind の aspect クラス
+  class?: string;
+  rounded?: string;
+}
+const { src, alt, ratio = 'aspect-[4/3]', class: klass = '', rounded = '' } = Astro.props;
+---
+
+<figure class={`frame is-empty ${ratio} ${rounded} ${klass}`}>
+  <span class="ph"></span>
+  <img
+    src={src}
+    alt={alt}
+    loading="lazy"
+    decoding="async"
+    onload="this.closest('.frame')?.classList.remove('is-empty')"
+    onerror="this.remove()"
+  />
+  <figcaption class="tag">写真サンプル</figcaption>
+</figure>

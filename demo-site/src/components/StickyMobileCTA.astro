@@ -1,0 +1,33 @@
+---
+import type { Shop } from '../data/shops';
+
+interface Props {
+  shop: Shop;
+}
+const { shop } = Astro.props;
+const mapHref = `https://maps.google.com/maps?q=${encodeURIComponent(shop.access.mapQuery)}`;
+---
+
+<!-- スマホ専用の固定CTA（電話 / 地図 / Instagram） -->
+<nav class="fixed inset-x-0 bottom-0 z-40 border-t border-line bg-bg/95 backdrop-blur sm:hidden">
+  <div class="grid grid-cols-3 divide-x divide-line">
+    <a href={`tel:${shop.cta.phone}`} class="flex flex-col items-center gap-0.5 py-2.5 text-[11px] text-ink">
+      <span class="text-base leading-none text-accent">☎</span>
+      電話
+    </a>
+    <a href={mapHref} target="_blank" rel="noopener" class="flex flex-col items-center gap-0.5 py-2.5 text-[11px] text-ink">
+      <span class="text-base leading-none text-accent">◉</span>
+      地図
+    </a>
+    <a
+      href={shop.cta.instagram ?? '#'}
+      target="_blank"
+      rel="noopener"
+      class="flex flex-col items-center gap-0.5 py-2.5 text-[11px] text-ink"
+    >
+      <span class="text-base leading-none text-accent">＠</span>
+      Instagram
+    </a>
+  </div>
+</nav>
+<div class="h-14 sm:hidden"></div>

@@ -1,0 +1,48 @@
+---
+import Frame from './Frame.astro';
+import type { Shop } from '../data/shops';
+import { radii, type RestaurantTheme } from '../themes/restaurantThemes';
+
+interface Props {
+  shop: Shop;
+  theme: RestaurantTheme;
+}
+const { shop, theme } = Astro.props;
+const r = radii(theme);
+---
+
+<section class={`relative tex-${theme.texture}`}>
+  <div class="mx-auto max-w-content px-5 py-12 sm:py-16">
+    <div class="flex items-end justify-between">
+      <div>
+        <p class="text-xs tracking-[0.3em] text-accent">POPULAR MENU</p>
+        <h2 class="mt-2 font-heading text-2xl text-ink sm:text-3xl" style="letter-spacing:var(--tracking)">
+          おすすめメニュー
+        </h2>
+      </div>
+      {!shop.verify.menu && <span class="chip-sample">メニュー・価格はサンプル</span>}
+    </div>
+
+    <div class="mt-8 grid grid-cols-2 gap-4 sm:grid-cols-3 sm:gap-6">
+      {
+        shop.menu.map((m) => (
+          <article class={`overflow-hidden border border-line bg-surface ${r.card}`}>
+            <Frame src={m.image ?? ''} alt={m.name} ratio="aspect-square" />
+            <div class="p-3 sm:p-4">
+              <div class="flex items-baseline justify-between gap-2">
+                <h3 class="font-heading text-sm text-ink sm:text-base">{m.name}</h3>
+                {m.price && <span class="shrink-0 text-sm text-accent">{m.price}</span>}
+              </div>
+              {m.desc && <p class="mt-1 text-xs text-muted">{m.desc}</p>}
+              {m.recommend && (
+                <span class={`mt-2 inline-block bg-accent px-2 py-0.5 text-[10px] font-bold text-accentInk ${r.pill}`}>
+                  人気
+                </span>
+              )}
+            </div>
+          </article>
+        ))
+      }
+    </div>
+  </div>
+</section>

@@ -1,0 +1,52 @@
+---
+import type { Shop } from '../data/shops';
+import { radii, type RestaurantTheme } from '../themes/restaurantThemes';
+
+interface Props {
+  shop: Shop;
+  theme: RestaurantTheme;
+}
+const { shop, theme } = Astro.props;
+const r = radii(theme);
+const mapHref = `https://maps.google.com/maps?q=${encodeURIComponent(shop.access.mapQuery)}`;
+---
+
+<section class="bg-accent">
+  <div class="mx-auto max-w-content px-5 py-14 text-center sm:py-20">
+    <h2 class="font-heading text-2xl text-accentInk sm:text-3xl" style="letter-spacing:var(--tracking)">
+      ご来店をお待ちしています
+    </h2>
+    <p class="mt-3 text-sm text-accentInk/80">ご予約・お問い合わせはお気軽に。</p>
+
+    <div class="mx-auto mt-8 flex max-w-md flex-wrap justify-center gap-3">
+      <a href={`tel:${shop.cta.phone}`} class={`bg-bg px-6 py-3 text-sm font-bold text-ink ${r.btn}`}>電話する</a>
+      <a href={mapHref} target="_blank" rel="noopener" class={`border border-accentInk/40 px-6 py-3 text-sm font-bold text-accentInk ${r.btn}`}>
+        地図を見る
+      </a>
+      {
+        shop.cta.instagram && (
+          <a href={shop.cta.instagram} target="_blank" rel="noopener" class={`border border-accentInk/40 px-6 py-3 text-sm font-bold text-accentInk ${r.btn}`}>
+            Instagram
+          </a>
+        )
+      }
+      {
+        shop.cta.reserve && (
+          <a href={shop.cta.reserve} target="_blank" rel="noopener" class={`bg-bg px-6 py-3 text-sm font-bold text-ink ${r.btn}`}>
+            予約する
+          </a>
+        )
+      }
+    </div>
+  </div>
+</section>
+
+<footer class="bg-bg">
+  <div class="mx-auto max-w-content px-5 py-8 text-center">
+    <p class="font-heading text-lg text-ink" style="letter-spacing:var(--tracking)">{shop.name}</p>
+    <p class="mt-1 text-xs text-muted">{shop.genre}</p>
+    <p class="mt-4 text-[11px] text-muted">
+      ※本ページは営業ご提案用のデモサンプルです。掲載情報の一部はサンプル・要確認です。
+    </p>
+  </div>
+</footer>

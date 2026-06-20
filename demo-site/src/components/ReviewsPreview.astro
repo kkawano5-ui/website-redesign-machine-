@@ -1,0 +1,43 @@
+---
+import type { Shop } from '../data/shops';
+import { radii, type RestaurantTheme } from '../themes/restaurantThemes';
+
+interface Props {
+  shop: Shop;
+  theme: RestaurantTheme;
+}
+const { shop, theme } = Astro.props;
+const r = radii(theme);
+// 実口コミは捏造しない。「掲載予定」のプレースホルダーのみ表示する。
+const slots = ['A', 'B', 'C'];
+---
+
+<section class="mx-auto max-w-content px-5 py-12 sm:py-16">
+  <div class="flex items-end justify-between">
+    <div>
+      <p class="text-xs tracking-[0.3em] text-accent">VOICE</p>
+      <h2 class="mt-2 font-heading text-2xl text-ink sm:text-3xl" style="letter-spacing:var(--tracking)">
+        お客様の声
+      </h2>
+    </div>
+    <span class="chip-sample">Google口コミ連携予定</span>
+  </div>
+
+  <div class="mt-8 grid gap-4 sm:grid-cols-3">
+    {
+      slots.map((s) => (
+        <div class={`border border-line bg-surface p-5 ${r.card}`}>
+          <div class="flex items-center gap-3">
+            <span class="flex h-9 w-9 items-center justify-center rounded-full border border-line text-sm text-muted">
+              {s}
+            </span>
+            <div class="h-2.5 w-24 rounded-full bg-surfaceAlt" />
+          </div>
+          <p class="mt-4 text-sm leading-relaxed text-muted">
+            お客様の声をこちらに掲載予定です。Googleの口コミと連携して表示できます。
+          </p>
+        </div>
+      ))
+    }
+  </div>
+</section>
