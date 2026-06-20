@@ -137,6 +137,8 @@ async function searchCell(apiKey, point, radius, includedTypes) {
     includedTypes,
     maxResultCount: 20,
     rankPreference: 'POPULARITY',
+    languageCode: 'ja', // 店名・住所を日本語表記で取得
+    regionCode: 'JP',
     locationRestriction: {
       circle: {
         center: point,
