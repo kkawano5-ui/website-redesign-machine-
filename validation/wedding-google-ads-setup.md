@@ -28,9 +28,10 @@ https://YOUR-WEDDING-LP.vercel.app/?utm_source=community&utm_medium=referral&utm
 ## 2. キャンペーン設定
 - **タイプ**：**検索（Search）**のみ。
 - ネットワーク：ディスプレイ・検索パートナーは**両方オフ**。
-- **地域**：United States / Hong Kong / Indonesia（＋任意で Singapore・Canada の日系コミュニティ）。
+- **地域**：**United States のみ**（ターゲット＝アメリカ一択）。
+  - 初動は全米でOK。データが溜まったら**高単価・該当層が濃い都市/州に寄せる**：California（特にLA・SF/Bay）・Hawaii・New York・Washington・Texas・Illinois。
   - 「**この地域にいる/定期的にいるユーザー**（Presence）」を選択（“興味がある人”は外す）。
-- **言語**：English（※香港=英語/繁体字、インドネシア=英語/IDも後で追加検討）。
+- **言語**：English。
 - **予算**：1日 **¥1,500〜2,500**（2〜3週間で〜¥5万）。
 - **入札**：**クリック数の最大化**＋上限クリック単価 **¥250前後**（暴騰防止。低競合なので安く取れる想定）。
 
@@ -79,7 +80,7 @@ Your Wedding, Your Family's Reunion
 ```
 A private, English-speaking wedding house for couples with roots in Japan. Designed end to end.
 Shrine ceremony, venue, kimono, cuisine and your family's stay — one planner, one clear plan.
-50+ heritage weddings for families flying in from the US, Hong Kong and Indonesia. By private enquiry.
+50+ weddings for couples and families flying in from across the United States. By private enquiry.
 Nothing lost in translation. We carry the language and the relationships; you carry the meaning.
 ```
 **Final URL**：§0のUTM付きリンク。
@@ -107,4 +108,5 @@ CPQL（有効リード単価） = 広告費 ÷ 有効問い合わせ数
 ## 7. 注意
 - まず**少額・短期**で“刺さるKW/コピー”の当たりを見て、良いものに寄せてから増やす。
 - 表示URLは当面 `vercel.app`。承認・信頼の観点で将来は**独自ドメイン**へ移行推奨。
-- 香港・インドネシアは英語広告で初動を見て、刺されば現地語（繁体字/Bahasa）クリエイティブを追加。
+- ターゲットは**米国一択**（ゆめちゃん談：顧客の質が最良）。香港/インドネシアは当面やらない。
+- データが溜まったら、上記の濃い都市/州へ入札を寄せ、刺さるKW/コピーに予算を集中。
