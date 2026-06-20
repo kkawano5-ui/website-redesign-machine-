@@ -144,13 +144,29 @@ export function resolveTheme(category) {
   return 'dining';
 }
 
+const THEME_EMOJI = {
+  izakaya: '🏮', bar: '🍸', yakiniku: '🔥', ramen: '🍜', chinese: '🥟',
+  ethnic: '🍛', washoku: '🍣', western: '🍽️', cafe: '🍰', coffee: '☕',
+  takeout: '🍱', dining: '🍴'
+};
+
 export function renderSampleHtml({ name, category }) {
-  const theme = THEMES[resolveTheme(category)];
+  const themeKey = resolveTheme(category);
+  const theme = THEMES[themeKey];
+  const emoji = THEME_EMOJI[themeKey] || '🍴';
   const safeName = String(name || '店舗名').trim();
   const cat = String(category || '飲食店').trim();
-  const menuItems = theme.menu
-    .map((m) => `<li class="menu-item"><span>${m}</span><span class="dots"></span><span class="price">¥—</span></li>`)
-    .join('\n          ');
+  const nums = ['①', '②', '③', '④', '⑤'];
+  const menuCards = theme.menu
+    .map(
+      (m, i) => `
+        <div class="menu-card">
+          <div class="menu-badge">${nums[i] || '◦'}</div>
+          <div class="menu-name">${m}</div>
+          <div class="price-pill">¥—</div>
+        </div>`
+    )
+    .join('');
 
   return `<!doctype html>
 <html lang="ja">
@@ -158,69 +174,114 @@ export function renderSampleHtml({ name, category }) {
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>${safeName}｜${cat}</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;800&family=Zen+Maru+Gothic:wght@400;500;700;900&display=swap" rel="stylesheet">
 <style>
-  :root{
-    --bg:${theme.bg}; --panel:${theme.panel}; --text:${theme.text};
-    --sub:${theme.sub}; --accent:${theme.accent};
-  }
-  *{box-sizing:border-box;margin:0;padding:0}
-  body{font-family:"Hiragino Kaku Gothic ProN","Yu Gothic",system-ui,sans-serif;
-    background:var(--bg);color:var(--text);line-height:1.8;-webkit-font-smoothing:antialiased}
-  .wrap{max-width:960px;margin:0 auto;padding:0 24px}
-  header.hero{min-height:70vh;display:flex;flex-direction:column;justify-content:center;
-    align-items:center;text-align:center;padding:80px 24px;
-    background:linear-gradient(180deg,color-mix(in srgb,var(--accent) 12%,var(--bg)),var(--bg))}
-  .badge{font-size:13px;letter-spacing:.3em;color:var(--accent);margin-bottom:20px}
-  h1{font-size:clamp(34px,7vw,64px);font-weight:800;letter-spacing:.04em;margin-bottom:18px}
-  .tagline{font-size:clamp(15px,2.6vw,20px);color:var(--sub)}
-  .btn{display:inline-block;margin-top:34px;padding:14px 34px;border-radius:999px;
-    background:var(--accent);color:#fff;text-decoration:none;font-weight:700;letter-spacing:.08em}
-  section{padding:64px 0;border-top:1px solid color-mix(in srgb,var(--sub) 24%,transparent)}
-  h2{font-size:24px;letter-spacing:.12em;margin-bottom:24px;color:var(--accent)}
-  .intro{font-size:17px;color:var(--text);max-width:640px}
-  .menu-list{list-style:none;max-width:560px}
-  .menu-item{display:flex;align-items:baseline;gap:10px;padding:12px 0;
-    border-bottom:1px dashed color-mix(in srgb,var(--sub) 35%,transparent)}
-  .menu-item .dots{flex:1}
-  .price{color:var(--sub)}
-  .info{display:grid;grid-template-columns:120px 1fr;gap:12px 24px;max-width:560px}
-  .info dt{color:var(--accent);font-weight:700}
-  .info dd{color:var(--text)}
-  footer{padding:48px 24px;text-align:center;color:var(--sub);font-size:13px;
-    border-top:1px solid color-mix(in srgb,var(--sub) 24%,transparent)}
-  .demo-note{background:color-mix(in srgb,var(--accent) 14%,var(--bg));
-    color:var(--text);text-align:center;padding:10px;font-size:13px;letter-spacing:.05em}
+:root{--bg:${theme.bg};--panel:${theme.panel};--text:${theme.text};--sub:${theme.sub};--accent:${theme.accent};
+  --accent-soft:color-mix(in srgb,var(--accent) 22%,var(--bg));}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:"Zen Maru Gothic","Hiragino Maru Gothic ProN",system-ui,sans-serif;
+  background:var(--bg);color:var(--text);line-height:1.85;overflow-x:hidden;position:relative;-webkit-font-smoothing:antialiased}
+.blob{position:absolute;z-index:0;filter:blur(10px);opacity:.5;pointer-events:none}
+.blob.b1{width:520px;height:520px;top:-170px;right:-160px;
+  background:radial-gradient(circle at 30% 30%,var(--accent),transparent 70%);
+  border-radius:47% 53% 60% 40%/52% 45% 55% 48%}
+.blob.b2{width:380px;height:380px;bottom:10%;left:-150px;opacity:.4;
+  background:radial-gradient(circle at 50% 50%,var(--accent),transparent 70%);
+  border-radius:58% 42% 38% 62%/45% 60% 40% 55%}
+.wrap{max-width:1000px;margin:0 auto;padding:0 22px;position:relative;z-index:1}
+.demo{position:relative;z-index:2;text-align:center;padding:14px}
+.demo span{display:inline-block;background:var(--accent);color:#fff;font-size:12.5px;font-weight:700;
+  padding:8px 18px;border-radius:999px;box-shadow:0 8px 20px color-mix(in srgb,var(--accent) 40%,transparent)}
+nav{position:relative;z-index:2;max-width:1000px;margin:4px auto 0;padding:12px 22px;display:flex;
+  align-items:center;justify-content:space-between}
+nav .brand{font-weight:900;font-size:18px;letter-spacing:.03em}
+nav .tel{font-family:"Poppins",sans-serif;font-size:13px;font-weight:600;color:var(--text);
+  background:var(--panel);border:2px solid var(--accent);padding:8px 16px;border-radius:999px;text-decoration:none}
+.hero{position:relative;z-index:1;display:grid;grid-template-columns:1.1fr .9fr;gap:28px;align-items:center;
+  max-width:1000px;margin:0 auto;padding:34px 22px 16px}
+.badge{display:inline-block;font-family:"Poppins",sans-serif;font-size:12px;font-weight:600;letter-spacing:.16em;
+  color:var(--accent);background:var(--accent-soft);padding:7px 16px;border-radius:999px;margin-bottom:18px}
+.hero h1{font-size:clamp(36px,6.4vw,66px);font-weight:900;line-height:1.18;letter-spacing:.02em;margin-bottom:16px}
+.hero .tagline{font-size:clamp(15px,2.4vw,19px);color:var(--sub);margin-bottom:26px}
+.btn{display:inline-block;font-weight:700;background:var(--accent);color:#fff;text-decoration:none;
+  padding:15px 34px;border-radius:999px;box-shadow:0 12px 26px color-mix(in srgb,var(--accent) 38%,transparent);transition:transform .15s}
+.btn:hover{transform:translateY(-2px)}
+.visual{position:relative;aspect-ratio:1;display:flex;align-items:center;justify-content:center}
+.visual .ring{position:absolute;inset:0;
+  background:linear-gradient(140deg,var(--accent),color-mix(in srgb,var(--accent) 30%,#fff));
+  border-radius:62% 38% 47% 53%/45% 56% 44% 55%;
+  box-shadow:0 30px 60px color-mix(in srgb,var(--accent) 35%,transparent);animation:morph 9s ease-in-out infinite}
+.visual .emoji{position:relative;z-index:1;font-size:clamp(70px,15vw,128px);filter:drop-shadow(0 8px 14px rgba(0,0,0,.18))}
+.visual .dot{position:absolute;border-radius:50%;background:var(--panel);box-shadow:0 6px 16px rgba(0,0,0,.12)}
+.visual .dot.d1{width:46px;height:46px;top:6%;right:12%}
+.visual .dot.d2{width:26px;height:26px;bottom:12%;left:6%}
+.visual .dot.d3{width:34px;height:34px;bottom:-2%;right:24%;background:var(--accent-soft)}
+@keyframes morph{0%,100%{border-radius:62% 38% 47% 53%/45% 56% 44% 55%}
+  50%{border-radius:42% 58% 63% 37%/53% 44% 56% 47%}}
+section{position:relative;z-index:1;padding:30px 0}
+.label{font-family:"Poppins",sans-serif;letter-spacing:.22em;font-size:13px;font-weight:600;color:var(--accent);margin-bottom:14px}
+.card{background:var(--panel);border-radius:34px;padding:32px 30px;
+  box-shadow:0 16px 40px color-mix(in srgb,var(--text) 9%,transparent)}
+.intro{font-size:16.5px;max-width:680px}
+.menu-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:16px}
+.menu-card{background:var(--panel);border-radius:26px;padding:18px 20px;display:flex;align-items:center;gap:14px;
+  box-shadow:0 10px 26px color-mix(in srgb,var(--text) 8%,transparent)}
+.menu-badge{flex:none;width:42px;height:42px;border-radius:50%;display:flex;align-items:center;justify-content:center;
+  font-weight:700;background:var(--accent-soft);color:var(--accent);font-size:18px}
+.menu-name{flex:1;font-weight:500;font-size:15px}
+.price-pill{font-family:"Poppins",sans-serif;font-size:12px;color:var(--sub);background:var(--accent-soft);padding:4px 12px;border-radius:999px}
+.note{margin-top:14px;color:var(--sub);font-size:12.5px}
+.info{display:grid;grid-template-columns:110px 1fr;gap:14px 22px}
+.info dt{color:var(--accent);font-weight:700}
+footer{position:relative;z-index:1;margin-top:28px;background:var(--panel);
+  border-radius:48px 48px 0 0;padding:44px 22px;text-align:center}
+footer .fname{font-weight:900;font-size:20px}
+footer .price-row{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:18px}
+footer .pchip{background:var(--accent-soft);color:var(--accent);font-weight:700;font-size:13px;padding:9px 18px;border-radius:999px}
+footer .fnote{color:var(--sub);font-size:12px;margin-top:18px}
+@media(max-width:720px){.hero{grid-template-columns:1fr;text-align:center}
+  .badge{margin-inline:auto}.visual{max-width:300px;margin:4px auto 0}}
 </style>
 </head>
 <body>
-  <div class="demo-note">★ これは営業ご提案用のデモサンプルです（${safeName} 様専用イメージ）</div>
+  <div class="blob b1"></div>
+  <div class="blob b2"></div>
+  <div class="demo"><span>★ 営業ご提案用デモ（${safeName} 様専用イメージ）</span></div>
+  <nav><div class="brand">${safeName}</div><a class="tel" href="#info">☎ ご予約はこちら</a></nav>
+
   <header class="hero">
-    <div class="badge">${cat}</div>
-    <h1>${safeName}</h1>
-    <p class="tagline">${theme.tagline}</p>
-    <a class="btn" href="#contact">${theme.cta}</a>
+    <div class="hero-text">
+      <span class="badge">${cat}</span>
+      <h1>${safeName}</h1>
+      <p class="tagline">${theme.tagline}</p>
+      <a class="btn" href="#info">${theme.cta}</a>
+    </div>
+    <div class="visual">
+      <div class="ring"></div>
+      <div class="emoji">${emoji}</div>
+      <div class="dot d1"></div><div class="dot d2"></div><div class="dot d3"></div>
+    </div>
   </header>
 
-  <section>
-    <div class="wrap">
-      <h2>ABOUT</h2>
+  <section class="wrap">
+    <div class="card">
+      <div class="label">ABOUT</div>
       <p class="intro">${theme.intro}</p>
     </div>
   </section>
 
-  <section>
-    <div class="wrap">
-      <h2>MENU</h2>
-      <ul class="menu-list">
-          ${menuItems}
-      </ul>
-      <p style="margin-top:16px;color:var(--sub);font-size:13px">※メニュー・価格はサンプルです。実際の内容に差し替えできます。</p>
+  <section class="wrap">
+    <div class="label">MENU</div>
+    <div class="menu-grid">${menuCards}
     </div>
+    <p class="note">※メニュー・価格はサンプルです。実際の内容に差し替えできます。</p>
   </section>
 
-  <section id="contact">
-    <div class="wrap">
-      <h2>INFORMATION</h2>
+  <section class="wrap" id="info">
+    <div class="card">
+      <div class="label">INFORMATION</div>
       <dl class="info">
         <dt>店名</dt><dd>${safeName}</dd>
         <dt>業種</dt><dd>${cat}</dd>
@@ -232,8 +293,10 @@ export function renderSampleHtml({ name, category }) {
   </section>
 
   <footer>
-    ${safeName}　|　${cat}<br />
-    <span style="opacity:.8">Website sample created for proposal — 初期費用 5万円 / 月額 1万円</span>
+    <div class="fname">${safeName}</div>
+    <div style="color:var(--sub);font-size:13px">${cat}</div>
+    <div class="price-row"><span class="pchip">初期費用 5万円</span><span class="pchip">月額 1万円</span></div>
+    <div class="fnote">Website sample created for proposal</div>
   </footer>
 </body>
 </html>`;
