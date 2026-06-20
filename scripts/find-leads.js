@@ -178,6 +178,22 @@ function leadReason(place, maxReviews) {
   return reasons.join(' / ');
 }
 
+// restaurant 扱いで返るが営業対象にならないもの（自販機・駐輪場・駐車場など）を除外。
+const JUNK_NAME_RE = /自動販売機|自販機|駐輪場|駐車場|コインパーキング|ロッカー|トイレ|ATM|宅配便|ポスト/;
+
+function isJunk(place) {
+  const name = place.displayName?.text || '';
+  return JUNK_NAME_RE.test(name);
+}
+
+// 営業価値の高い順に並べる: 電話あり(架電可能)を優先 → 口コミ少ない順。
+function leadSort(a, b) {
+  const aPhone = a.nationalPhoneNumber || a.internationalPhoneNumber ? 1 : 0;
+  const bPhone = b.nationalPhoneNumber || b.internationalPhoneNumber ? 1 : 0;
+  if (aPhone !== bPhone) return bPhone - aPhone;
+  return (a.userRatingCount || 0) - (b.userRatingCount || 0);
+}
+
 function csvEscape(value) {
   const s = String(value ?? '');
   if (/[",\n]/.test(s)) {
@@ -260,8 +276,9 @@ async function scanRegion(apiKey, target, args, stamp) {
   const allPlaces = [...seen.values()];
   const leads = allPlaces
     .filter((p) => p.businessStatus !== 'CLOSED_PERMANENTLY')
+    .filter((p) => !isJunk(p))
     .filter((p) => isLead(p, args.maxReviews))
-    .sort((a, b) => (a.userRatingCount || 0) - (b.userRatingCount || 0));
+    .sort(leadSort);
 
   const csv = toCsv(leads, args.maxReviews);
   const csvPath = path.resolve('data/leads', `saitama-${target.key}-${stamp}.csv`);
