@@ -107,27 +107,24 @@ def put_emphasis(fr,im,cx,cy,lt,ts,band=True,bandh=None):
     img=with_alpha(scaled(im,sc),clamp(p*1.3))
     fr.alpha_composite(img,(int(cx-img.width/2),int(cy-img.height/2)))
 
-def put_number(fr,cx,cy,lt,ts,target,suffix,prefix="",num_sz=210,aff_sz=70,glow=True):
+def put_number(fr,cx,cy,lt,ts,target,suffix,label="",num_sz=200,affix_col=NAVY):
     p=clamp((lt-ts)/0.85); val=int(round(target*eoc(p)))
     if p>=1:val=target
-    bounce=1.0+0.08*math.sin(min(1,(lt-ts-0.85)/0.35)*math.pi) if lt>ts+0.85 and lt<ts+1.2 else 1.0
-    nf=font(int(num_sz*bounce),900); af=font(aff_sz,800); pf=font(aff_sz,800)
-    ns=f"{val:,}"
-    nw=nf.getlength(ns); aw=af.getlength(suffix); pw=pf.getlength(prefix)
-    total=pw+nw+aw+(18 if prefix else 0)+14
-    x=cx-total/2
     a=clamp(p*2)
-    if glow:
-        g=Image.new("RGBA",(W,H),(0,0,0,0))
-        gr=int(nw/2+150)
-        ImageDraw.Draw(g).ellipse([cx-gr,cy-gr,cx+gr,cy+gr],fill=(BLUE+(int(60*a),)))
-        fr.alpha_composite(g.filter(ImageFilter.GaussianBlur(70)))
+    bounce=1.0
+    if ts+0.85<lt<ts+1.25: bounce=1.0+0.07*math.sin((lt-ts-0.85)/0.4*math.pi)
+    nf=font(int(num_sz*bounce),900); sf=font(int(num_sz*0.34),800)
+    ns=f"{val:,}"; nw=nf.getlength(ns); sw=sf.getlength(suffix); gap=14
+    total=nw+gap+sw; x=cx-total/2
+    g=Image.new("RGBA",(W,H),(0,0,0,0)); gr=int(nw/2+150)
+    ImageDraw.Draw(g).ellipse([cx-gr,cy-gr,cx+gr,cy+gr],fill=(BLUE+(int(55*a),)))
+    fr.alpha_composite(g.filter(ImageFilter.GaussianBlur(70)))
     d=ImageDraw.Draw(fr)
-    yb=cy-nf.getmetrics()[0]*0.62
-    if prefix:
-        d.text((x,cy-af.getmetrics()[0]*0.5),prefix,font=pf,fill=NAVY+(int(255*a),)); x+=pw+18
-    d.text((x,yb),ns,font=nf,fill=BLUE+(int(255*a),)); x+=nw+14
-    d.text((x,cy-af.getmetrics()[0]*0.5),suffix,font=af,fill=NAVY+(int(255*a),))
+    if label:
+        lf=font(56,800); lw=lf.getlength(label)
+        d.text((cx-lw/2,cy-num_sz*0.82),label,font=lf,fill=affix_col+(int(255*a),))
+    d.text((x,cy-nf.getmetrics()[0]*0.62),ns,font=nf,fill=BLUE+(int(255*a),))
+    d.text((x+nw+gap,cy-sf.getmetrics()[0]*0.62),suffix,font=sf,fill=affix_col+(int(255*a),))
 
 # ---------- flat illustration primitives ----------
 def draw_person(fr,cx,by,s,mood="neutral",shirt=NAVY2,phone=False,hand_head=False,face_up=False,accent=ORANGE):
@@ -254,12 +251,13 @@ def s2(lt,dur):  # 自分のやり方が / 悪いのかな？
         d=ImageDraw.Draw(lay); icon_play(d,xx-150,yy,0.7,PALE3)
         d.rectangle([xx-110,yy-14,xx+150,yy-4],fill=PALE2); d.rectangle([xx-110,yy+6,xx+90,yy+16],fill=PALE2)
         fr.alpha_composite(with_alpha(lay,a))
-    # calendar
-    icon_card(fr,W*0.22,H*0.2,200,170,fill=WHITE,outline=PALE2)
-    d=ImageDraw.Draw(fr); d.rectangle([W*0.22-80,H*0.2-70,W*0.22+80,H*0.2-44],fill=ORANGE)
+    # calendar (placed below the telop so it doesn't collide)
+    ccx,ccy=W*0.2,H*0.32
+    icon_card(fr,ccx,ccy,190,160,fill=WHITE,outline=PALE2)
+    d=ImageDraw.Draw(fr); d.rectangle([ccx-76,ccy-66,ccx+76,ccy-42],fill=ORANGE)
     for r in range(3):
         for c in range(4):
-            d.rectangle([W*0.22-78+c*40,H*0.2-30+r*36,W*0.22-78+c*40+28,H*0.2-30+r*36+24],
+            d.rectangle([ccx-74+c*38,ccy-28+r*34,ccx-74+c*38+26,ccy-28+r*34+22],
                         fill=PALE if (r*4+c)%3 else BLUE)
     put_normal(fr,line_img("自分のやり方が",58,WHITE),W*0.5,H*0.135,lt,0.2)
     put_normal(fr,line_img("悪いのかな？",78,(150,185,235)),W*0.5,H*0.215,lt,0.5,kind="pain")
@@ -347,11 +345,11 @@ def s6(lt,dur):  # 実績 数字
     for i in range(4):
         if lt>3.5+i*0.2:
             d=ImageDraw.Draw(fr); icon_play(d,W*0.2+i*W*0.2,H*0.2,clamp((lt-3.5-i*0.2)/0.3)*1.1,BLUE)
-    # number sequence
-    put_emphasis(fr,line_img("広告費 0円",72,WHITE,900),W*0.5,H*0.2,lt,0.2,band=True,bandh=110)
-    if lt>1.4:  put_number(fr,W*0.5,H*0.42,lt,1.4,18,"万人",prefix="フォロワー")
-    if lt>3.4:  put_number(fr,W*0.5,H*0.42,lt,3.4,100,"万回再生")
-    if lt>5.2:  put_number(fr,W*0.5,H*0.42,lt,5.2,50,"本以上")
+    # number sequence (one number visible at a time)
+    put_emphasis(fr,line_img("広告費 0円",72,NAVY,900),W*0.5,H*0.2,lt,0.2,band=True,bandh=110)
+    if 1.4<=lt<3.3:   put_number(fr,W*0.5,H*0.46,lt,1.4,18,"万人",label="フォロワー",affix_col=WHITE)
+    elif 3.3<=lt<5.1: put_number(fr,W*0.5,H*0.46,lt,3.3,100,"万回再生",affix_col=WHITE)
+    elif lt>=5.1:     put_number(fr,W*0.5,H*0.46,lt,5.1,50,"本以上",affix_col=WHITE)
     return fr
 
 def s7(lt,dur):  # 今は、まずSNSで / 会社を調べる時代
@@ -469,7 +467,7 @@ def main():
         proc.stdin.write(rgb.tobytes())
         if fi%90==0:print(f"  {fi}/{n}")
     proc.stdin.close(); proc.wait()
-    for ti,name in [(2,"s1"),(6,"s2"),(10,"s3"),(14.5,"s4"),(19,"s5"),(25.5,"s6"),(32,"s7"),(37,"s8"),(43,"s9")]:
+    for ti,name in [(2,"s1"),(6,"s2"),(10,"s3"),(14.8,"s4"),(19,"s5"),(25.5,"s6"),(27,"s6b"),(29.2,"s6c"),(32,"s7"),(37,"s8"),(43,"s9")]:
         render(ti).convert("RGB").save(os.path.join(DBG,f"{name}.png"))
     print("DONE:",OUTFILE)
 
