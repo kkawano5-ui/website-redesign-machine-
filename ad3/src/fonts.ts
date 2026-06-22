@@ -1,21 +1,12 @@
-import { staticFile, delayRender, continueRender } from "remotion";
+import { staticFile } from "remotion";
+import { loadFont } from "@remotion/fonts";
 
-// Bundle the gothic font locally (no network at render time).
+// Bundle the gothic font locally (sandbox/offline-safe; no Google Fonts at render).
 export const fontFamily = "NotoSansJP";
 
-if (typeof document !== "undefined") {
-  const url = staticFile("ad3/fonts/NotoSansJP.ttf");
-  const style = document.createElement("style");
-  style.textContent = `@font-face{font-family:"NotoSansJP";src:url("${url}") format("truetype");font-weight:100 900;font-style:normal;font-display:block;}`;
-  document.head.appendChild(style);
+const url = staticFile("ad3/fonts/NotoSansJP.ttf");
 
-  const handle = delayRender("load-noto-sans-jp");
-  const face = new FontFace("NotoSansJP", `url(${url})`, { weight: "100 900" });
-  face
-    .load()
-    .then((f) => {
-      (document as unknown as { fonts: FontFaceSet }).fonts.add(f);
-      continueRender(handle);
-    })
-    .catch(() => continueRender(handle));
-}
+// Variable font: register the weights we use. @remotion/fonts handles delayRender.
+["400", "500", "700", "900"].forEach((weight) => {
+  loadFont({ family: fontFamily, url, weight, display: "block" }).catch(() => undefined);
+});
