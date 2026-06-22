@@ -68,10 +68,7 @@ export const scenes: Scene[] = [
   // 2 — 自責
   {
     id: 2, dur: 4, asset: A("s2.png"), bg: "dark", motion: "panUp",
-    overlays: [
-      { asset: A("s2_calendar.png"), enter: "slideLeft", delay: 0.3, xPct: 22, yPct: 33, wPct: 24 },
-      { asset: A("s2_cards.png"), enter: "pop", delay: 0.5, xPct: 50, yPct: 70, wPct: 42 },
-    ],
+    // base art already includes the post cards + calendar
     telops: [
       { text: "自分のやり方が", kind: "normal", delay: 0.3 },
       { text: "悪いのかな？", kind: "pain", delay: 0.5, size: 88, color: "#8FB7E6" },
@@ -88,9 +85,7 @@ export const scenes: Scene[] = [
   // 4 — 原因の再定義
   {
     id: 4, dur: 5, asset: A("s4.png"), bg: "pale", motion: "none",
-    overlays: [
-      { asset: A("s4_center.png"), enter: "pop", delay: 2.8, xPct: 50, yPct: 52, wPct: 40 },
-    ],
+    // base art already includes the three cards
     telops: [
       { text: "伸びる理由は", kind: "normal", delay: 0.25 },
       { text: "そこじゃない", kind: "normal", delay: 0.45, size: 80, color: "#2B87E8" },
@@ -98,12 +93,8 @@ export const scenes: Scene[] = [
   },
   // 5 — 答え（人）
   {
-    id: 5, dur: 6, asset: A("s5.png"), bg: "white", motion: "none",
-    overlays: [
-      { asset: A("s5_ceo.png"), enter: "slideUp", delay: 0.5, xPct: 27, yPct: 64, wPct: 26, float: true },
-      { asset: A("s5_staff.png"), enter: "slideUp", delay: 0.95, xPct: 50, yPct: 64, wPct: 26, float: true },
-      { asset: A("s5_site.png"), enter: "slideUp", delay: 1.4, xPct: 73, yPct: 64, wPct: 26, float: true },
-    ],
+    id: 5, dur: 6, asset: A("s5.png"), bg: "white", motion: "zoomIn",
+    // optional: add s5_ceo/staff/site transparent cards to slide in (see docs)
     telops: [
       { text: "SNSに", kind: "normal", delay: 0.25, color: "#15294B" },
       { text: "人", kind: "emphasis", delay: 0.7, size: 150, color: "#2B87E8" },
@@ -124,11 +115,8 @@ export const scenes: Scene[] = [
   },
   // 7 — SNSで会社を調べる時代
   {
-    id: 7, dur: 5, asset: A("s7.png"), bg: "pale", motion: "none",
-    overlays: [
-      { asset: A("s7_empty.png"), enter: "slideUp", delay: 0.35, xPct: 30, yPct: 56, wPct: 30, dim: 0.78 },
-      { asset: A("s7_warm.png"), enter: "slideUp", delay: 0.6, xPct: 70, yPct: 56, wPct: 30 },
-    ],
+    id: 7, dur: 5, asset: A("s7.png"), bg: "pale", motion: "zoomIn",
+    // optional: add s7_empty/s7_warm transparent profile cards into the phones (see docs)
     telops: [
       { text: "今は、まずSNSで", kind: "normal", delay: 0.25 },
       { text: "会社を調べる時代", kind: "normal", delay: 0.45, size: 60, color: "#2B87E8" },
@@ -137,9 +125,7 @@ export const scenes: Scene[] = [
   // 8 — もったいない
   {
     id: 8, dur: 5, asset: A("s8.png"), bg: "pale", motion: "zoomIn", veil: true,
-    overlays: [
-      { asset: A("s8_reveal.png"), enter: "fade", delay: 1.6, xPct: 50, yPct: 52, wPct: 88 },
-    ],
+    // veil clears to reveal the company (base art). optional: add s8_reveal cards (see docs)
     telops: [
       { text: "良さが伝わらないのは", kind: "normal", delay: 0.25, size: 46 },
       { text: "もったいない", kind: "emphasis", delay: 0.55, size: 74, color: "#F59648", bandColor: "rgba(245,150,72,0.16)" },
