@@ -46,6 +46,9 @@ export interface Scene {
   bg: BgKind;
   bgFrom?: BgKind;      // transition source (e.g. scene3 dark->pale)
   motion: Motion;
+  bgPlate?: string;     // background plate (person removed/blurred) for rigged motion
+  foreground?: string;  // cut-out layer animated on top (e.g. S1 person)
+  fx?: "s1" | "s6";     // code-rigged motion effects pack
   light?: boolean;      // soft light wash (relief)
   veil?: boolean;       // gray veil that clears (scene8)
   overlays?: Overlay[];
@@ -60,6 +63,7 @@ export const scenes: Scene[] = [
   // 1 — ペイン導入
   {
     id: 1, dur: 4, asset: A("s1.png"), bg: "dark", motion: "zoomIn",
+    bgPlate: A("s1_bg.png"), foreground: A("s1_fg.png"), fx: "s1",
     telops: [
       { text: "投稿してるのに", kind: "normal", delay: 0.3 },
       { text: "伸びない…", kind: "pain", delay: 0.6, size: 96, color: "#8FB7E6" },
@@ -103,7 +107,7 @@ export const scenes: Scene[] = [
   },
   // 6 — 実績
   {
-    id: 6, dur: 8, asset: A("s6.png"), bg: "dark", motion: "zoomOut",
+    id: 6, dur: 8, asset: A("s6.png"), bg: "dark", motion: "zoomOut", fx: "s6",
     telops: [
       { text: "広告費 0円", kind: "emphasis", delay: 0.2, size: 76, color: "#15294B", bandColor: "#CAE6FA" },
     ],

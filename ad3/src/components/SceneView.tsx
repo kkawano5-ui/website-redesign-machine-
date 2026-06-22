@@ -7,6 +7,7 @@ import { TelopLine } from "./Telop";
 import { NumberStatView } from "./NumberStat";
 import { OverlayView } from "./Overlay";
 import { Cta } from "./Cta";
+import { ForegroundS1, FxS1, FxS6 } from "./Fx";
 
 export const SceneView: React.FC<{ scene: Scene }> = ({ scene }) => {
   const frame = useCurrentFrame();
@@ -55,13 +56,20 @@ export const SceneView: React.FC<{ scene: Scene }> = ({ scene }) => {
           />
         ) : (
           <Img
-            src={staticFile(scene.asset)}
+            src={staticFile(scene.bgPlate ?? scene.asset)}
             style={{
               width: WIDTH, height: HEIGHT, objectFit: "cover",
               transform: `scale(${scale}) translateY(${ty}px)`,
             }}
           />
         )}
+
+        {/* rigged foreground (animated cut-out person) */}
+        {!useVideo && scene.foreground && <ForegroundS1 src={scene.foreground} />}
+
+        {/* code-rigged motion effects */}
+        {!useVideo && scene.fx === "s1" && <FxS1 />}
+        {!useVideo && scene.fx === "s6" && <FxS6 />}
 
         {/* overlays */}
         {scene.overlays?.map((o, i) => <OverlayView key={i} o={o} />)}
