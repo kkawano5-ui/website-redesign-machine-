@@ -1,6 +1,6 @@
 import React from "react";
-import { AbsoluteFill, Img, staticFile, useCurrentFrame, useVideoConfig, interpolate } from "remotion";
-import { Scene, WIDTH, HEIGHT } from "../data/storyboard";
+import { AbsoluteFill, Img, OffthreadVideo, staticFile, useCurrentFrame, useVideoConfig, interpolate } from "remotion";
+import { Scene, WIDTH, HEIGHT, SCENES_WITH_VIDEO } from "../data/storyboard";
 import { BG } from "../theme";
 import { clamp, easeOutCubic, lerpColor } from "../helpers";
 import { TelopLine } from "./Telop";
@@ -20,13 +20,18 @@ export const SceneView: React.FC<{ scene: Scene }> = ({ scene }) => {
     bgColor = lerpColor(BG[scene.bgFrom], BG[scene.bg], easeOutCubic(tp));
   }
 
-  // base image Ken Burns / parallax
+  // does this scene have an image->video clip ready?
+  const useVideo = SCENES_WITH_VIDEO.includes(scene.id);
+
+  // base image Ken Burns / parallax (kept subtle; skipped when a moving clip is used)
   const prog = frame / durationInFrames;
   let scale = 1, ty = 0;
-  if (scene.motion === "zoomIn") scale = interpolate(prog, [0, 1], [1.0, 1.08]);
-  if (scene.motion === "zoomOut") scale = interpolate(prog, [0, 1], [1.08, 1.0]);
-  if (scene.motion === "parallax") { scale = 1.06; ty = interpolate(prog, [0, 1], [-12, 12]); }
-  if (scene.motion === "panUp") ty = interpolate(prog, [0, 1], [16, -16]);
+  if (!useVideo) {
+    if (scene.motion === "zoomIn") scale = interpolate(prog, [0, 1], [1.0, 1.08]);
+    if (scene.motion === "zoomOut") scale = interpolate(prog, [0, 1], [1.08, 1.0]);
+    if (scene.motion === "parallax") { scale = 1.06; ty = interpolate(prog, [0, 1], [-12, 12]); }
+    if (scene.motion === "panUp") ty = interpolate(prog, [0, 1], [16, -16]);
+  }
 
   // per-scene clean fade-in (cut feel)
   const fadeIn = clamp((frame / fps) / 0.25);
@@ -40,14 +45,23 @@ export const SceneView: React.FC<{ scene: Scene }> = ({ scene }) => {
   return (
     <AbsoluteFill style={{ backgroundColor: bgColor }}>
       <AbsoluteFill style={{ opacity: fadeIn }}>
-        {/* base illustration */}
-        <Img
-          src={staticFile(scene.asset)}
-          style={{
-            width: WIDTH, height: HEIGHT, objectFit: "cover",
-            transform: `scale(${scale}) translateY(${ty}px)`,
-          }}
-        />
+        {/* base: moving clip (image->video) if ready, else the still illustration */}
+        {useVideo ? (
+          <OffthreadVideo
+            src={staticFile(`ad3/assets/s${scene.id}.mp4`)}
+            muted
+            loop
+            style={{ width: WIDTH, height: HEIGHT, objectFit: "cover" }}
+          />
+        ) : (
+          <Img
+            src={staticFile(scene.asset)}
+            style={{
+              width: WIDTH, height: HEIGHT, objectFit: "cover",
+              transform: `scale(${scale}) translateY(${ty}px)`,
+            }}
+          />
+        )}
 
         {/* overlays */}
         {scene.overlays?.map((o, i) => <OverlayView key={i} o={o} />)}

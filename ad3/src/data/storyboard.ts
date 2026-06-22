@@ -145,3 +145,9 @@ export const scenes: Scene[] = [
 export const TOTAL_FRAMES = Math.round(
   scenes.reduce((s, sc) => s + sc.dur, 0) * FPS
 );
+
+// 画像→動画AI(Runway/Kling等)で作った 3〜5秒ループクリップを
+// public/ad3/assets/s<id>.mp4 として置いたら、その scene id をここに追加する。
+// 追加されたシーンは静止画の代わりに動画クリップを背景に使う（テロップ等は上に乗る）。
+// 例: [1, 3, 6] → S1/S3/S6 が動画になる。空なら全て静止画のまま。
+export const SCENES_WITH_VIDEO: number[] = [];
