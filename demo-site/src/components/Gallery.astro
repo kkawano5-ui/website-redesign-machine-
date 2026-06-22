@@ -24,7 +24,7 @@ const slots: { role: AssetRole; index: number }[] = [
 ];
 ---
 
-<section class={`relative tex-${theme.texture}`}>
+<section class={`reveal relative tex-${theme.texture}`}>
   <div class="mx-auto max-w-content px-5 py-12 sm:py-16">
     <p class="text-xs tracking-[0.3em] text-accent">GALLERY</p>
     <h2 class="mt-2 font-heading text-2xl text-ink sm:text-3xl" style="letter-spacing:var(--tracking)">
@@ -32,7 +32,7 @@ const slots: { role: AssetRole; index: number }[] = [
     </h2>
 
     <!-- スマホは横スクロール、PCはグリッド -->
-    <div class="no-scrollbar mt-6 flex gap-3 overflow-x-auto sm:grid sm:grid-cols-3 sm:gap-4 sm:overflow-visible">
+    <div class="reveal stagger no-scrollbar mt-6 flex gap-3 overflow-x-auto sm:grid sm:grid-cols-3 sm:gap-4 sm:overflow-visible">
       {
         slots.map((s) => (
           <AssetImage

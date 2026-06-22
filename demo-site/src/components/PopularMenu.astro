@@ -13,7 +13,7 @@ const cat = shop.assetCategory;
 const mood = shop.mood;
 ---
 
-<section class={`relative tex-${theme.texture}`}>
+<section class={`reveal relative tex-${theme.texture}`}>
   <div class="mx-auto max-w-content px-5 py-12 sm:py-16">
     <div class="flex items-end justify-between">
       <div>
@@ -25,10 +25,10 @@ const mood = shop.mood;
       {!shop.verify.menu && <span class="chip-sample">メニュー・価格はサンプル（実際の内容に差し替え）</span>}
     </div>
 
-    <div class="mt-8 grid grid-cols-2 gap-4 sm:grid-cols-3 sm:gap-6">
+    <div class="reveal stagger mt-8 grid grid-cols-2 gap-4 sm:grid-cols-3 sm:gap-6">
       {
         shop.menu.map((m, i) => (
-          <article class={`overflow-hidden border border-line bg-surface ${r.card}`}>
+          <article class={`lift overflow-hidden border border-line bg-surface ${r.card}`}>
             <AssetImage category={cat} role="menu" index={i} mood={mood} ratio="aspect-square" label={m.name} />
             <div class="p-3 sm:p-4">
               <div class="flex items-baseline justify-between gap-2">

@@ -27,7 +27,7 @@ const heroVideo = pickAsset(cat, 'video', 0, mood);
     <section class="relative flex min-h-[82vh] items-end overflow-hidden sm:min-h-[90vh]">
       {heroVideo ? (
         <video
-          class="absolute inset-0 h-full w-full object-cover"
+          class="absolute inset-0 h-full w-full object-cover kenburns"
           autoplay
           muted
           loop
@@ -40,13 +40,13 @@ const heroVideo = pickAsset(cat, 'video', 0, mood);
         </video>
       ) : heroImg ? (
         <figure class="frame absolute inset-0">
-          <img src={heroImg.src} alt={heroImg.alt} />
+          <img src={heroImg.src} alt={heroImg.alt} class="kenburns" />
         </figure>
       ) : (
-        <ReplacementFrame ratio="" class="absolute inset-0" />
+        <ReplacementFrame ratio="" class="absolute inset-0 kenburns" />
       )}
       <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/55 to-black/20" />
-      <div class="relative z-10 mx-auto w-full max-w-content px-5 pb-14 sm:pb-24">
+      <div class="hero-in relative z-10 mx-auto w-full max-w-content px-5 pb-14 sm:pb-24">
         <p class="mb-4 flex items-center gap-2.5 text-white">
           <span class="h-px w-7 bg-accent" />
           <span class="font-heading text-base sm:text-lg">{shop.name}</span>
@@ -73,7 +73,7 @@ const heroVideo = pickAsset(cat, 'video', 0, mood);
 {
   theme.hero === 'split' && (
     <section class="mx-auto grid max-w-content items-center gap-6 px-5 py-8 sm:grid-cols-2 sm:gap-10 sm:py-14">
-      <div class="order-2 sm:order-1">
+      <div class="hero-in order-2 sm:order-1">
         <p class="mb-3 flex items-center gap-2.5">
           <span class="h-px w-7 bg-accent" />
           <span class="font-heading text-base text-ink">{shop.name}</span>
@@ -97,7 +97,7 @@ const heroVideo = pickAsset(cat, 'video', 0, mood);
         </div>
       </div>
       <div class="order-1 sm:order-2">
-        <AssetImage category={cat} role="hero" mood={mood} ratio="aspect-[4/5]" rounded={r.img} />
+        <AssetImage category={cat} role="hero" mood={mood} ratio="aspect-[4/5]" rounded={r.img} class="kenburns" />
       </div>
     </section>
   )
@@ -107,7 +107,7 @@ const heroVideo = pickAsset(cat, 'video', 0, mood);
   theme.hero === 'editorial' && (
     <section class="mx-auto max-w-content px-5 pb-8 pt-6 sm:pt-10">
       <div class="mb-5 flex items-end justify-between border-b border-line pb-4">
-        <div>
+        <div class="hero-in">
           <p class="flex items-center gap-2.5">
             <span class="h-px w-7 bg-accent" />
             <span class="font-heading text-base text-ink">{shop.name}</span>
@@ -121,7 +121,7 @@ const heroVideo = pickAsset(cat, 'video', 0, mood);
           </h1>
         </div>
       </div>
-      <AssetImage category={cat} role="hero" mood={mood} ratio="aspect-[16/10]" rounded={r.img} />
+      <AssetImage category={cat} role="hero" mood={mood} ratio="aspect-[16/10]" rounded={r.img} class="kenburns" />
       <div class="mt-5 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <p class="text-sm text-muted">{h.sub}　／　{h.nearest}</p>
         <a href={reserveHref} class={`inline-block bg-accent px-6 py-3 text-center text-sm font-bold text-accentInk ${r.btn}`}>
