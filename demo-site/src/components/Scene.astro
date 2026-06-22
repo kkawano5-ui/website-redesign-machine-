@@ -10,7 +10,7 @@ const { shop, theme } = Astro.props;
 const r = radii(theme);
 ---
 
-<section class="reveal mx-auto max-w-content px-5 py-12 sm:py-16">
+<section class="mx-auto max-w-content px-5 py-12 sm:py-16">
   <p class="text-xs tracking-[0.3em] text-accent">SCENE</p>
   <h2 class="mt-2 font-heading text-2xl text-ink sm:text-3xl" style="letter-spacing:var(--tracking)">
     こんなシーンに
@@ -18,7 +18,7 @@ const r = radii(theme);
   <div class="mt-8 grid gap-4 sm:grid-cols-3">
     {
       shop.scenes.map((s) => (
-        <div class={`lift border border-line bg-surface p-5 ${r.card}`}>
+        <div class={`border border-line bg-surface p-5 ${r.card}`}>
           <p class="font-heading text-base text-accent">{s.label}</p>
           <p class="mt-2 text-sm leading-relaxed text-muted">{s.body}</p>
         </div>

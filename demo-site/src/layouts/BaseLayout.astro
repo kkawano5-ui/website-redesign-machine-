@@ -46,35 +46,8 @@ const og = new URL(resolveOgpSrc(shop.assetCategory, shop.mood), Astro.site ?? '
     <meta name="twitter:image" content={og} />
 
     <style set:html={rootVars}></style>
-    <noscript><style>{`.reveal{opacity:1 !important;transform:none !important}`}</style></noscript>
   </head>
   <body class="font-body text-ink">
     <slot />
-    <script is:inline>
-      (function () {
-        var els = document.querySelectorAll('.reveal');
-        if (!els.length) return;
-        if (!('IntersectionObserver' in window)) {
-          els.forEach(function (e) {
-            e.classList.add('in');
-          });
-          return;
-        }
-        var io = new IntersectionObserver(
-          function (entries) {
-            entries.forEach(function (en) {
-              if (en.isIntersecting) {
-                en.target.classList.add('in');
-                io.unobserve(en.target);
-              }
-            });
-          },
-          { rootMargin: '0px 0px -10% 0px', threshold: 0.08 }
-        );
-        els.forEach(function (e) {
-          io.observe(e);
-        });
-      })();
-    </script>
   </body>
 </html>
