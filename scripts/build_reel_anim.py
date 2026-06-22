@@ -259,34 +259,107 @@ def render_cta_frame(scene, lt):
         frame.alpha_composite(l,(int(cx-en.width/2),int(end_y+116+34)))
     return frame
 
+def apply_alpha(img, f):
+    a = img.split()[3].point(lambda v: int(v * clamp(f))); img.putalpha(a); return img
+
+# sparks rising through the opening doorway
+SPARKS = [dict(x0=random.uniform(-0.5, 0.5), y=random.uniform(0, 1), v=random.uniform(0.18, 0.5),
+               sz=random.uniform(2, 6), ph=random.uniform(0, 6.28)) for _ in range(18)]
+
+def draw_intro_sparks(frame, lt, g, left, right):
+    if g <= 0.03 or g >= 0.985: return
+    gap = right - left
+    layer = Image.new("RGBA", (W, H), (0, 0, 0, 0)); d = ImageDraw.Draw(layer)
+    for s in SPARKS:
+        x = W/2 + s["x0"] * gap * 0.9 + 10*math.sin(2*lt + s["ph"])
+        y = H * (((s["y"] - s["v"]*lt) % 1.0))
+        r = s["sz"]
+        d.ellipse([x-r, y-r, x+r, y+r], fill=(255, 232, 180, int(210*g)))
+    layer = layer.filter(ImageFilter.GaussianBlur(2))
+    frame.alpha_composite(apply_alpha(layer, g))
+
+INTRO_DUR = 2.8
+
+def render_intro_frame(hero_base, lt, dur):
+    """Procedural 'double doors open to warm light' cinematic intro, settling on hero."""
+    g = 0.5 - 0.5*math.cos(math.pi * clamp((lt - 0.2)/(dur - 0.55)))   # 0..1 eased door opening
+    hb = ken_window(hero_base, "in", clamp(lt/(dur*1.6)))
+    hb = ImageEnhance.Brightness(hb).enhance(min(1.0, 0.16 + 0.95*g))
+    frame = hb.convert("RGBA")
+    gap_px = g * W
+    left = W/2 - gap_px/2; right = W/2 + gap_px/2
+    # warm light pouring from the doorway
+    glow = Image.new("RGBA", (W, H), (0, 0, 0, 0))
+    gw = max(24, gap_px*0.6 + 46)
+    ImageDraw.Draw(glow).ellipse([W/2-gw, -H*0.12, W/2+gw, H*1.12], fill=(255, 226, 170, int(160*g)))
+    frame.alpha_composite(glow.filter(ImageFilter.GaussianBlur(90)))
+    # light shafts
+    if g > 0.06:
+        rays = Image.new("RGBA", (W, H), (0, 0, 0, 0)); rd = ImageDraw.Draw(rays)
+        for k in range(-3, 4):
+            x2 = W/2 + math.sin(k*0.16) * H*1.3
+            rd.line([(W/2, H*0.32), (x2, H*1.25)], fill=(255, 236, 198, int(46*g)), width=10)
+        frame.alpha_composite(rays.filter(ImageFilter.GaussianBlur(22)))
+    # dark door panels parting
+    pan = Image.new("RGBA", (W, H), (0, 0, 0, 0)); pd = ImageDraw.Draw(pan)
+    pd.rectangle([0, 0, left, H], fill=(13, 9, 7, 255))
+    pd.rectangle([right, 0, W, H], fill=(13, 9, 7, 255))
+    frame.alpha_composite(pan)
+    # glowing seam at the revealing edges (fades as doors fully open)
+    seam = Image.new("RGBA", (W, H), (0, 0, 0, 0)); sd = ImageDraw.Draw(seam)
+    sd.line([(left, 0), (left, H)], fill=(255, 226, 170, 255), width=16)
+    sd.line([(right, 0), (right, H)], fill=(255, 226, 170, 255), width=16)
+    seam = seam.filter(ImageFilter.GaussianBlur(18))
+    frame.alpha_composite(apply_alpha(seam, 0.25 + 0.75*clamp(1 - g)))
+    draw_intro_sparks(frame, lt, g, left, right)
+    # bloom flash that peaks as doors swing wide, then clears to reveal hero
+    bloom = clamp((g - 0.5)/0.22) * clamp(1 - (g - 0.74)/0.26)
+    if bloom > 0.01:
+        frame.alpha_composite(Image.new("RGBA", (W, H), (255, 244, 222, int(205*bloom))))
+    return frame
+
 def main():
     print("Preparing scenes...")
     scenes = [build_scene(s) for s in FRAMES]
-    total_t = SCENE_DUR * len(scenes)
+    hero_base = scenes[0]["base"]
+    durs = [INTRO_DUR] + [SCENE_DUR]*len(scenes)
+    starts = [sum(durs[:i]) for i in range(len(durs))]
+    total_t = sum(durs)
     n = int(total_t * FPS)
     print(f"Rendering {n} frames ({total_t:.1f}s)...")
+    OUTFILE = os.path.join(OUT, "reel_tsumugi_rahakenya_intro.mp4")
     proc = subprocess.Popen([FFMPEG,"-y","-f","rawvideo","-pix_fmt","rgb24","-s",f"{W}x{H}",
         "-r",str(FPS),"-i","-","-an","-c:v","libx264","-crf","19","-preset","medium",
-        "-pix_fmt","yuv420p","-movflags","+faststart",
-        os.path.join(OUT,"reel_tsumugi_rahakenya_anim.mp4")], stdin=subprocess.PIPE)
+        "-pix_fmt","yuv420p","-movflags","+faststart", OUTFILE], stdin=subprocess.PIPE)
     flash_col = (255, 240, 214)
+
+    def render_at(ti):
+        # locate timeline slot (0 = intro, 1.. = scenes)
+        si = 0
+        for k in range(len(durs)):
+            if ti >= starts[k]: si = k
+        lt = ti - starts[si]
+        if si == 0:
+            return render_intro_frame(hero_base, lt, durs[0]), si, lt
+        sc = scenes[si-1]
+        fr = render_cta_frame(sc, lt) if sc.get("cta") else render_caption_frame(sc, lt)
+        return fr, si, lt
+
     for fi in range(n):
         t = fi / FPS
-        si = min(len(scenes)-1, int(t / SCENE_DUR)); lt = t - si*SCENE_DUR
-        sc = scenes[si]
-        frame = render_cta_frame(sc, lt) if sc.get("cta") else render_caption_frame(sc, lt)
-        # light-burst transition near scene boundary (out-going tail + in-coming head)
-        tail = SCENE_DUR - lt
+        frame, si, lt = render_at(t)
+        # light-burst transition near each scene boundary
+        tail = durs[si] - lt
         fa = 0.0
-        if si < len(scenes)-1 and tail < FLASH:        # outgoing half (rising)
+        if si < len(durs)-1 and tail < FLASH:           # outgoing (rising)
             fa = (1 - tail/FLASH) ** 2
-        if si > 0 and lt < FLASH:                       # incoming half (falling)
+        if si > 0 and lt < FLASH:                        # incoming (falling)
             fa = max(fa, (1 - lt/FLASH) ** 2)
         if fa > 0.01:
-            fl = Image.new("RGBA",(W,H),flash_col+(int(205*clamp(fa)),)); frame.alpha_composite(fl)
-        # global fade in/out
+            frame.alpha_composite(Image.new("RGBA",(W,H),flash_col+(int(205*clamp(fa)),)))
+        # global fade in (short; intro is already dark) + fade out
         g = 1.0
-        if t < 0.5: g = t/0.5
+        if t < 0.25: g = t/0.25
         if t > total_t-0.8: g = max(0.0,(total_t-t)/0.8)
         rgb = frame.convert("RGB")
         if g < 0.999:
@@ -294,11 +367,10 @@ def main():
         proc.stdin.write(rgb.tobytes())
         if fi % 60 == 0: print(f"  {fi}/{n}")
     proc.stdin.close(); proc.wait()
-    # debug stills mid-reveal
-    for (si, lt, name) in [(1,1.0,"reveal_a"),(1,1.55,"reveal_b"),(5,1.6,"emph"),(6,1.4,"cta")]:
-        sc=scenes[si]; fr = render_cta_frame(sc,lt) if sc.get("cta") else render_caption_frame(sc,lt)
-        fr.convert("RGB").save(os.path.join(DBG,f"{name}.png"))
-    print("DONE:", os.path.join(OUT,"reel_tsumugi_rahakenya_anim.mp4"))
+    # debug stills
+    for (ti, name) in [(0.7,"intro_a"),(1.5,"intro_b"),(2.3,"intro_c")]:
+        render_at(ti)[0].convert("RGB").save(os.path.join(DBG,f"{name}.png"))
+    print("DONE:", OUTFILE, f"(~{total_t:.1f}s)")
 
 if __name__ == "__main__":
     main()
