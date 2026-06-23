@@ -37,6 +37,7 @@ export interface NumberStat {
   label?: string;       // small label above (e.g. フォロワー)
   value: number;        // count-up target
   suffix: string;       // unit (万人 / 万回再生 / 本以上)
+  decimals?: number;    // decimal places for the count-up (e.g. 1 -> 5.5)
 }
 
 export interface Scene {

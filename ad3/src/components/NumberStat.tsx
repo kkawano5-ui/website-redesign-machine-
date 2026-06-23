@@ -13,7 +13,9 @@ export const NumberStatView: React.FC<{ s: NumberStat; onDark: boolean }> = ({ s
   if (time < 0) return null;
 
   const p = clamp(time / 0.85);
-  const val = Math.round(s.value * easeOutCubic(p));
+  const dec = s.decimals ?? 0;
+  const raw = s.value * easeOutCubic(p);
+  const val = dec > 0 ? raw.toFixed(dec) : Math.round(raw).toLocaleString();
   const opacity = clamp(time / 0.3);
   // bounce just after count completes
   const b = time > 0.85 && time < 1.25 ? 1 + 0.07 * Math.sin(((time - 0.85) / 0.4) * Math.PI) : 1;
@@ -46,7 +48,7 @@ export const NumberStatView: React.FC<{ s: NumberStat; onDark: boolean }> = ({ s
             textShadow: "0 6px 24px rgba(0,0,0,0.25)",
           }}
         >
-          {val.toLocaleString()}
+          {val}
         </span>
         <span style={{ fontFamily, fontWeight: 800, fontSize: 74, color: affix }}>{s.suffix}</span>
       </div>
