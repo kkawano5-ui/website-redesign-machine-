@@ -4,8 +4,8 @@
   "wav_duration": 43.05,
   "video_frames_in": 1290,
   "video_frames_out": 1290,
-  "video_stream_md5_in": "c0cba1e42464b148077b1bc8fae63a98",
-  "video_stream_md5_out": "c0cba1e42464b148077b1bc8fae63a98",
+  "video_stream_md5_in": "cd1d6475b089b05da9904b5b4f4663a7",
+  "video_stream_md5_out": "cd1d6475b089b05da9904b5b4f4663a7",
   "video_identical": true,
   "tts_speed": 1.435,
   "raw_speech_len": 42.393,
@@ -69,63 +69,81 @@
   ],
   "key_sync": [
     {
-      "key": "十八万人",
+      "key": "広告費0円テロップ",
       "target": [
-        17.2,
-        18.5
+        13.7,
+        15.5
       ],
       "sentence_start": 13.868,
       "sentence_end": 19.222
     },
     {
-      "key": "五点五倍",
+      "key": "18万人 数字",
       "target": [
-        19.7,
-        21.0
+        15.8,
+        17.5
       ],
       "sentence_start": 13.868,
       "sentence_end": 19.222
     },
     {
-      "key": "二百名",
+      "key": "5.5倍 数字",
       "target": [
-        21.8,
-        23.2
+        18.0,
+        19.5
+      ],
+      "sentence_start": 13.868,
+      "sentence_end": 19.222
+    },
+    {
+      "key": "200名 数字",
+      "target": [
+        20.0,
+        21.7
       ],
       "sentence_start": 19.422,
       "sentence_end": 22.313
     },
     {
-      "key": "人が見える発信",
+      "key": "“資産”になるテロップ",
       "target": [
-        26.3,
-        28.2
+        23.7,
+        25.6
+      ],
+      "sentence_start": 22.563,
+      "sentence_end": 25.566
+    },
+    {
+      "key": "人 (大) テロップ",
+      "target": [
+        27.2,
+        29.6
       ],
       "sentence_start": 25.966,
       "sentence_end": 29.615
     },
     {
-      "key": "SNSで調べる時代",
+      "key": "会社を調べる時代",
       "target": [
-        30.0,
-        31.8
+        33.0,
+        35.0
       ],
       "sentence_start": 29.865,
       "sentence_end": 35.003
     },
     {
-      "key": "無料の相談会",
+      "key": "無料相談会テロップ",
       "target": [
-        34.0,
-        35.7
+        36.2,
+        38.6
       ],
       "sentence_start": 35.353,
       "sentence_end": 38.7
     },
     {
-      "key": "プロフィールトップ",
+      "key": "CTA表示開始",
       "target": [
-        40.5,
+        40.0,
         41.8
       ],
       "sentence_start": 39.0,
@@ -134,7 +152,7 @@
     {
       "key": "最後のチェック",
       "target": [
-        42.15,
+        41.5,
         42.6
       ],
       "sentence_start": 39.0,
