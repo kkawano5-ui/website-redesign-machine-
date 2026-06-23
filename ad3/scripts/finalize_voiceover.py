@@ -133,7 +133,7 @@ rep = f"""# KATALYS v2 ナレーション付き — ビルドレポート
 
 ## 音声
 - 48kHz / AAC 192k / ステレオ(センター) / loudnorm I=-16 LUFS, TP=-1.5 dBTP / 冒頭末尾フェード
-- TTS: Kokoro 日本語女性(jf_alpha), speed={timing.get('speed')}（実測ベース自動調整, raw={timing.get('raw_len')}s）
+- TTS: {timing.get('voice', 'unknown')}, speed={timing.get('speed')}（実測ベース自動調整, raw={timing.get('raw_len')}s）
 - BGM/効果音/リバーブ無し、ピッチ変更無し、asetrate不使用
 
 ## 重要語の同期（参考: 文単位の実測 vs 目標窓）
