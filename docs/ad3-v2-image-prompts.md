@@ -31,21 +31,26 @@ no logo, no watermark.
 
 ## 1. シーン別プロンプト（新規4枚）
 
-### S1 — 毎月いくら払ってる？（コスト流出）　`v2_s1.png`
+### S1 — 毎月いくら払ってる？（継続コスト：請求書＋カレンダー）　`v2_s1.png`
+> ※S2と見た目を明確に分けるため「請求書の山＋カレンダー＝毎月の出費」に変更。
 ```
-[共通][人物] A Japanese small-business owner sitting at a desk looking worried, while coins
-and bills flow out of his hands and drift away toward two abstract icons floating at the
-side: a megaphone (advertising) and a magnifier-with-a-person (recruiting). The money is
-clearly leaving him. Clean flat 2D B2B, white and pale blue, the outgoing money tinted a
-small warm orange, large empty space in the upper third. No text, no numbers.
+[共通] A Japanese small-business owner at a desk looking concerned at a GROWING STACK OF
+MONTHLY BILLS AND INVOICES, with a wall calendar beside him where coins drop out on repeated
+dates (a recurring monthly payment). Two abstract channels float to the side — a megaphone
+(ads) and a magnifier-with-a-person (recruiting) — quietly consuming the money. The
+composition emphasizes a repeating monthly cost. White and pale blue, small warm orange
+accent on the coins, large empty space in the upper third. No text, no numbers.
 ```
 
-### S2 — 止めたら消える / 何も残らない　`v2_s2.png`
+### S2 — 止めたら消える / 何も残らない（スイッチOFFで霧散・人物なし）　`v2_s2.png`
+> ※S1と差別化：机の人物ナシ、スイッチで消える別メタファー。
 ```
-[共通] A minimal, slightly melancholic scene: coins and paper bills dissolving into small
-particles and vanishing into the air above an open, empty hand — money that disappears and
-leaves nothing behind. Pale blue background, flat 2D, a tiny orange accent on the dissolving
-money, lots of empty space in the upper third. No text, no numbers.
+[共通] A conceptual scene with NO desk and NO person: a glowing balloon-like "paid ads /
+recruiting" bubble is switched off by a power toggle and DEFLATES, scattering into particles
+that fade into nothing, leaving an empty open hand and an empty box below — when you stop
+paying, it disappears and nothing remains. Pale blue background, a tiny orange accent on the
+vanishing bubble, lots of empty space in the upper third, minimal and slightly melancholic.
+No text, no numbers.
 ```
 
 ### S3 — 同じ会社でも"ある状態"で選ばれ方が変わる（2社対比）　`v2_s3.png`
