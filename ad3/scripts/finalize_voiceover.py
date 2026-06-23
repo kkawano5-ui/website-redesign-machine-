@@ -9,8 +9,11 @@ import numpy as np, soundfile as sf
 import imageio_ffmpeg
 FF = imageio_ffmpeg.get_ffmpeg_exe()
 
-REPO = "/home/user/website-redesign-machine-"
+REPO = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+# prefer freshly rendered output, fall back to the committed preview (fresh sessions)
 VIDEO = f"{REPO}/ad3/out/katalys-ad3-v2.mp4"
+if not os.path.exists(VIDEO):
+    VIDEO = f"{REPO}/ad3/preview/katalys-ad3-v2.mp4"
 OUT = f"{REPO}/output"; os.makedirs(OUT, exist_ok=True)
 DUR = 43.050667
 MP4 = f"{OUT}/katalysad3v2_voiceover_43sec.mp4"
