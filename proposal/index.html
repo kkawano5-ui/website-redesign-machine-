@@ -10,7 +10,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+JP:wght@400;500;700&family=Noto+Serif+JP:wght@500;600;700&display=swap" rel="stylesheet"/>
 <style>
 :root{
-  --ink:#15171c; --ink-soft:#3a3f4a; --sub:#6b7280; --faint:#9aa0ab;
+  --ink:#15171c; --ink-soft:#3a3f4a; --sub:#6b7280; --faint:#767c87;
   --line:#e7e3da; --line2:#efece5;
   --paper:#faf8f4; --paper2:#f3f0e9; --white:#ffffff;
   --accent:#1d3b6e; --accent-2:#3866c4; --accent-soft:#eef1f8;
@@ -40,7 +40,7 @@ body{font-family:var(--sans);color:var(--ink);background:#0c0d10;-webkit-font-sm
 .kicker::before{content:"";width:26px;height:2px;background:var(--accent-2);display:inline-block}
 .dark .kicker,.ink .kicker{color:#9fc0ff}
 .dark .kicker::before,.ink .kicker::before{background:#9fc0ff}
-h1.title{font-family:var(--serif);font-weight:600;font-size:38px;line-height:1.3;letter-spacing:.01em;margin-top:16px}
+h1.title{font-family:var(--serif);font-weight:600;font-size:38px;line-height:1.3;letter-spacing:.01em;margin-top:16px;text-wrap:pretty}
 h1.title.lg{font-size:44px}
 .lead{font-size:17.5px;line-height:1.85;color:var(--ink-soft);max-width:64ch}
 .dark .lead,.ink .lead{color:#cfdcf2}
@@ -75,7 +75,7 @@ h1.title.lg{font-size:44px}
 /* grids / cards */
 .grid{display:grid;gap:20px}.g3{grid-template-columns:repeat(3,1fr)}.g2{grid-template-columns:repeat(2,1fr)}
 .stat{border:1px solid var(--line);border-radius:14px;padding:24px 22px;background:var(--white)}
-.stat .n{font-family:"Inter";font-weight:700;font-size:46px;line-height:1;color:var(--accent);letter-spacing:-.02em}
+.stat .n{font-family:"Inter",var(--sans);font-weight:700;font-size:46px;line-height:1;color:var(--accent);letter-spacing:-.02em}
 .stat .n small{font-size:19px;font-weight:600;color:var(--accent-2);margin-left:3px}
 .stat .l{margin-top:10px;font-size:13.5px;color:var(--sub);line-height:1.6}
 
@@ -85,7 +85,7 @@ h1.title.lg{font-size:44px}
 .case .ba{display:flex;align-items:baseline;gap:11px;margin-top:4px}
 .case .from{font-size:22px;color:var(--faint);text-decoration:line-through;text-decoration-color:var(--line);font-family:"Inter"}
 .case .arr{color:var(--accent-2);font-size:18px}
-.case .to{font-size:40px;font-weight:700;color:var(--accent);letter-spacing:-.02em;font-family:"Inter"}
+.case .to{font-size:40px;font-weight:700;color:var(--accent);letter-spacing:-.02em;font-family:"Inter",var(--sans)}
 .delta{display:inline-block;font-size:12px;font-weight:600;color:var(--signal);background:var(--signal-soft);
   padding:3px 10px;border-radius:999px;align-self:flex-start}
 .case .desc{font-size:12.5px;color:var(--sub);line-height:1.65}
@@ -103,7 +103,7 @@ h1.title.lg{font-size:44px}
 /* pillars */
 .pillars{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;flex:1;align-content:center}
 .pillar{border:1px solid var(--line);border-radius:14px;padding:26px 24px;background:var(--white);display:flex;flex-direction:column}
-.pillar .pn{font-family:"Inter";font-weight:700;font-size:15px;color:#fff;background:var(--accent);width:34px;height:34px;
+.pillar .pn{font-family:"Inter",var(--sans);font-weight:700;font-size:15px;color:#fff;background:var(--accent);width:34px;height:34px;
   border-radius:9px;display:flex;align-items:center;justify-content:center}
 .pillar h3{font-size:18px;font-weight:700;margin-top:18px;line-height:1.45}
 .pillar p{font-size:13.5px;color:var(--sub);line-height:1.7;margin-top:10px}
@@ -113,7 +113,7 @@ h1.title.lg{font-size:44px}
 .step{position:relative;padding:0 20px}
 .step:not(:last-child)::after{content:"";position:absolute;top:13px;left:46px;width:calc(100% - 24px);height:2px;background:var(--line)}
 .step .dot{width:28px;height:28px;border-radius:50%;background:var(--accent);color:#fff;display:flex;align-items:center;
-  justify-content:center;font-size:13px;font-weight:700;font-family:"Inter";position:relative;z-index:1}
+  justify-content:center;font-size:13px;font-weight:700;font-family:"Inter",var(--sans);position:relative;z-index:1}
 .step .st{margin-top:14px;font-weight:700;font-size:15px}
 .step .sd{margin-top:6px;font-size:12.5px;color:var(--sub);line-height:1.6}
 .step .sm{margin-top:8px;font-size:11px;color:var(--accent-2);font-weight:600;letter-spacing:.03em}
@@ -123,7 +123,7 @@ h1.title.lg{font-size:44px}
 .price .col{flex:1;padding:28px 30px}.price .col+ .col{border-left:1px solid var(--line)}
 .price .col.hl{background:var(--accent);color:#fff}
 .price .lab{font-size:12.5px;color:var(--sub);letter-spacing:.03em}.price .col.hl .lab{color:#bcd0f5}
-.price .big{font-family:"Inter";font-weight:700;font-size:40px;letter-spacing:-.02em;margin-top:10px}
+.price .big{font-family:"Inter",var(--sans);font-weight:700;font-size:40px;letter-spacing:-.02em;margin-top:10px}
 .price .big .u{font-size:15px;font-weight:600;color:var(--sub)}.price .col.hl .big .u{color:#bcd0f5}
 .price .note{font-size:12px;color:var(--sub);margin-top:12px;line-height:1.65}.price .col.hl .note{color:#cfdcf2}
 
@@ -136,7 +136,7 @@ h1.title.lg{font-size:44px}
 .check b{font-weight:700}
 .agenda{display:grid;gap:0;margin-top:8px}
 .ag{display:flex;gap:18px;align-items:baseline;padding:15px 0;border-bottom:1px solid var(--line)}
-.ag .agn{font-family:"Inter";font-weight:700;font-size:15px;color:var(--accent-2);width:30px}
+.ag .agn{font-family:"Inter",var(--sans);font-weight:700;font-size:15px;color:var(--accent-2);width:30px}
 .ag .agt{font-size:16.5px;font-weight:700}.ag .agd{font-size:13.5px;color:var(--sub);margin-left:auto;max-width:48ch;text-align:right;line-height:1.55}
 
 .pillrow{display:flex;gap:9px;flex-wrap:wrap;margin-top:10px}
@@ -147,7 +147,7 @@ h1.title.lg{font-size:44px}
 .strip{display:grid;grid-template-columns:repeat(4,1fr);gap:0;border-top:1px solid var(--line);border-bottom:1px solid var(--line);margin-top:4px}
 .strip .s{padding:22px 18px;border-right:1px solid var(--line2)}
 .strip .s:last-child{border-right:0}
-.strip .sn{font-family:"Inter";font-weight:700;font-size:34px;color:var(--accent);letter-spacing:-.02em}
+.strip .sn{font-family:"Inter",var(--sans);font-weight:700;font-size:34px;color:var(--accent);letter-spacing:-.02em}
 .strip .sn small{font-size:15px;color:var(--accent-2);margin-left:2px}
 .strip .sl{font-size:12px;color:var(--sub);margin-top:6px;line-height:1.5}
 
@@ -163,7 +163,7 @@ h1.title.lg{font-size:44px}
 .pain{display:grid;grid-template-columns:1fr 1fr;gap:14px 40px;margin-top:8px}
 .pi{display:flex;gap:13px;align-items:baseline;padding:12px 0;border-bottom:1px solid var(--line2)}
 .pi .pt{font-size:15.5px;font-weight:500}
-.pi .ph{font-family:"Inter";font-weight:700;font-size:15px;color:var(--signal);margin-left:auto;white-space:nowrap}
+.pi .ph{font-family:"Inter",var(--sans);font-weight:700;font-size:15px;color:var(--signal);margin-left:auto;white-space:nowrap}
 
 /* next-action board */
 .board{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:6px}
@@ -187,7 +187,7 @@ h1.title.lg{font-size:44px}
 
 /* chrome */
 #prog{position:fixed;left:0;top:0;height:3px;background:var(--accent-2);width:0;z-index:50;transition:width .3s}
-#counter{position:fixed;right:18px;bottom:13px;font-size:11.5px;color:rgba(255,255,255,.55);font-family:"Inter";z-index:50;letter-spacing:.08em}
+#counter{position:fixed;right:18px;bottom:13px;font-size:11.5px;color:rgba(255,255,255,.55);font-family:"Inter",var(--sans);z-index:50;letter-spacing:.08em}
 #hint{position:fixed;left:50%;transform:translateX(-50%);bottom:13px;font-size:11px;color:rgba(255,255,255,.42);z-index:50;
   letter-spacing:.04em;transition:opacity .6s ease;pointer-events:none}
 #hint.hide{opacity:0}
@@ -199,7 +199,7 @@ h1.title.lg{font-size:44px}
   body{display:block;background:#fff;overflow:visible}
   #viewport{display:block;width:auto;height:auto}
   #stage{transform:none!important;width:var(--w);height:auto}
-  .slide{position:relative;opacity:1!important;visibility:visible!important;box-shadow:none;page-break-after:always;break-after:page}
+  .slide{position:relative;height:720px;overflow:hidden;opacity:1!important;visibility:visible!important;box-shadow:none;page-break-after:always;break-after:page;break-inside:avoid;page-break-inside:avoid}
   #prog,#counter,#hint{display:none}
   @page{size:1280px 720px;margin:0}
 }
@@ -318,7 +318,7 @@ h1.title.lg{font-size:44px}
   <div class="cols l">
     <div><p class="quote">売るのは“研修”ではなく、<br><span class="em">業務が変わった状態</span>。</p></div>
     <div>
-      <p class="lead">「AIの使い方を教える研修」なら、世の中にたくさんあります。私たちが大切にしているのは、研修が終わった後に <b style="color:#fff">“さっきの◯◯業務が、実際に変わっている”</b> ところまで持っていくこと。</p>
+      <p class="lead">「AIの使い方を教える研修」なら、世の中にたくさんあります。私たちが大切にしているのは、研修が終わった後に <b style="color:#fff">「さっき挙げた業務が、実際に変わっている」</b> ところまで持っていくこと。</p>
       <p class="lead mt20" style="color:#9fc0ff">だから研修の題材も、汎用サンプルではなく <b style="color:#fff">御社の実業務そのもの</b>（個人情報はマスキング）を使います。</p>
     </div>
   </div>
@@ -414,7 +414,7 @@ h1.title.lg{font-size:44px}
       <span class="desc">属人化していた作成を仕組み化。修学旅行のメニュー案作成も10h→6hに。</span>
     </div>
   </div>
-  <p class="lead" style="font-size:13.5px;color:var(--faint)">※ いずれも受講後アンケート・実測値。業種・規模の近い実例をご用意できます。</p>
+  <p class="lead" style="font-size:13.5px;color:var(--sub);margin-top:14px">※ いずれも受講後アンケート・実測値。業種・規模の近い実例をご用意できます。</p>
 </section>
 
 <!-- 14 CURRICULUM -->
@@ -438,7 +438,7 @@ h1.title.lg{font-size:44px}
 <!-- 15 PROCESS -->
 <section class="slide" data-sec="進め方">
   <div class="kicker">導入の進め方</div>
-  <h1 class="title">研修して終わり、ではなく約半年の“伴走プロジェクト”。</h1>
+  <h1 class="title">お渡しして終わりにしない、約半年の“伴走プロジェクト”。</h1>
   <div class="steps mt26">
     <div class="step"><div class="dot fnum">1</div><div class="st">事前ヒアリング</div><div class="sd">御社の業務・課題を把握し、効く領域を見立てる。</div><div class="sm">研修とは別枠</div></div>
     <div class="step"><div class="dot fnum">2</div><div class="st">専用カリキュラム作成</div><div class="sd">御社の実業務を題材に、内容を設計・合意。</div><div class="sm">オーダーメイド</div></div>
@@ -469,6 +469,7 @@ h1.title.lg{font-size:44px}
       <p style="font-size:12.5px;color:var(--sub);margin-top:14px;line-height:1.7">準備〜受給まで全体で約半年。だからこそ、検討は早いほど有利です。</p>
     </div>
   </div>
+  <p class="lead" style="font-size:11px;color:var(--sub);margin-top:16px">※ 上限額・助成率は企業区分・年度・申請内容により変動します。最新の支給要領をご確認ください。</p>
 </section>
 
 <!-- 17 WHY NOW -->
@@ -525,11 +526,11 @@ h1.title.lg{font-size:44px}
   <h1 class="title">まず、御社の“一番効きそうな業務”で<br>ROIを一緒に試算してみませんか。</h1>
   <div class="board mt20">
     <div class="bx"><div class="bl">最初に取り組む業務</div><div class="bv">例：議事録／安全書類／月次レポート／提案資料 … <span class="blank"></span></div></div>
-    <div class="bx"><div class="bl">対象人数・部署</div><div class="bv">雇用保険加入者 <span class="blank" style="min-width:60px"></span> 名 ／ 経営者 <span class="blank" style="min-width:40px"></span> 名</div></div>
-    <div class="bx"><div class="bl">実施したい時期</div><div class="bv"><span class="blank"></span> 頃から（助成金は2027年3月末まで）</div></div>
-    <div class="bx"><div class="bl">次回までに決めること・期日</div><div class="bv"><span class="blank" style="min-width:240px"></span></div></div>
+    <div class="bx"><div class="bl">対象人数（雇用保険加入者／経営者）</div><div class="bv">加入者 <span class="blank" style="min-width:54px"></span> 名 ／ 経営者 <span class="blank" style="min-width:40px"></span> 名</div></div>
+    <div class="bx"><div class="bl">ご一緒いただきたい方（決裁者・関係部署）と次回日程</div><div class="bv"><span class="blank" style="min-width:200px"></span></div></div>
+    <div class="bx"><div class="bl">実施したい時期／次回までに決めること</div><div class="bv"><span class="blank" style="min-width:100px"></span> 頃〜（助成金は2027年3月末まで）</div></div>
   </div>
-  <p class="lead mt20" style="font-size:15px">次回は、御社の具体業務でROI試算を一緒に作り、進めるかどうかを判断いただけます。社内説明用の資料もご用意します。</p>
+  <p class="lead mt20" style="font-size:15px">次回は、御社の具体業務でROI試算を一緒に作り、<b class="accent">決裁者の方にもご同席いただいて</b>、進めるかどうかを判断いただけます。社内稟議用の1枚資料もご用意します。</p>
 </section>
 
 <!-- 21 CONTACT / CLOSING -->
