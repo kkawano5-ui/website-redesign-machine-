@@ -1,0 +1,23 @@
+{
+  "name": "katalys-ad3",
+  "version": "1.0.0",
+  "private": true,
+  "description": "KATALYS 縦型広告(3本目) — Remotion実装。画像はChatGPT/gpt-imageで生成し public/ad3/assets/ に配置。テロップ・数字・CTA・遷移はコード側。",
+  "scripts": {
+    "studio": "remotion studio src/index.ts",
+    "render": "remotion render src/index.ts Ad3 out/katalys-ad3.mp4 --codec=h264",
+    "still": "remotion still src/index.ts Ad3 out/frame.png --frame=60"
+  },
+  "dependencies": {
+    "@remotion/cli": "4.0.347",
+    "@remotion/fonts": "^4.0.347",
+    "@remotion/google-fonts": "4.0.347",
+    "react": "18.3.1",
+    "react-dom": "18.3.1",
+    "remotion": "4.0.347"
+  },
+  "devDependencies": {
+    "@types/react": "18.3.12",
+    "typescript": "5.6.3"
+  }
+}

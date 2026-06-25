@@ -1,0 +1,162 @@
+{
+  "final_duration_target": 43.050667,
+  "final_mp4_duration": 43.05,
+  "wav_duration": 43.05,
+  "video_frames_in": 1290,
+  "video_frames_out": 1290,
+  "video_stream_md5_in": "cd1d6475b089b05da9904b5b4f4663a7",
+  "video_stream_md5_out": "cd1d6475b089b05da9904b5b4f4663a7",
+  "video_identical": true,
+  "tts_speed": 1.435,
+  "raw_speech_len": 42.393,
+  "last_word_end": 42.473,
+  "segments": [
+    {
+      "text": "毎月、広告と求人にいくら払っていますか？",
+      "start": 0.08,
+      "end": 3.5
+    },
+    {
+      "text": "そのお金、本当に意味があるといえますか？",
+      "start": 3.8,
+      "end": 6.89
+    },
+    {
+      "text": "広告も求人媒体も、止めたら消えます。",
+      "start": 7.14,
+      "end": 10.063
+    },
+    {
+      "text": "毎月払い続けて、手元には何も残らない。",
+      "start": 10.213,
+      "end": 13.268
+    },
+    {
+      "text": "広告費ぜろえんで、フォロワーをじゅうはちまんにんまで増やし、集客はごてんごばい。",
+      "start": 13.868,
+      "end": 19.222
+    },
+    {
+      "text": "お金をかけずに、にひゃくめいの応募がきました。",
+      "start": 19.422,
+      "end": 22.313
+    },
+    {
+      "text": "エスエヌエスは、続けるほど、資産となります。",
+      "start": 22.563,
+      "end": 25.566
+    },
+    {
+      "text": "社長やスタッフの、人が見える発信を続けただけ。",
+      "start": 25.966,
+      "end": 29.615
+    },
+    {
+      "text": "お客さまも、これから働く人も、まず会社をエスエヌエスで調べる時代です。",
+      "start": 29.865,
+      "end": 35.003
+    },
+    {
+      "text": "その始め方を、無料の相談会でお話ししています。",
+      "start": 35.353,
+      "end": 38.7
+    },
+    {
+      "text": "少しでも気になったら、プロフィールトップのリンクからチェック。",
+      "start": 39.0,
+      "end": 42.473
+    }
+  ],
+  "key_sync": [
+    {
+      "key": "広告費0円テロップ",
+      "target": [
+        13.7,
+        15.5
+      ],
+      "sentence_start": 13.868,
+      "sentence_end": 19.222
+    },
+    {
+      "key": "18万人 数字",
+      "target": [
+        15.8,
+        17.5
+      ],
+      "sentence_start": 13.868,
+      "sentence_end": 19.222
+    },
+    {
+      "key": "5.5倍 数字",
+      "target": [
+        18.0,
+        19.5
+      ],
+      "sentence_start": 13.868,
+      "sentence_end": 19.222
+    },
+    {
+      "key": "200名 数字",
+      "target": [
+        20.0,
+        21.7
+      ],
+      "sentence_start": 19.422,
+      "sentence_end": 22.313
+    },
+    {
+      "key": "“資産”になるテロップ",
+      "target": [
+        23.7,
+        25.6
+      ],
+      "sentence_start": 22.563,
+      "sentence_end": 25.566
+    },
+    {
+      "key": "人 (大) テロップ",
+      "target": [
+        27.2,
+        29.6
+      ],
+      "sentence_start": 25.966,
+      "sentence_end": 29.615
+    },
+    {
+      "key": "会社を調べる時代",
+      "target": [
+        33.0,
+        35.0
+      ],
+      "sentence_start": 29.865,
+      "sentence_end": 35.003
+    },
+    {
+      "key": "無料相談会テロップ",
+      "target": [
+        36.2,
+        38.6
+      ],
+      "sentence_start": 35.353,
+      "sentence_end": 38.7
+    },
+    {
+      "key": "CTA表示開始",
+      "target": [
+        40.0,
+        41.8
+      ],
+      "sentence_start": 39.0,
+      "sentence_end": 42.473
+    },
+    {
+      "key": "最後のチェック",
+      "target": [
+        41.5,
+        42.6
+      ],
+      "sentence_start": 39.0,
+      "sentence_end": 42.473
+    }
+  ]
+}
