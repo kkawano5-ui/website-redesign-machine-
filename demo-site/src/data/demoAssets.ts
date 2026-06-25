@@ -118,7 +118,7 @@ const ALT: Record<AssetCategory, Partial<Record<AssetRole, string>>> = {
 
 // 業態ごとに用意する素材スロット数（店舗から提供される想定の枚数）
 const SPEC: Record<AssetCategory, Partial<Record<AssetRole, number>>> = {
-  yakiniku: { hero: 5, menu: 12, detail: 6, interior: 4, video: 3, ogp: 2 },
+  yakiniku: { hero: 5, menu: 12, atmosphere: 6, detail: 6, interior: 4, video: 3, ogp: 2 },
   kissaten: { hero: 5, menu: 10, detail: 6, interior: 5, ogp: 2 },
   cafe: { hero: 5, menu: 10, interior: 5, detail: 5, ogp: 2 },
   izakaya: { hero: 5, menu: 12, interior: 5, detail: 5, ogp: 2 },
@@ -130,15 +130,25 @@ const SPEC: Record<AssetCategory, Partial<Record<AssetRole, number>>> = {
 
 const pad = (n: number) => String(n).padStart(2, '0');
 
-// SPEC から manifest を生成（実ファイルは未配置のため approved:false）。
+// 実際に public/demo-assets/{category}/{role}/{role}-NN.png として配置・承認済みの枚数。
+// ここに登録された role の 1..N 枚目だけ approved:true（拡張子 .png）になる。
+// 残りのスロットは approved:false のまま（ランダム画像ではなくデザイン差し替え枠を表示）。
+// 追加で生成・配置したら、この件数を増やすだけで表示に反映される。
+const APPROVED_PNG: Partial<Record<AssetCategory, Partial<Record<AssetRole, number>>>> = {
+  yakiniku: { hero: 1, menu: 5, atmosphere: 3, detail: 4, interior: 2, ogp: 1 }
+};
+
+// SPEC から manifest を生成。APPROVED_PNG に登録済みの枚数だけ approved:true / .png。
 function buildManifest(): DemoAsset[] {
   const out: DemoAsset[] = [];
   (Object.keys(SPEC) as AssetCategory[]).forEach((category) => {
     const roles = SPEC[category];
     (Object.keys(roles) as AssetRole[]).forEach((role) => {
       const count = roles[role] ?? 0;
-      const ext = role === 'video' ? 'mp4' : 'jpg';
+      const approvedCount = APPROVED_PNG[category]?.[role] ?? 0;
       for (let i = 1; i <= count; i++) {
+        const isApproved = i <= approvedCount;
+        const ext = role === 'video' ? 'mp4' : isApproved ? 'png' : 'jpg';
         out.push({
           id: `${category}-${role}-${pad(i)}`,
           category,
@@ -147,9 +157,9 @@ function buildManifest(): DemoAsset[] {
           alt: ALT[category][role] ?? `${category}の${role}イメージ`,
           mood: CATEGORY_MOOD[category],
           suitableFor: [category],
-          // 本物のキュレーション写真を配置したら true に切り替える
-          approved: false,
-          note: '店舗提供写真へ差し替え予定のスロット'
+          // 承認済み（実ファイル配置済み）なら true。残りは差し替え枠。
+          approved: isApproved,
+          note: isApproved ? '生成サンプル写真（本番は店舗提供写真へ差し替え）' : '店舗提供写真へ差し替え予定のスロット'
         });
       }
     });
