@@ -113,7 +113,7 @@ export const SceneView: React.FC<{ scene: Scene }> = ({ scene }) => {
         )}
 
         {/* CTA */}
-        {scene.cta && <Cta line1={scene.cta.line1} line2={scene.cta.line2} delay={1.2} />}
+        {scene.cta && <Cta line1={scene.cta.line1} line2={scene.cta.line2} delay={0.4} />}
       </AbsoluteFill>
     </AbsoluteFill>
   );
