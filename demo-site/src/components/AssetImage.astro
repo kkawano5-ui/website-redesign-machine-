@@ -32,7 +32,14 @@ const asset = pickAsset(category, role, index, mood);
 {
   asset ? (
     <figure class={`frame ${ratio} ${rounded} ${klass}`}>
-      <img src={asset.src} alt={asset.alt} loading="lazy" decoding="async" />
+      <span class="ph" />
+      <img
+        src={asset.src}
+        alt={asset.alt}
+        loading="lazy"
+        decoding="async"
+        onerror="this.remove()"
+      />
     </figure>
   ) : (
     <ReplacementFrame ratio={ratio} rounded={rounded} class={klass} label={label} />
