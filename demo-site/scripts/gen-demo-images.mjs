@@ -27,14 +27,22 @@ const JP = 'Authentic small Japanese local restaurant, realistic photo, natural 
 const SPEC = {
   yakiniku: [
     ['hero', 1, '1536x1024', `Close-up of premium marbled wagyu beef grilling over glowing charcoal on a metal grill at a cozy Japanese yakiniku restaurant, smoke rising, glistening juicy meat, warm dark moody ambiance. ${JP} ${NEG}`],
+    // menu 01-05 は大同門の品書き順に対応（特選カルビ / 本日の希少部位 / 上タン塩 / 大同門ハラミ / 〆の冷麺）
     ['menu', 1, '1024x1024', `A plate of fresh raw premium wagyu karubi short rib slices, beautifully marbled, dark slate background, yakiniku restaurant. ${JP} ${NEG}`],
-    ['menu', 2, '1024x1024', `Sliced beef harami skirt steak on a plate with house tare sauce, yakiniku restaurant, dark background. ${JP} ${NEG}`],
+    ['menu', 2, '1024x1024', `Assorted premium yakiniku beef cuts platter, several marbled rare cuts arranged neatly on a plate, dark slate background. ${JP} ${NEG}`],
     ['menu', 3, '1024x1024', `Thick-cut beef tongue (gyutan) slices on a plate with lemon and salt, yakiniku restaurant, dark background. ${JP} ${NEG}`],
-    ['menu', 4, '1024x1024', `Assorted premium yakiniku beef cuts platter, marbled meat arranged neatly, dark background. ${JP} ${NEG}`],
+    ['menu', 4, '1024x1024', `Sliced beef harami skirt steak on a plate glazed with house tare sauce, yakiniku restaurant, dark background. ${JP} ${NEG}`],
     ['menu', 5, '1024x1024', `Korean-style cold noodle naengmyeon in a steel bowl, refreshing, garnish, restaurant table. ${JP} ${NEG}`],
     ['interior', 1, '1536x1024', `Warm dimly lit Japanese yakiniku restaurant interior, wooden tables each with a built-in charcoal grill and overhead exhaust ducts, empty seats, cozy. ${JP} ${NEG}`],
+    ['interior', 2, '1024x1024', `Cozy semi-private booth seating in a dark warm Japanese yakiniku restaurant, built-in grill on the table, soft pendant lighting, empty seats. ${JP} ${NEG}`],
     ['atmosphere', 1, '1024x1024', `Glowing charcoal embers with rising smoke close-up, dark moody warm light, yakiniku grill. ${JP} ${NEG}`],
-    ['detail', 1, '1024x1024', `Tabletop yakiniku roaster with tongs and a small dish of dipping tare sauce, charcoal, close-up detail. ${JP} ${NEG}`]
+    ['atmosphere', 2, '1024x1024', `Marbled wagyu slices searing on a charcoal grill grate with flames and smoke, dark moody warm light, dynamic. ${JP} ${NEG}`],
+    ['atmosphere', 3, '1024x1024', `Warm evening ambiance inside a small Japanese yakiniku eatery, soft warm glow, lantern light, dark tones. ${JP} ${NEG}`],
+    ['detail', 1, '1024x1024', `Tabletop yakiniku roaster with tongs and a small dish of dipping tare sauce, charcoal, close-up detail. ${JP} ${NEG}`],
+    ['detail', 2, '1024x1024', `Close-up of house-made tare dipping sauce in a small bowl with sesame and green onion, dark wooden table, yakiniku. ${JP} ${NEG}`],
+    ['detail', 3, '1024x1024', `Close-up of binchotan charcoal glowing red-orange in a grill, fine ash, dark moody warm light. ${JP} ${NEG}`],
+    ['detail', 4, '1024x1024', `Close-up of metal tongs turning a single marbled beef slice on a charcoal grill, juices glistening, smoke. ${JP} ${NEG}`],
+    ['ogp', 1, '1536x1024', `Wide cinematic banner of premium marbled wagyu grilling over glowing charcoal at a Japanese yakiniku restaurant, smoke rising, warm dark moody ambiance, generous empty space. ${JP} ${NEG}`]
   ],
   cafe: [
     ['hero', 1, '1536x1024', `Bright airy modern Japanese cafe scene with a latte on a wooden table by a large window with soft natural daylight, minimal, calm. ${JP} ${NEG}`],
