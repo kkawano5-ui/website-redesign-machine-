@@ -213,6 +213,98 @@ export const shops: Shop[] = [
     cta: { phone: '048-644-4609', instagram: 'https://instagram.com/', reserve: 'https://example.com/reserve' },
     verify: { phone: false, address: false, hours: false, menu: false },
     demoNotice: DEMO_NOTICE
+  },
+  {
+    slug: 'ramen-hibikiya',
+    name: 'らーめん 響家',
+    kana: 'らーめん ひびきや',
+    genre: 'ラーメン店',
+    theme: 'ramen-street',
+    assetCategory: 'ramen',
+    mood: ['steam', 'red', 'energetic', 'counter', 'hearty'],
+    seo: {
+      title: 'らーめん 響家｜濃厚煮干し中華そば｜さいたま市浦和',
+      description:
+        'さいたま市浦和のラーメン店「響家」。毎朝炊く濃厚な煮干し白湯と、自家製麺の中華そば。カウンターで味わう熱々の一杯をどうぞ。'
+    },
+    hero: {
+      catch: '一杯に、\nまっすぐ。',
+      sub: '毎朝炊く煮干し白湯と、自家製の中太麺。',
+      nearest: '最寄り：浦和駅 徒歩5分（要確認）'
+    },
+    about: [
+      { title: '煮干しを、惜しまず。', body: '毎朝炊き上げる濃厚な煮干し白湯。香りとコクを一杯に閉じ込めて。' },
+      { title: '自家製麺。', body: 'スープに負けない中太麺を自家製で。もちっとした食感を大切に。' },
+      { title: 'カウンターの臨場感。', body: '湯気の立つ厨房を前に、できたてを一番おいしい温度で。' }
+    ],
+    menu: [
+      { name: '特製煮干し中華そば', price: '¥1,050', desc: '全部のせ', recommend: true },
+      { name: '煮干し中華そば', price: '¥850', desc: '看板の一杯', recommend: true },
+      { name: '濃厚つけめん', price: '¥980', desc: '麺増し無料' },
+      { name: '味玉ごはん', price: '¥250', desc: '〆にどうぞ' },
+      { name: '自家製餃子（5個）', price: '¥420', desc: 'パリッと', recommend: true }
+    ],
+    scenes: [
+      { label: 'ひとりで', body: 'カウンターでさっと一杯。仕事帰りの夜食にも。' },
+      { label: 'がっつり', body: '全部のせと味玉ごはんで満足の一食。' },
+      { label: '常連の一杯', body: '毎日でも飽きない、まっすぐな煮干しの味。' }
+    ],
+    access: {
+      address: 'さいたま市浦和区（住所はサンプル・要確認）',
+      hours: ['11:00 - 15:00', '18:00 - 22:00（サンプル）'],
+      holiday: '火曜定休（サンプル）',
+      phone: '048-000-0000',
+      mapQuery: 'さいたま市浦和区 ラーメン'
+    },
+    cta: { phone: '048-000-0000', instagram: 'https://instagram.com/', reserve: '' },
+    verify: { phone: false, address: false, hours: false, menu: false },
+    demoNotice: DEMO_NOTICE
+  },
+  {
+    slug: 'izakaya-tomoshibi',
+    name: '酒場 ともしび',
+    kana: 'さかば ともしび',
+    genre: '居酒屋',
+    theme: 'izakaya-warm',
+    assetCategory: 'izakaya',
+    mood: ['wood', 'warm', 'lively', 'casual', 'amber'],
+    seo: {
+      title: '酒場 ともしび｜炭火串と地酒｜さいたま市大宮',
+      description:
+        'さいたま市大宮の居酒屋「ともしび」。炭火で焼く串と、店主が選ぶ地酒。仕事帰りに気軽に立ち寄れる、暖色の小さな酒場です。'
+    },
+    hero: {
+      catch: '今日のおつかれに、\n一杯と一串。',
+      sub: '炭火の串と、店主が選ぶ季節の地酒。',
+      nearest: '最寄り：大宮駅 徒歩4分（要確認）'
+    },
+    about: [
+      { title: '炭火で、一串ずつ。', body: '注文を受けてから炭火で焼く串。香ばしさとジューシーさを両立。' },
+      { title: '季節の地酒。', body: '店主がその時季のおすすめを少量ずつ。料理に合う一杯をご提案。' },
+      { title: '気取らない一軒。', body: 'ひとりでも、仲間とでも。暖色の灯りの下でほっとひと息。' }
+    ],
+    menu: [
+      { name: '本日の串盛り（5本）', price: '¥980', desc: 'おまかせ', recommend: true },
+      { name: 'つくね（卵黄添え）', price: '¥320', desc: '人気の一本', recommend: true },
+      { name: '名物 もつ煮込み', price: '¥580', desc: 'じっくり煮込み', recommend: true },
+      { name: '本日のお造り', price: '時価', desc: '入荷次第' },
+      { name: '地酒 飲み比べ（3種）', price: '¥980', desc: '店主おすすめ' }
+    ],
+    scenes: [
+      { label: '仕事帰りに', body: 'さっと一杯と一串で、一日の締めくくりを。' },
+      { label: '仲間と', body: '串盛りと地酒で、気のおけない時間を。' },
+      { label: 'ひとり呑み', body: 'カウンターで店主と話しながら、ゆっくりと。' }
+    ],
+    access: {
+      address: 'さいたま市大宮区（住所はサンプル・要確認）',
+      hours: ['17:00 - 24:00（サンプル）'],
+      holiday: '日曜定休（サンプル）',
+      phone: '048-000-0000',
+      mapQuery: 'さいたま市大宮区 居酒屋'
+    },
+    cta: { phone: '048-000-0000', instagram: 'https://instagram.com/', reserve: '' },
+    verify: { phone: false, address: false, hours: false, menu: false },
+    demoNotice: DEMO_NOTICE
   }
 ];
 
