@@ -5,64 +5,74 @@ export { FPS, WIDTH, HEIGHT };
 
 const A = (n: string) => `ad3/assets/${n}`;
 
-// 新台本の文言・順番に一致（"資産"は数値の前）。合計 36.8627s。
+// 新台本の音声(実測)に完全同期。各シーンの切替＝各文の開始時刻。合計 36.52s。
 export const scenes2New: Scene[] = [
-  // 1) 毎月、広告や求人にいくら払っていますか？ (0–2.9)
-  { id: 1, dur: 2.9, asset: A("v2_s1.png"), bg: "pale", motion: "zoomIn",
+  // 1) 毎月、広告や求人にいくら払っていますか？ (0.00–3.09)
+  { id: 1, dur: 3.09, asset: A("v2_s1.png"), bg: "pale", motion: "zoomIn",
     telops: [
       { text: "広告や求人に", kind: "normal", delay: 0.2, color: "#15294B" },
-      { text: "毎月いくら払ってる？", kind: "emphasis", delay: 0.5, size: 60, color: "#15294B" },
+      { text: "毎月いくら払ってる？", kind: "emphasis", delay: 0.5, size: 58, color: "#15294B" },
     ] },
-  // 2) 止めれば消える…手元には何も残りません。 (2.9–7.5)
-  { id: 2, dur: 4.6, asset: A("v2_s2.png"), bg: "pale", motion: "zoomIn",
+  // 2) 止めれば消える…手元には何も残りません。 (3.09–7.54)
+  { id: 2, dur: 4.45, asset: A("v2_s2.png"), bg: "pale", motion: "zoomIn",
     telops: [
-      { text: "止めれば、消える", kind: "normal", delay: 0.2, color: "#15294B" },
-      { text: "手元に何も残らない", kind: "pain", delay: 0.6, size: 64, color: "#5b7aa6" },
+      { text: "止めれば、消える", kind: "normal", delay: 0.3, color: "#15294B" },
+      { text: "手元に何も残らない", kind: "pain", delay: 1.6, size: 64, color: "#5b7aa6" },
     ] },
-  // 3) でも、SNSは続けるほど"資産"になります。 (7.5–10.5)
-  { id: 3, dur: 3.0, asset: A("v2_s3.png"), bg: "white", motion: "zoomIn",
+  // 3) でも、SNSは続けるほど"資産"になります。 (7.54–10.78)
+  { id: 3, dur: 3.24, asset: A("v2_s3.png"), bg: "white", motion: "zoomIn",
     telops: [
-      { text: "でも、SNSは", kind: "normal", delay: 0.2, color: "#15294B" },
-      { text: "“資産”になる", kind: "emphasis", delay: 0.5, size: 72, color: "#2B87E8" },
+      { text: "でも、SNSは", kind: "normal", delay: 0.3, color: "#15294B" },
+      { text: "“資産”になる", kind: "emphasis", delay: 0.9, size: 72, color: "#2B87E8" },
     ] },
-  // 4) 数値：広告費0円 / 18万人 / 5.5倍 / 200名 (10.5–19.4)
-  //    数値の出現は音声に合わせた絶対時刻：0円≈13.2 / 18万≈14.2 / 5.5倍≈16.0 / 200名≈17.7
-  { id: 4, dur: 8.9, asset: A("v2_s4.png"), bg: "dark", motion: "zoomOut",
+  // 4) 広告費0円でフォロワー18万人、集客5.5倍 (10.78–15.44) ※18万≈13.0 / 5.5倍≈14.7
+  { id: 4, dur: 4.66, asset: A("v2_s4.png"), bg: "dark", motion: "zoomOut",
     telops: [
-      { text: "広告費 0円", kind: "emphasis", delay: 2.7, size: 60, color: "#15294B", bandColor: "#CAE6FA" },
+      { text: "広告費 0円", kind: "emphasis", delay: 0.3, size: 58, color: "#15294B", bandColor: "#CAE6FA" },
     ],
     numbers: [
-      { start: 3.7, label: "フォロワー", value: 18, suffix: "万人" },
-      { start: 5.5, label: "集客", value: 5.5, decimals: 1, suffix: "倍" },
-      { start: 7.2, label: "応募", value: 200, suffix: "名" },
+      { start: 2.2, label: "フォロワー", value: 18, suffix: "万人" },
+      { start: 3.9, label: "集客", value: 5.5, decimals: 1, suffix: "倍" },
     ] },
-  // 5) 特別なことはしていません。"人"が見える発信。 (19.4–24.0)
-  { id: 5, dur: 4.6, asset: A("s5.png"), bg: "white", motion: "zoomIn",
+  // 5) 求人媒体に頼らず、200名の応募。 (15.44–18.50) ※200名≈16.8
+  { id: 5, dur: 3.06, asset: A("v2_s4.png"), bg: "dark", motion: "zoomOut",
     telops: [
-      { text: "特別なことはしていない", kind: "normal", delay: 0.3, size: 46, color: "#15294B" },
-      { text: "人", kind: "emphasis", delay: 1.6, size: 150, color: "#2B87E8" },
-      { text: "が見える発信だけ", kind: "normal", delay: 2.0, size: 50, color: "#15294B" },
+      { text: "求人に頼らず", kind: "normal", delay: 0.2, size: 46, color: "#FFFFFF" },
+    ],
+    numbers: [
+      { start: 1.4, label: "応募", value: 200, suffix: "名" },
     ] },
-  // 6) まず会社をSNSで調べる時代。 (24.0–28.2)
-  { id: 6, dur: 4.2, asset: A("s7.png"), bg: "pale", motion: "zoomIn",
+  // 6) 特別なことはしていません。 (18.50–20.18)
+  { id: 6, dur: 1.68, asset: A("s5.png"), bg: "white", motion: "zoomIn",
+    telops: [
+      { text: "特別なことはしていない", kind: "normal", delay: 0.2, size: 50, color: "#15294B" },
+    ] },
+  // 7) 社長やスタッフの"人"が見える発信。 (20.18–23.36)
+  { id: 7, dur: 3.18, asset: A("s5.png"), bg: "white", motion: "zoomIn",
+    telops: [
+      { text: "人", kind: "emphasis", delay: 0.4, size: 150, color: "#2B87E8" },
+      { text: "が見える発信だけ", kind: "normal", delay: 0.9, size: 50, color: "#15294B" },
+    ] },
+  // 8) お客さまも、まず会社をSNSで調べる時代。 (23.36–27.69)
+  { id: 8, dur: 4.33, asset: A("s7.png"), bg: "pale", motion: "zoomIn",
     telops: [
       { text: "まずSNSで", kind: "normal", delay: 0.3 },
-      { text: "会社を調べる時代", kind: "normal", delay: 0.55, size: 58, color: "#2B87E8" },
+      { text: "会社を調べる時代", kind: "normal", delay: 0.6, size: 58, color: "#2B87E8" },
     ] },
-  // 7) "人"が見えるだけで、選ばれる会社に。 (28.2–31.2)
-  { id: 7, dur: 3.0, asset: A("v2_s3.png"), bg: "white", motion: "zoomIn",
+  // 9) そこで"人"が見えるだけで、選ばれる会社に。 (27.69–30.70)
+  { id: 9, dur: 3.01, asset: A("v2_s3.png"), bg: "white", motion: "zoomIn",
     telops: [
       { text: "人が見えるだけで", kind: "normal", delay: 0.3, size: 50, color: "#15294B" },
       { text: "選ばれる会社に", kind: "emphasis", delay: 0.7, size: 64, color: "#2B87E8" },
     ] },
-  // 8) その始め方を、無料の相談会で。 (31.2–34.3)
-  { id: 8, dur: 3.1, asset: A("s9.png"), bg: "white", motion: "zoomIn",
+  // 10) その始め方を、無料の相談会で。 (30.70–33.93)
+  { id: 10, dur: 3.23, asset: A("s9.png"), bg: "white", motion: "zoomIn",
     telops: [
       { text: "無料相談会で", kind: "normal", delay: 0.3 },
-      { text: "お話ししています", kind: "normal", delay: 0.55, size: 56, color: "#2B87E8" },
+      { text: "お話ししています", kind: "normal", delay: 0.6, size: 56, color: "#2B87E8" },
     ] },
-  // 9) 気になったら、プロフィールTOPからCheck！ (34.3–36.86)
-  { id: 9, dur: 2.5627, asset: A("s9.png"), bg: "white", motion: "zoomIn",
+  // 11) 気になったら、プロフィールTOPからCheck！ (33.93–36.52)
+  { id: 11, dur: 2.59, asset: A("s9.png"), bg: "white", motion: "zoomIn",
     telops: [
       { text: "気になったら", kind: "normal", delay: 0.2, size: 44, color: "#15294B" },
     ],
