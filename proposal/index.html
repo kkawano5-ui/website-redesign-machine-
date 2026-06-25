@@ -1,0 +1,617 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>法人向け 生成AI研修 ご提案 ｜ 株式会社AIスキル</title>
+<meta name="description" content="研修して終わり、ではなく現場が実際に変わるところまで。法人向け生成AI研修のご提案資料。"/>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+JP:wght@400;500;700&family=Noto+Serif+JP:wght@500;600;700&display=swap" rel="stylesheet"/>
+<style>
+:root{
+  --ink:#15171c; --ink-soft:#3a3f4a; --sub:#6b7280; --faint:#9aa0ab;
+  --line:#e7e3da; --line2:#efece5;
+  --paper:#faf8f4; --paper2:#f3f0e9; --white:#ffffff;
+  --accent:#1d3b6e; --accent-2:#3866c4; --accent-soft:#eef1f8;
+  --signal:#b8502e; --signal-soft:#f6ece6; --ok:#1f7a5c;
+  --shadow:0 24px 60px -28px rgba(20,30,60,.45), 0 8px 22px -16px rgba(0,0,0,.18);
+  --sans:"Noto Sans JP","Inter",system-ui,sans-serif;
+  --serif:"Noto Serif JP",serif;
+  --w:1280px; --h:720px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
+body{font-family:var(--sans);color:var(--ink);background:#0c0d10;-webkit-font-smoothing:antialiased;
+  text-rendering:optimizeLegibility;display:flex;align-items:center;justify-content:center;overflow:hidden}
+#viewport{width:100vw;height:100vh;display:flex;align-items:center;justify-content:center}
+#stage{width:var(--w);height:var(--h);position:relative;transform-origin:center center;flex:0 0 auto}
+.slide{position:absolute;inset:0;width:var(--w);height:var(--h);background:var(--paper);color:var(--ink);
+  overflow:hidden;padding:60px 80px 56px;display:flex;flex-direction:column;
+  opacity:0;visibility:hidden;transition:opacity .4s ease;box-shadow:var(--shadow)}
+.slide.active{opacity:1;visibility:visible}
+.slide.dark{background:var(--accent);color:#eaf0fb}
+.slide.ink{background:#14161b;color:#eef0f4}
+.slide.pad-sm{padding:48px 72px 52px}
+
+/* atoms */
+.kicker{display:flex;align-items:center;gap:12px;font-size:12.5px;font-weight:600;letter-spacing:.18em;
+  text-transform:uppercase;color:var(--accent-2)}
+.kicker::before{content:"";width:26px;height:2px;background:var(--accent-2);display:inline-block}
+.dark .kicker,.ink .kicker{color:#9fc0ff}
+.dark .kicker::before,.ink .kicker::before{background:#9fc0ff}
+h1.title{font-family:var(--serif);font-weight:600;font-size:38px;line-height:1.3;letter-spacing:.01em;margin-top:16px}
+h1.title.lg{font-size:44px}
+.lead{font-size:17.5px;line-height:1.85;color:var(--ink-soft);max-width:64ch}
+.dark .lead,.ink .lead{color:#cfdcf2}
+.muted{color:var(--sub)} .accent{color:var(--accent-2)} .serif{font-family:var(--serif)}
+.fnum{font-family:"Inter",var(--sans);font-variant-numeric:tabular-nums}
+.spacer{flex:1 1 auto}.mt8{margin-top:8px}.mt14{margin-top:14px}.mt20{margin-top:20px}.mt26{margin-top:26px}
+.sig{color:var(--signal);font-weight:700}
+
+/* footer (auto-injected) */
+.foot{position:absolute;left:80px;right:80px;bottom:24px;display:flex;justify-content:space-between;
+  align-items:center;font-size:11px;color:var(--faint);letter-spacing:.04em}
+.dark .foot,.ink .foot{color:rgba(255,255,255,.5)}
+.brandmark{display:flex;align-items:center;gap:8px;font-weight:700;letter-spacing:.02em;color:var(--ink)}
+.dark .brandmark,.ink .brandmark{color:#fff}
+.brandmark .dot{width:8px;height:8px;border-radius:2px;background:var(--accent-2);transform:rotate(45deg)}
+
+/* cover */
+.cover{justify-content:center}
+.cover .biglead{font-family:var(--serif);font-weight:600;font-size:52px;line-height:1.34;letter-spacing:.005em;max-width:1040px;margin-top:22px}
+.cover .biglead em{font-style:normal;color:#9fc0ff}
+.cover .sub{margin-top:24px;font-size:17px;color:#cfdcf2;max-width:50ch;line-height:1.85}
+.cover .meta{margin-top:44px;display:flex;gap:46px;font-size:12.5px;color:rgba(255,255,255,.65)}
+.cover .meta b{display:block;color:#fff;font-size:15px;font-weight:600;margin-top:5px;letter-spacing:.02em}
+
+/* divider / statement */
+.quote{font-family:var(--serif);font-weight:600;font-size:36px;line-height:1.5;letter-spacing:.01em;max-width:22ch}
+.quote .em{color:#9fc0ff}
+.cols{display:grid;grid-template-columns:1fr 1fr;gap:48px;flex:1;align-items:center}
+.cols.l{grid-template-columns:.92fr 1.08fr}
+.cols.tight{align-items:start}
+
+/* grids / cards */
+.grid{display:grid;gap:20px}.g3{grid-template-columns:repeat(3,1fr)}.g2{grid-template-columns:repeat(2,1fr)}
+.stat{border:1px solid var(--line);border-radius:14px;padding:24px 22px;background:var(--white)}
+.stat .n{font-family:"Inter";font-weight:700;font-size:46px;line-height:1;color:var(--accent);letter-spacing:-.02em}
+.stat .n small{font-size:19px;font-weight:600;color:var(--accent-2);margin-left:3px}
+.stat .l{margin-top:10px;font-size:13.5px;color:var(--sub);line-height:1.6}
+
+.case{border:1px solid var(--line);border-radius:14px;padding:22px 22px;background:var(--white);display:flex;flex-direction:column;gap:8px}
+.case .co{font-size:12px;font-weight:700;letter-spacing:.03em;color:var(--accent-2)}
+.case .biz{font-size:11.5px;color:var(--faint)}
+.case .ba{display:flex;align-items:baseline;gap:11px;margin-top:4px}
+.case .from{font-size:22px;color:var(--faint);text-decoration:line-through;text-decoration-color:var(--line);font-family:"Inter"}
+.case .arr{color:var(--accent-2);font-size:18px}
+.case .to{font-size:40px;font-weight:700;color:var(--accent);letter-spacing:-.02em;font-family:"Inter"}
+.delta{display:inline-block;font-size:12px;font-weight:600;color:var(--signal);background:var(--signal-soft);
+  padding:3px 10px;border-radius:999px;align-self:flex-start}
+.case .desc{font-size:12.5px;color:var(--sub);line-height:1.65}
+
+/* comparison */
+.cmp{width:100%;border-collapse:separate;border-spacing:0;font-size:15px}
+.cmp th,.cmp td{padding:15px 20px;text-align:left;vertical-align:top}
+.cmp thead th{font-size:12.5px;letter-spacing:.06em;color:var(--sub);font-weight:600;border-bottom:1px solid var(--line)}
+.cmp thead th.us{color:var(--accent)}
+.cmp tbody td{border-bottom:1px solid var(--line2);line-height:1.6}
+.cmp tbody td.rl{color:var(--faint);font-size:12.5px;width:96px}
+.cmp tbody td.old{color:var(--sub)}
+.cmp tbody td.us{background:var(--accent-soft);color:var(--accent);font-weight:500;border-bottom:1px solid #dfe6f4}
+
+/* pillars */
+.pillars{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;flex:1;align-content:center}
+.pillar{border:1px solid var(--line);border-radius:14px;padding:26px 24px;background:var(--white);display:flex;flex-direction:column}
+.pillar .pn{font-family:"Inter";font-weight:700;font-size:15px;color:#fff;background:var(--accent);width:34px;height:34px;
+  border-radius:9px;display:flex;align-items:center;justify-content:center}
+.pillar h3{font-size:18px;font-weight:700;margin-top:18px;line-height:1.45}
+.pillar p{font-size:13.5px;color:var(--sub);line-height:1.7;margin-top:10px}
+
+/* steps */
+.steps{display:grid;grid-template-columns:repeat(4,1fr);gap:0;margin-top:6px}
+.step{position:relative;padding:0 20px}
+.step:not(:last-child)::after{content:"";position:absolute;top:13px;left:46px;width:calc(100% - 24px);height:2px;background:var(--line)}
+.step .dot{width:28px;height:28px;border-radius:50%;background:var(--accent);color:#fff;display:flex;align-items:center;
+  justify-content:center;font-size:13px;font-weight:700;font-family:"Inter";position:relative;z-index:1}
+.step .st{margin-top:14px;font-weight:700;font-size:15px}
+.step .sd{margin-top:6px;font-size:12.5px;color:var(--sub);line-height:1.6}
+.step .sm{margin-top:8px;font-size:11px;color:var(--accent-2);font-weight:600;letter-spacing:.03em}
+
+/* price */
+.price{display:flex;border:1px solid var(--line);border-radius:16px;overflow:hidden;background:var(--white)}
+.price .col{flex:1;padding:28px 30px}.price .col+ .col{border-left:1px solid var(--line)}
+.price .col.hl{background:var(--accent);color:#fff}
+.price .lab{font-size:12.5px;color:var(--sub);letter-spacing:.03em}.price .col.hl .lab{color:#bcd0f5}
+.price .big{font-family:"Inter";font-weight:700;font-size:40px;letter-spacing:-.02em;margin-top:10px}
+.price .big .u{font-size:15px;font-weight:600;color:var(--sub)}.price .col.hl .big .u{color:#bcd0f5}
+.price .note{font-size:12px;color:var(--sub);margin-top:12px;line-height:1.65}.price .col.hl .note{color:#cfdcf2}
+
+/* checklist / agenda / lists */
+.checks{display:grid;gap:13px;margin-top:6px}
+.check{display:flex;gap:12px;align-items:flex-start;font-size:15.5px;line-height:1.6}
+.check .ic{flex:0 0 auto;width:22px;height:22px;border-radius:50%;background:var(--accent-soft);color:var(--accent);
+  display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;margin-top:1px}
+.dark .check .ic,.ink .check .ic{background:rgba(255,255,255,.12);color:#bcd0f5}
+.check b{font-weight:700}
+.agenda{display:grid;gap:0;margin-top:8px}
+.ag{display:flex;gap:18px;align-items:baseline;padding:15px 0;border-bottom:1px solid var(--line)}
+.ag .agn{font-family:"Inter";font-weight:700;font-size:15px;color:var(--accent-2);width:30px}
+.ag .agt{font-size:16.5px;font-weight:700}.ag .agd{font-size:13.5px;color:var(--sub);margin-left:auto;max-width:48ch;text-align:right;line-height:1.55}
+
+.pillrow{display:flex;gap:9px;flex-wrap:wrap;margin-top:10px}
+.pill{font-size:12px;color:var(--accent);background:var(--accent-soft);border:1px solid #e0e7f5;padding:6px 13px;border-radius:999px;font-weight:500}
+.dark .pill,.ink .pill{color:#cfe0ff;background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.14)}
+
+/* statestrip 規模感 */
+.strip{display:grid;grid-template-columns:repeat(4,1fr);gap:0;border-top:1px solid var(--line);border-bottom:1px solid var(--line);margin-top:4px}
+.strip .s{padding:22px 18px;border-right:1px solid var(--line2)}
+.strip .s:last-child{border-right:0}
+.strip .sn{font-family:"Inter";font-weight:700;font-size:34px;color:var(--accent);letter-spacing:-.02em}
+.strip .sn small{font-size:15px;color:var(--accent-2);margin-left:2px}
+.strip .sl{font-size:12px;color:var(--sub);margin-top:6px;line-height:1.5}
+
+/* curriculum */
+.curric{width:100%;border-collapse:separate;border-spacing:0;font-size:13.5px}
+.curric th{font-size:12px;letter-spacing:.05em;color:var(--sub);font-weight:600;text-align:left;padding:0 16px 11px;border-bottom:1px solid var(--line)}
+.curric td{padding:12px 16px;border-bottom:1px solid var(--line2);vertical-align:top;line-height:1.55}
+.curric td.no{width:54px;color:var(--accent-2);font-weight:700;font-family:"Inter"}
+.curric td.th{font-weight:700;width:280px}
+.curric td.wk{color:var(--sub);font-size:12.5px}
+
+/* industry pain list */
+.pain{display:grid;grid-template-columns:1fr 1fr;gap:14px 40px;margin-top:8px}
+.pi{display:flex;gap:13px;align-items:baseline;padding:12px 0;border-bottom:1px solid var(--line2)}
+.pi .pt{font-size:15.5px;font-weight:500}
+.pi .ph{font-family:"Inter";font-weight:700;font-size:15px;color:var(--signal);margin-left:auto;white-space:nowrap}
+
+/* next-action board */
+.board{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:6px}
+.bx{border:1px solid var(--line);border-radius:12px;padding:18px 20px;background:var(--white)}
+.bx .bl{font-size:12px;color:var(--accent-2);font-weight:600;letter-spacing:.04em}
+.bx .bv{font-size:14.5px;color:var(--ink-soft);margin-top:9px;line-height:1.6;min-height:42px}
+.bx .blank{display:inline-block;border-bottom:1.5px dashed var(--line);min-width:120px}
+
+/* contact / company */
+.deflist{display:grid;grid-template-columns:120px 1fr;gap:13px 22px;font-size:14.5px;margin-top:6px}
+.deflist dt{color:var(--faint);font-size:13px}.deflist dd{color:var(--ink-soft);line-height:1.55}
+.bio{display:grid;grid-template-columns:.8fr 1.2fr;gap:40px;flex:1;align-items:center}
+.bioimg{border:1px solid var(--line);border-radius:14px;background:
+  radial-gradient(120% 90% at 30% 10%,#e9eef8,transparent 60%),linear-gradient(160deg,#f4f1ea,#e7e3da);
+  aspect-ratio:1/1;display:flex;align-items:flex-end;padding:22px;color:var(--accent);font-weight:700}
+
+/* logo wordmark */
+.logo{display:flex;align-items:center;gap:11px;font-family:var(--serif);font-weight:600;font-size:22px;letter-spacing:.02em}
+.logo .m{width:16px;height:16px;border-radius:4px;background:var(--accent-2);transform:rotate(45deg)}
+.dark .logo,.ink .logo{color:#fff}
+
+/* chrome */
+#prog{position:fixed;left:0;top:0;height:3px;background:var(--accent-2);width:0;z-index:50;transition:width .3s}
+#counter{position:fixed;right:18px;bottom:13px;font-size:11.5px;color:rgba(255,255,255,.55);font-family:"Inter";z-index:50;letter-spacing:.08em}
+#hint{position:fixed;left:50%;transform:translateX(-50%);bottom:13px;font-size:11px;color:rgba(255,255,255,.42);z-index:50;
+  letter-spacing:.04em;transition:opacity .6s ease;pointer-events:none}
+#hint.hide{opacity:0}
+.tag{display:inline-block;font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--accent-2);border:1px solid #dbe3f4;border-radius:999px;padding:4px 12px}
+.dark .tag,.ink .tag{color:#bcd0f5;border-color:rgba(255,255,255,.2)}
+
+@media print{
+  body{display:block;background:#fff;overflow:visible}
+  #viewport{display:block;width:auto;height:auto}
+  #stage{transform:none!important;width:var(--w);height:auto}
+  .slide{position:relative;opacity:1!important;visibility:visible!important;box-shadow:none;page-break-after:always;break-after:page}
+  #prog,#counter,#hint{display:none}
+  @page{size:1280px 720px;margin:0}
+}
+</style>
+</head>
+<body>
+<div id="prog"></div><div id="counter"></div><div id="hint">← → でスライド送り ／ Pキーで印刷・PDF</div>
+<div id="viewport"><div id="stage">
+
+<!-- 01 COVER -->
+<section class="slide dark cover" data-sec="表紙">
+  <div class="logo"><span class="m"></span>AIスキル</div>
+  <p class="biglead">研修して終わり、ではなく<br><em>現場が実際に変わる</em>ところまで。</p>
+  <p class="sub">「使い方を教える研修」ではありません。受講後に“あの業務が、実際に変わっている”状態まで設計してお渡しする、実践型の法人向け生成AI研修です。</p>
+  <div class="meta">
+    <div>ご提案先<b>◯◯◯◯株式会社 御中</b></div>
+    <div>ご提案<b>株式会社AIスキル</b></div>
+    <div>ご提案日<b>2026年6月</b></div>
+  </div>
+</section>
+
+<!-- 02 AGENDA / reframe the room -->
+<section class="slide" data-sec="本日の進め方">
+  <div class="kicker">本日のゴール</div>
+  <h1 class="title">本日は「研修の説明」から入りません。<br>御社で“AIが一番効きそうな業務”を、一緒に見つける時間に。</h1>
+  <p class="lead mt14">サービス紹介を聞いていただく場ではなく、御社の現場でどこが変えられそうかを一緒に見立て、進めるかどうかを判断いただくための時間にさせてください。下記を一緒に確認できればと思います。</p>
+  <div class="agenda mt20">
+    <div class="ag"><span class="agn fnum">01</span><span class="agt">いま、現場で何に時間が溶けているか</span><span class="agd">資料作成・議事録・問い合わせ対応・調査・文章作成 ほか</span></div>
+    <div class="ag"><span class="agn fnum">02</span><span class="agt">同じ規模・業種の会社が、もう何をしているか</span><span class="agd">御社に近い“普通の会社”の動きと、解決した実例</span></div>
+    <div class="ag"><span class="agn fnum">03</span><span class="agt">御社だと、どの業務から始めるのが効くか</span><span class="agd">研修の中身・進め方・費用（助成金活用後の実質負担）</span></div>
+    <div class="ag"><span class="agn fnum">04</span><span class="agt">次の一歩をどう決めるか</span><span class="agd">対象人数・実施時期・社内での進め方</span></div>
+  </div>
+</section>
+
+<!-- 03 PEER / 取り残されたくない -->
+<section class="slide pad-sm" data-sec="現状認識">
+  <div class="kicker">いま、現場で起きていること</div>
+  <h1 class="title">先進的な大企業ではなく、<br>御社と<span class="accent">同じ規模・業種の“普通の会社”</span>が、もう毎日使っています。</h1>
+  <p class="lead mt14" style="font-size:16px">「AIはまだ一部の進んだ企業の話」——その前提は、すでに変わりました。あらゆる業種・規模・地域の中小企業が、日常業務でAIを使い始めています。</p>
+  <div class="strip mt20">
+    <div class="s"><div class="sn fnum">21<small>社</small></div><div class="sl">法人研修の導入実績<br>（上場企業〜数名規模まで）</div></div>
+    <div class="s"><div class="sn fnum">3,000<small>名+</small></div><div class="sl">経営者がセミナー・<br>研修を受講</div></div>
+    <div class="s"><div class="sn fnum">15万<small>名+</small></div><div class="sl">累計セミナー<br>参加者数</div></div>
+    <div class="s"><div class="sn fnum">15,000<small>名+</small></div><div class="sl">AI学習コミュニティ<br>会員数</div></div>
+  </div>
+  <p class="lead mt20" style="font-size:13.5px;color:var(--faint);margin-bottom:2px">導入企業の業種・規模はすでにこれだけ広がっています ── 御社に近い会社が、必ずこの中にいます。</p>
+  <div class="pillrow">
+    <span class="pill">建設・不動産</span><span class="pill">運輸・物流</span><span class="pill">製造</span><span class="pill">福祉・介護</span><span class="pill">商社・小売</span><span class="pill">ホテル・サービス</span><span class="pill">医療</span><span class="pill">士業・コンサル</span><span class="pill">IT</span><span class="pill">北海道〜九州</span><span class="pill">1名〜500名規模</span>
+  </div>
+</section>
+
+<!-- 04 OBJECTION pre-empt -->
+<section class="slide pad-sm" data-sec="現状認識">
+  <div class="kicker">よくある“やらない理由”</div>
+  <h1 class="title">御社が思う「やらない理由」は、<br>同じような会社が、すでに越えています。</h1>
+  <div class="grid g2 mt20" style="gap:16px 40px">
+    <div class="check"><span class="ic">→</span><div><b>「うちはまだ早い」</b><br><span class="muted" style="font-size:14px">むしろ50名いかない・事務3〜5名の会社が一番多く始めています。</span></div></div>
+    <div class="check"><span class="ic">→</span><div><b>「もう乗り遅れた」</b><br><span class="muted" style="font-size:14px">まだ“触り始め”の会社がほとんど。今なら十分に先頭集団です。</span></div></div>
+    <div class="check"><span class="ic">→</span><div><b>「うちの業界は特殊」</b><br><span class="muted" style="font-size:14px">建設・運送・医療・士業…同じ業界でも、皆さん最初はそう言われます。</span></div></div>
+    <div class="check"><span class="ic">→</span><div><b>「高齢の社員が多くて無理」</b><br><span class="muted" style="font-size:14px">20〜60代の全世代で好評。むしろ年配の方が“ラクになった”と。</span></div></div>
+  </div>
+  <p class="lead mt20" style="font-size:15px">大切なのは「やるか・やらないか」ではなく、<b class="accent">どこから始めるか</b>。次に、御社の本当の課題を一緒に見ていきます。</p>
+</section>
+
+<!-- 05 THE FEAR (dark statement) -->
+<section class="slide ink" data-sec="本当の課題">
+  <div class="kicker">買い手の本当の不安</div>
+  <div class="cols l">
+    <div><p class="quote">研修をやっても、<br>結局<span class="em">誰も使わない</span><br>のではないか。</p></div>
+    <div>
+      <p class="lead">AI導入をためらう最大の理由は、費用でも難しさでもありません。<b style="color:#fff">「お金をかけても、受講後に現場が元に戻る」</b>——投資がムダになる、という不安です。</p>
+      <p class="lead mt20" style="color:#9fc0ff">私たちが最初に潰したいのも、まさにこの“定着しない”問題です。だから、研修の設計思想そのものが違います。</p>
+    </div>
+  </div>
+</section>
+
+<!-- 06 REFRAME the real problem -->
+<section class="slide" data-sec="本当の課題">
+  <div class="kicker">課題の再定義</div>
+  <h1 class="title">本当の課題は「ツールを入れること」ではなく、<br><span class="accent">現場で“使われ続けるか”＝定着</span>です。</h1>
+  <div class="cols tight mt20" style="gap:44px">
+    <div>
+      <p class="lead">無料ツールは誰でも触れます。実際、多くの会社が「各自バラバラに少し触っている」段階で止まっています。そこで必ずぶつかるのが——</p>
+      <div class="checks mt20">
+        <div class="check"><span class="ic">✓</span><div>各自が個別に使い、<b>業務に落とし込めていない</b>／社内で揃わない</div></div>
+        <div class="check"><span class="ic">✓</span><div>ツールを導入しても、<b>一部の人しか使わない</b>（配る≠使える）</div></div>
+        <div class="check"><span class="ic">✓</span><div>研修をしても“なるほど”で終わり、<b>翌週には元の業務</b>に戻る</div></div>
+      </div>
+    </div>
+    <div style="background:var(--accent-soft);border:1px solid #dfe6f4;border-radius:16px;padding:30px 30px;align-self:center">
+      <div class="tag">差がつくポイント</div>
+      <p class="serif" style="font-size:24px;line-height:1.6;margin-top:16px;color:var(--accent)">差がつくのは<br>ツールの有無ではなく、<br>社員が日常業務で<br><b>使いこなせるか</b>。</p>
+    </div>
+  </div>
+</section>
+
+<!-- 07 INDUSTRY PAIN -->
+<section class="slide pad-sm" data-sec="本当の課題">
+  <div class="kicker">御社の現場で起きていること</div>
+  <h1 class="title">毎月、こうした業務に“静かに”時間が溶けています。</h1>
+  <p class="lead mt8" style="font-size:15px">実際に導入企業で測った、AIで圧縮できた定型業務の例です。御社だと、どれが一番近いでしょうか？</p>
+  <div class="pain mt14">
+    <div class="pi"><span class="pt">安全書類・取引先ごとの書類作成</span><span class="ph">月 25時間</span></div>
+    <div class="pi"><span class="pt">顧客への月次レポート作成</span><span class="ph">月 24時間</span></div>
+    <div class="pi"><span class="pt">会議の議事録作成</span><span class="ph">月 10時間</span></div>
+    <div class="pi"><span class="pt">シフト・配置表の作成</span><span class="ph">月 10時間</span></div>
+    <div class="pi"><span class="pt">提案・プレゼン資料の作成</span><span class="ph">月 15時間</span></div>
+    <div class="pi"><span class="pt">日報・現場報告の清書</span><span class="ph">月 10時間</span></div>
+  </div>
+  <p class="lead mt20" style="font-size:14.5px">こうした「なくならないけれど、価値を生まない時間」を、AIに任せられる形にしていきます。</p>
+</section>
+
+<!-- 08 POSITIONING (dark statement) -->
+<section class="slide dark" data-sec="私たちの提供価値">
+  <div class="kicker">私たちが売っているもの</div>
+  <div class="cols l">
+    <div><p class="quote">売るのは“研修”ではなく、<br><span class="em">業務が変わった状態</span>。</p></div>
+    <div>
+      <p class="lead">「AIの使い方を教える研修」なら、世の中にたくさんあります。私たちが大切にしているのは、研修が終わった後に <b style="color:#fff">“さっきの◯◯業務が、実際に変わっている”</b> ところまで持っていくこと。</p>
+      <p class="lead mt20" style="color:#9fc0ff">だから研修の題材も、汎用サンプルではなく <b style="color:#fff">御社の実業務そのもの</b>（個人情報はマスキング）を使います。</p>
+    </div>
+  </div>
+</section>
+
+<!-- 09 COMPARISON -->
+<section class="slide" data-sec="一般研修との違い">
+  <div class="kicker">一般的なAI研修との違い</div>
+  <h1 class="title">「知っている」で終わらせず、「使えている」まで。</h1>
+  <table class="cmp mt20">
+    <thead><tr><th></th><th>一般的なAI研修</th><th class="us">弊社の実践型研修</th></tr></thead>
+    <tbody>
+      <tr><td class="rl">形式</td><td class="old">座学・講義型のインプット ／ e-Learning</td><td class="us">実務課題をその場で解く実践ワークショップ</td></tr>
+      <tr><td class="rl">教材</td><td class="old">汎用サンプル</td><td class="us">御社の実業務（マスキング）を題材化</td></tr>
+      <tr><td class="rl">成果物</td><td class="old">ノート・受講証明書</td><td class="us">参加者の数だけ“業務改善AI”が完成</td></tr>
+      <tr><td class="rl">研修後</td><td class="old">元の業務に戻る</td><td class="us">3ヶ月伴走し、社内でPDCAを自走</td></tr>
+    </tbody>
+  </table>
+  <p class="lead mt20" style="font-size:15px">受講後に残るのは「ノート」ではなく、<b class="accent">明日から使える“業務が変わる仕組み”</b>です。</p>
+</section>
+
+<!-- 10 THREE PILLARS -->
+<section class="slide" data-sec="選ばれる理由">
+  <div class="kicker">弊社が選ばれる3つの理由</div>
+  <h1 class="title">「定着」を、設計に組み込んでいます。</h1>
+  <div class="pillars mt20">
+    <div class="pillar"><span class="pn fnum">1</span><h3>定着まで設計</h3><p>座学で終わらせず、受講者の実業務をその場で題材に。研修後の運用まで伴走し、“使われ続ける状態”を作ります。</p></div>
+    <div class="pillar"><span class="pn fnum">2</span><h3>事業を作ってきた人間が設計</h3><p>研修専業ではなく、実際に事業を立ち上げてきたメンバーが、現場業務とROIの視点で設計。「どう使えば成果が出るか」まで踏み込みます。</p></div>
+    <div class="pillar"><span class="pn fnum">3</span><h3>効果の見える化</h3><p>受講前後で「この業務が何分→何分」を測定。経営に報告できる形で成果を残し、次の投資判断につなげます。</p></div>
+  </div>
+</section>
+
+<!-- 11 CREDIBILITY (監修・会社・実績) -->
+<section class="slide pad-sm" data-sec="信頼の裏づけ">
+  <div class="kicker">なぜ“定着まで”設計できるのか</div>
+  <h1 class="title">研修屋ではなく、AIの専門性と事業の両方を持つチーム。</h1>
+  <div class="bio mt14">
+    <div class="bioimg">監修者</div>
+    <div>
+      <div class="tag">研修プログラム監修</div>
+      <p class="serif" style="font-size:24px;margin-top:12px">鈴木 章央 <span style="font-size:15px;color:var(--sub)">Suzuki Akihiro</span></p>
+      <p class="lead mt8" style="font-size:14.5px">国立大学 生命体工学研究科 人間知能システム工学専攻。AI研究で修士・博士号を取得。2017年に株式会社Techno.sendを創業し、AIの受託開発・技術顧問・教育事業を展開。企業のAI導入支援を多数手がける。AIプログラミング講座の講師歴5年（Udemyでも講座を展開）。</p>
+      <div class="pillrow"><span class="pill">AI研究 修士・博士</span><span class="pill">AI受託開発・技術顧問</span><span class="pill">講師歴5年</span></div>
+    </div>
+  </div>
+  <div class="strip mt20" style="grid-template-columns:repeat(3,1fr)">
+    <div class="s"><div class="sn fnum">700<small>本+</small></div><div class="sl">自社制作のAI動画教材</div></div>
+    <div class="s"><div class="sn fnum">600<small>名+</small></div><div class="sl">法人研修の延べ受講者</div></div>
+    <div class="s"><div class="sn">全国</div><div class="sl">北海道〜九州でセミナー開催・新聞掲載実績</div></div>
+  </div>
+</section>
+
+<!-- 12 RETENTION proof (anti-fear) -->
+<section class="slide" data-sec="導入事例">
+  <div class="kicker">「また使われないのでは」への答え</div>
+  <h1 class="title">受講者が、<span class="accent">自分でAIを作って回し始める</span>ところまで。</h1>
+  <div class="cols tight mt20" style="gap:40px">
+    <div>
+      <p class="lead">「どうせ定着しない」は、皆さん最初に必ず言われます。私たちが一番設計しているのが、まさにこの“その後”です。</p>
+      <div class="checks mt20">
+        <div class="check"><span class="ic">✓</span><div><b>農機販売の会社</b>では、受講者が自分でGPTsを自作し、補助金申請やチラシ作成を省力化。研修後も“自走”しています。</div></div>
+        <div class="check"><span class="ic">✓</span><div><b>建設・電気工事の会社</b>では、紙書類の文字起こし専用AIを構築。1枚10〜60分の作業が“確認するだけ”に。</div></div>
+      </div>
+    </div>
+    <div style="background:var(--accent);color:#fff;border-radius:16px;padding:32px 30px;align-self:center">
+      <p class="serif" style="font-size:25px;line-height:1.6">配って終わり、<br>ではありません。</p>
+      <p style="font-size:14.5px;color:#cfdcf2;line-height:1.8;margin-top:16px">上場企業でも、最初は“配っても一部しか使わない”状態でした。そこから<b style="color:#fff">全部署が「ほぼ毎日」使う</b>状態まで設計しています。</p>
+    </div>
+  </div>
+</section>
+
+<!-- 13 CASE STATS -->
+<section class="slide" data-sec="導入事例">
+  <div class="kicker">導入企業の成果（実測）</div>
+  <h1 class="title">“浮いた時間”が、受講料を回収します。</h1>
+  <div class="grid g3 mt20" style="flex:1;align-content:center">
+    <div class="case">
+      <span class="co">建設業・51名</span><span class="biz">安全書類の作成</span>
+      <div class="ba"><span class="from">25h</span><span class="arr">→</span><span class="to">10h</span></div>
+      <span class="delta">月15時間削減 ／ 60%減</span>
+      <span class="desc">元請けごとに異なる書類を、AIが8割作成し人が確認する形へ。議事録も10h→3h。</span>
+    </div>
+    <div class="case">
+      <span class="co">会計事務所・7名</span><span class="biz">顧客への月次レポート</span>
+      <div class="ba"><span class="from">24h</span><span class="arr">→</span><span class="to">12h</span></div>
+      <span class="delta">月12時間削減 ／ 50%減</span>
+      <span class="desc">データ統合〜レポート文面までを定型化。海外向け提案資料は15h→5hに。</span>
+    </div>
+    <div class="case">
+      <span class="co">ホテル・50名</span><span class="biz">シフト作成業務</span>
+      <div class="ba"><span class="from">10h</span><span class="arr">→</span><span class="to">5h</span></div>
+      <span class="delta">月5時間削減 ／ 50%減</span>
+      <span class="desc">属人化していた作成を仕組み化。修学旅行のメニュー案作成も10h→6hに。</span>
+    </div>
+  </div>
+  <p class="lead" style="font-size:13.5px;color:var(--faint)">※ いずれも受講後アンケート・実測値。業種・規模の近い実例をご用意できます。</p>
+</section>
+
+<!-- 14 CURRICULUM -->
+<section class="slide pad-sm" data-sec="研修の中身">
+  <div class="kicker">研修カリキュラム</div>
+  <h1 class="title">全12時間（2時間×6回）。すべて、御社の実業務に直結します。</h1>
+  <p class="lead mt8" style="font-size:14px">講義時間の<b class="accent">70%以上を演習・ワーク</b>に充てるハンズオン構成。各回で“その場で動くもの”を作ります。</p>
+  <table class="curric mt14">
+    <thead><tr><th class="no">回</th><th>テーマ</th><th>主なワーク（実技）</th></tr></thead>
+    <tbody>
+      <tr><td class="no">1</td><td class="th">生成AIの基礎とプロンプト設計入門</td><td class="wk">出力比較／自社業務のプロンプト作成（業界動向・セキュリティ含む）</td></tr>
+      <tr><td class="no">2</td><td class="th">表計算 × AIによる業務効率化</td><td class="wk">コードによる自動化／データ要約・整形・自動転記</td></tr>
+      <tr><td class="no">3</td><td class="th">データ分析 & レポート・資料作成</td><td class="wk">レポート文書作成／スライド生成AIでのビジュアル化</td></tr>
+      <tr><td class="no">4</td><td class="th">画像生成・音声入力 × AIツール活用</td><td class="wk">業務用ラフ案（バナー等）生成／短尺PR動画制作</td></tr>
+      <tr><td class="no">5</td><td class="th">GPTs構築・NotebookLMでナレッジ活用</td><td class="wk">社内資料のQ&A化／RAG型の社内質問応答を構築</td></tr>
+      <tr><td class="no">6</td><td class="th">全体振り返りと PoC プランニング</td><td class="wk">自社業務への適用プラン設計／PoCテーマの決定</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- 15 PROCESS -->
+<section class="slide" data-sec="進め方">
+  <div class="kicker">導入の進め方</div>
+  <h1 class="title">研修して終わり、ではなく約半年の“伴走プロジェクト”。</h1>
+  <div class="steps mt26">
+    <div class="step"><div class="dot fnum">1</div><div class="st">事前ヒアリング</div><div class="sd">御社の業務・課題を把握し、効く領域を見立てる。</div><div class="sm">研修とは別枠</div></div>
+    <div class="step"><div class="dot fnum">2</div><div class="st">専用カリキュラム作成</div><div class="sd">御社の実業務を題材に、内容を設計・合意。</div><div class="sm">オーダーメイド</div></div>
+    <div class="step"><div class="dot fnum">3</div><div class="st">研修の実施</div><div class="sd">全12時間（2h×6回）。オンライン中心、10名以上は対面も可。</div><div class="sm">実技70%以上</div></div>
+    <div class="step"><div class="dot fnum">4</div><div class="st">3ヶ月の定着フォロー</div><div class="sd">運用に伴走し、効果（何分→何分）を測定・見える化。</div><div class="sm">定着まで設計</div></div>
+  </div>
+  <div class="spacer"></div>
+  <p class="lead" style="font-size:15px">最低5名から（雇用保険加入者）。<b class="accent">経営者・役員1名は無料でご招待</b>します（5名以上のお申込み時、10名以上で最大2名）。</p>
+</section>
+
+<!-- 16 SUBSIDY / 社労士 -->
+<section class="slide" data-sec="助成金">
+  <div class="kicker">助成金の活用</div>
+  <h1 class="title">国の助成金で、研修費の<span class="accent">大半が戻る</span>仕組みです。</h1>
+  <div class="cols tight mt20" style="gap:44px">
+    <div>
+      <p class="lead">人材開発支援助成金「事業展開等リスキリング支援コース」。雇用保険の加入者5名以上が対象で、1事業所あたり<b>年間最大1億円</b>を上限に補助されます。</p>
+      <div class="checks mt20">
+        <div class="check"><span class="ic">✓</span><div>申請は<b>実績500件以上の提携社労士法人が代行</b>。御社の手間は最小限に。</div></div>
+        <div class="check"><span class="ic">✓</span><div>弊社は社労士の<b>紹介料を一切いただきません</b>。</div></div>
+        <div class="check"><span class="ic">✓</span><div>自治体の助成金と<b>併用できる</b>ケースもあります（案件ごとに要確認）。</div></div>
+      </div>
+    </div>
+    <div style="background:var(--white);border:1px solid var(--line);border-radius:16px;padding:28px 28px;align-self:center">
+      <div class="lab" style="font-size:12.5px;color:var(--sub);letter-spacing:.03em">申請から受給までの流れ</div>
+      <p style="font-size:14.5px;line-height:2.0;margin-top:12px;color:var(--ink-soft)">
+        お申込み → <b>計画申請</b> → 認定受理 → 研修受講 → <b>支給申請</b> → 受給</p>
+      <p style="font-size:12.5px;color:var(--sub);margin-top:14px;line-height:1.7">準備〜受給まで全体で約半年。だからこそ、検討は早いほど有利です。</p>
+    </div>
+  </div>
+</section>
+
+<!-- 17 WHY NOW -->
+<section class="slide pad-sm" data-sec="今、始める理由">
+  <div class="kicker">なぜ“今”か</div>
+  <h1 class="title">差がつくのは、ツールの新しさではなく<br><span class="accent">“土台を作った時期”</span>です。</h1>
+  <div class="grid g3 mt20" style="align-content:center">
+    <div class="stat"><div class="serif" style="font-size:20px;color:var(--accent);font-weight:600">助成金の期限</div><p style="font-size:14px;color:var(--sub);line-height:1.75;margin-top:12px"><b class="sig">2027年3月末まで</b>。申請〜受給に数ヶ月かかるため、逆算するともう動く時期です。</p></div>
+    <div class="stat"><div class="serif" style="font-size:20px;color:var(--accent);font-weight:600">取引先の先行</div><p style="font-size:14px;color:var(--sub);line-height:1.75;margin-top:12px">元請け・取引先が先にAI化すると、対応の差がそのまま受注の差になります。</p></div>
+    <div class="stat"><div class="serif" style="font-size:20px;color:var(--accent);font-weight:600">複利で開く差</div><p style="font-size:14px;color:var(--sub);line-height:1.75;margin-top:12px">AIは走りながら育てるもの。早く始めた会社ほど、ノウハウが蓄積していきます。</p></div>
+  </div>
+  <p class="lead mt20" style="font-size:15px">今やる意味は、最新ツールを学ぶことより、<b class="accent">社内にAI活用の“土台”を作ること</b>。一度の研修ではなく、組織文化として定着させる第一歩です。</p>
+</section>
+
+<!-- 18 PRICE -->
+<section class="slide" data-sec="費用">
+  <div class="kicker">費用</div>
+  <h1 class="title">実質、1人あたり<span class="accent">10万円弱</span>から。</h1>
+  <p class="lead mt8" style="font-size:15px">人材開発支援助成金の活用で、受講料の大部分が補助されます。</p>
+  <div class="price mt20">
+    <div class="col">
+      <div class="lab">標準受講料</div>
+      <div class="big fnum">¥300,300<span class="u"> / 人（税込）</span></div>
+      <div class="note">全12時間（2時間×6回）＋ 研修後3ヶ月のフォローアップ込み。最低5名から。</div>
+    </div>
+    <div class="col hl">
+      <div class="lab">助成金活用後の実質負担（中小企業）</div>
+      <div class="big fnum">約 ¥98,675<span class="u"> / 人</span></div>
+      <div class="note">社労士費用込み。経営者1名は無料でご招待（5名以上のお申込み時）。</div>
+    </div>
+  </div>
+  <p class="lead mt20" style="font-size:15px"><b class="accent">浮いた時間で回収できる投資です。</b> 例：月15時間かかっていた業務が半分になれば、年間で約90時間。その時間を本来の業務に戻せます。</p>
+</section>
+
+<!-- 19 BEST START (dark) -->
+<section class="slide dark" data-sec="まとめ">
+  <div class="kicker">最初の一歩として</div>
+  <div class="cols l">
+    <div><p class="quote">完璧を待たず、<br>まず始める。<br><span class="em">最高のスタート</span>を、<br>今、切りましょう。</p></div>
+    <div>
+      <p class="lead">AI活用は、走りながら育てるものです。だからこそ最初の一歩は、リスクを抑えて踏み出せる形がいちばん。</p>
+      <div class="checks mt20">
+        <div class="check"><span class="ic">✓</span><div>助成金で<b style="color:#fff">実質10万円弱／人</b>から</div></div>
+        <div class="check"><span class="ic">✓</span><div>経営者は<b style="color:#fff">無料でご招待</b></div></div>
+        <div class="check"><span class="ic">✓</span><div>研修後<b style="color:#fff">3ヶ月の伴走</b>つき</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 20 NEXT STEP -->
+<section class="slide" data-sec="次の一歩">
+  <div class="kicker">次の一歩</div>
+  <h1 class="title">まず、御社の“一番効きそうな業務”で<br>ROIを一緒に試算してみませんか。</h1>
+  <div class="board mt20">
+    <div class="bx"><div class="bl">最初に取り組む業務</div><div class="bv">例：議事録／安全書類／月次レポート／提案資料 … <span class="blank"></span></div></div>
+    <div class="bx"><div class="bl">対象人数・部署</div><div class="bv">雇用保険加入者 <span class="blank" style="min-width:60px"></span> 名 ／ 経営者 <span class="blank" style="min-width:40px"></span> 名</div></div>
+    <div class="bx"><div class="bl">実施したい時期</div><div class="bv"><span class="blank"></span> 頃から（助成金は2027年3月末まで）</div></div>
+    <div class="bx"><div class="bl">次回までに決めること・期日</div><div class="bv"><span class="blank" style="min-width:240px"></span></div></div>
+  </div>
+  <p class="lead mt20" style="font-size:15px">次回は、御社の具体業務でROI試算を一緒に作り、進めるかどうかを判断いただけます。社内説明用の資料もご用意します。</p>
+</section>
+
+<!-- 21 CONTACT / CLOSING -->
+<section class="slide ink cover" data-sec="お問い合わせ">
+  <div class="logo"><span class="m"></span>AIスキル</div>
+  <p class="serif" style="font-size:30px;margin-top:22px;line-height:1.5">AIで、人を、社会を、未来を変える。</p>
+  <p class="lead mt14" style="max-width:52ch">ご質問・ご相談、無料デモのご希望など、お気軽にお申し付けください。御社に合わせた進め方をご提案します。</p>
+  <div class="deflist mt26" style="color:#cfdcf2">
+    <dt style="color:#8fa6c9">会社名</dt><dd style="color:#fff">株式会社AIスキル</dd>
+    <dt style="color:#8fa6c9">代表者</dt><dd style="color:#fff">立石 亮介</dd>
+    <dt style="color:#8fa6c9">所在地</dt><dd style="color:#fff">東京都渋谷区神南1-11-4 FPGリンクス神南 5階</dd>
+    <dt style="color:#8fa6c9">事業内容</dt><dd style="color:#fff">AI活用サポート事業／教育事業／コミュニティ事業／SNS事業</dd>
+  </div>
+</section>
+
+<!-- ===== APPENDIX ===== -->
+<!-- A1 divider -->
+<section class="slide" data-sec="付録">
+  <div class="spacer"></div>
+  <div class="tag">Appendix</div>
+  <h1 class="title lg" style="margin-top:16px">付録：詳細資料</h1>
+  <p class="lead mt8">料金の内訳・カリキュラム詳細・よくあるご質問。商談に合わせて必要なページのみご参照ください。</p>
+  <div class="spacer"></div>
+</section>
+
+<!-- A2 price detail -->
+<section class="slide pad-sm" data-sec="付録 ｜ 料金">
+  <div class="kicker">付録 ｜ 料金の内訳</div>
+  <h1 class="title">助成金活用後の実質負担（1人あたり・目安）</h1>
+  <table class="cmp mt20">
+    <thead><tr><th>項目</th><th>中小企業</th><th class="us">大企業</th></tr></thead>
+    <tbody>
+      <tr><td class="rl">標準受講料</td><td class="old">¥300,300</td><td class="us">¥300,300</td></tr>
+      <tr><td class="rl">助成金（経費助成）</td><td class="old">約 −¥225,225</td><td class="us">約 −¥209,880</td></tr>
+      <tr><td class="rl">賃金助成</td><td class="old">約 −¥12,000</td><td class="us">約 −¥6,000</td></tr>
+      <tr><td class="rl">社労士費用（助成額の約15%）</td><td class="old">約 ＋¥35,600</td><td class="us">約 ＋¥32,380</td></tr>
+      <tr><td class="rl">実質負担</td><td class="old"><b>約 ¥98,675</b></td><td class="us"><b>約 ¥116,800</b></td></tr>
+    </tbody>
+  </table>
+  <p class="lead mt20" style="font-size:13px;color:var(--faint)">※ 助成額・賃金助成は企業区分や申請内容により変動します。動画教材を用いた研修は賃金助成の対象外。申請はご自身でも可能です（提携社労士に依頼の場合は上記手数料）。最新の条件は個別にご確認ください。</p>
+</section>
+
+<!-- A3 FAQ -->
+<section class="slide pad-sm" data-sec="付録 ｜ FAQ">
+  <div class="kicker">付録 ｜ よくあるご質問</div>
+  <h1 class="title">よくあるご質問</h1>
+  <div class="grid g2 mt20" style="gap:18px 44px">
+    <div><p style="font-weight:700;font-size:15px">オンラインですか、対面ですか？</p><p class="muted" style="font-size:13.5px;line-height:1.7;margin-top:6px">最低5名以上で基本オンライン。10名以上なら対面も可能です（交通費別途）。アーカイブ視聴も可能です。</p></div>
+    <div><p style="font-weight:700;font-size:15px">研修期間はどのくらい？</p><p class="muted" style="font-size:13.5px;line-height:1.7;margin-top:6px">全12時間（2時間×6回が中心）。1ヶ月集中も、2〜3ヶ月かけても、御社の状況に合わせて調整します。</p></div>
+    <div><p style="font-weight:700;font-size:15px">すでに他社研修を受けています。</p><p class="muted" style="font-size:13.5px;line-height:1.7;margin-top:6px">内容が異なれば、助成金は一法人・年度で複数回の活用が可能です。一度内容をご確認ください。</p></div>
+    <div><p style="font-weight:700;font-size:15px">社員のITリテラシーが不安です。</p><p class="muted" style="font-size:13.5px;line-height:1.7;margin-top:6px">20〜60代の全世代で好評をいただいています。実業務を題材にするため「自分の仕事でどう使うか」がつかめます。</p></div>
+    <div><p style="font-weight:700;font-size:15px">個人情報は使って大丈夫？</p><p class="muted" style="font-size:13.5px;line-height:1.7;margin-top:6px">実データはマスキングしたサンプルを使用。実業務に近い形で、安全に演習できます。</p></div>
+    <div><p style="font-weight:700;font-size:15px">申請が難しそうです。</p><p class="muted" style="font-size:13.5px;line-height:1.7;margin-top:6px">実績500件以上の提携社労士が代行。対象判定から書類準備まで支援します（弊社の紹介料なし）。</p></div>
+  </div>
+</section>
+
+</div></div>
+<script>
+const slides=[...document.querySelectorAll('.slide')];
+// auto-inject footers
+slides.forEach((s,k)=>{
+  const f=document.createElement('div');f.className='foot';
+  const sec=s.dataset.sec||'';
+  f.innerHTML='<span class="brandmark"><span class="dot"></span>株式会社AIスキル</span>'+
+    '<span>'+String(k+1).padStart(2,'0')+' / '+String(slides.length).padStart(2,'0')+'　'+sec+'</span>';
+  s.appendChild(f);
+});
+let i=0;
+const counter=document.getElementById('counter'),prog=document.getElementById('prog'),stage=document.getElementById('stage');
+function fit(){const s=Math.min(innerWidth/1280,innerHeight/720);stage.style.transform=`scale(${s})`}
+function show(n){i=Math.max(0,Math.min(slides.length-1,n));slides.forEach((s,k)=>s.classList.toggle('active',k===i));
+  counter.textContent=String(i+1).padStart(2,'0')+' / '+String(slides.length).padStart(2,'0');
+  prog.style.width=((i+1)/slides.length*100)+'%';if(('#'+(i+1))!==location.hash)location.hash=i+1}
+addEventListener('keydown',e=>{
+  if(['ArrowRight','ArrowDown',' ','PageDown'].includes(e.key)){show(i+1);e.preventDefault()}
+  else if(['ArrowLeft','ArrowUp','PageUp'].includes(e.key)){show(i-1);e.preventDefault()}
+  else if(e.key==='Home')show(0);else if(e.key==='End')show(slides.length-1);
+  else if(e.key==='p'||e.key==='P')print();});
+addEventListener('click',e=>{if(e.target.closest('a'))return;if(e.clientX<innerWidth*0.30)show(i-1);else show(i+1)});
+addEventListener('hashchange',()=>show((parseInt(location.hash.slice(1))||1)-1));
+addEventListener('resize',fit);fit();show((parseInt(location.hash.slice(1))||1)-1);
+const hint=document.getElementById('hint');setTimeout(()=>hint&&hint.classList.add('hide'),5000);
+</script>
+</body>
+</html>
