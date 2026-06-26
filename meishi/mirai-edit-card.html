@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>名刺 - 株式会社みらい編集</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&family=Noto+Serif+JP:wght@500;700&display=swap');
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Noto Sans JP', sans-serif; }
+  .card {
+    position: relative;
+    width: 1050px;
+    height: 634px;
+    overflow: hidden;
+  }
+
+  /* ============ FRONT ============ */
+  .front { background: #0F2A47; }
+  .front .topbar {
+    position: absolute; top: 0; left: 0;
+    width: 100%; height: 8px;
+    background: linear-gradient(90deg, #C9A227 0%, #E6C75A 100%);
+  }
+  /* faint growth graph decoration */
+  .front .graph {
+    position: absolute; right: -40px; bottom: -30px;
+    width: 620px; height: 360px; opacity: 0.10;
+  }
+  .front .center {
+    position: absolute; top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center; width: 100%;
+  }
+  .front .mark {
+    width: 92px; height: 92px; margin: 0 auto 30px;
+    border: 2px solid #C9A227; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .front .eyebrow {
+    color: #9FB4CC; font-size: 19px; letter-spacing: 8px;
+    font-weight: 500; margin-bottom: 18px;
+  }
+  .front .company {
+    color: #FFFFFF; font-family: 'Noto Serif JP', serif;
+    font-size: 62px; font-weight: 700; letter-spacing: 6px;
+  }
+  .front .rule {
+    width: 70px; height: 3px; background: #C9A227;
+    margin: 26px auto 24px;
+  }
+  .front .tagline {
+    color: #E6C75A; font-size: 24px; letter-spacing: 3px; font-weight: 500;
+  }
+
+  /* ============ BACK ============ */
+  .back { background: #FFFFFF; }
+  .back .band {
+    position: absolute; left: 0; top: 0;
+    width: 26px; height: 100%; background: #0F2A47;
+  }
+  .back .band .gold {
+    position: absolute; right: -6px; top: 0;
+    width: 5px; height: 100%; background: #C9A227;
+  }
+  .back .mark {
+    position: absolute; top: 64px; right: 80px;
+    width: 64px; height: 64px;
+    border: 2px solid #0F2A47; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .back .inner { position: absolute; left: 96px; top: 78px; right: 80px; }
+  .back .company {
+    color: #0F2A47; font-family: 'Noto Serif JP', serif;
+    font-size: 26px; font-weight: 700; letter-spacing: 3px; margin-bottom: 34px;
+  }
+  .back .name {
+    color: #0F2A47; font-size: 64px; font-weight: 700; letter-spacing: 6px;
+    display: inline-block; vertical-align: bottom;
+  }
+  .back .title {
+    color: #5A6B7E; font-size: 22px; letter-spacing: 3px;
+    display: inline-block; margin-left: 24px; vertical-align: bottom; padding-bottom: 8px;
+  }
+  .back .contact {
+    position: absolute; left: 96px; bottom: 70px; right: 80px;
+  }
+  .back .row {
+    display: flex; align-items: center; margin-bottom: 20px;
+  }
+  .back .row svg { flex: 0 0 auto; margin-right: 18px; }
+  .back .row span { color: #1F3A56; font-size: 23px; letter-spacing: 1px; }
+  .back .tagline {
+    position: absolute; left: 96px; bottom: 30px;
+    color: #C9A227; font-size: 17px; letter-spacing: 2px; font-weight: 500;
+  }
+</style>
+</head>
+<body>
+
+<!-- ===================== FRONT ===================== -->
+<div class="card front" data-document-role="page" data-label="表面">
+  <div class="topbar"></div>
+
+  <svg class="graph" viewBox="0 0 620 360" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <polyline points="20,330 140,250 260,280 380,160 500,200 600,40"
+      stroke="#E6C75A" stroke-width="6" fill="none"
+      stroke-linecap="round" stroke-linejoin="round"/>
+    <polygon points="600,40 560,52 588,80" fill="#E6C75A"/>
+  </svg>
+
+  <div class="center">
+    <div class="mark">
+      <svg width="46" height="46" viewBox="0 0 46 46" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <polyline points="8,34 19,24 27,29 38,12" stroke="#C9A227" stroke-width="3.5"
+          fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+        <polygon points="38,12 28,13 35,21" fill="#C9A227"/>
+      </svg>
+    </div>
+    <div class="eyebrow">経営支援パートナー</div>
+    <div class="company">株式会社みらい編集</div>
+    <div class="rule"></div>
+    <div class="tagline">中小企業の売上アップと、コストダウンを。</div>
+  </div>
+</div>
+
+<!-- ===================== BACK ===================== -->
+<div class="card back" data-document-role="page" data-label="裏面">
+  <div class="band"><div class="gold"></div></div>
+
+  <div class="mark">
+    <svg width="32" height="32" viewBox="0 0 46 46" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <polyline points="8,34 19,24 27,29 38,12" stroke="#0F2A47" stroke-width="3.5"
+        fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      <polygon points="38,12 28,13 35,21" fill="#0F2A47"/>
+    </svg>
+  </div>
+
+  <div class="inner">
+    <div class="company">株式会社みらい編集</div>
+    <div>
+      <span class="name">河野 邦彦</span>
+      <span class="title">執行役員</span>
+    </div>
+  </div>
+
+  <div class="contact">
+    <div class="row">
+      <svg width="26" height="26" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M12 2C7.8 2 4.5 5.3 4.5 9.5C4.5 15 12 22 12 22C12 22 19.5 15 19.5 9.5C19.5 5.3 16.2 2 12 2Z"
+          stroke="#0F2A47" stroke-width="1.8" fill="none"/>
+        <circle cx="12" cy="9.5" r="2.6" stroke="#0F2A47" stroke-width="1.8" fill="none"/>
+      </svg>
+      <span>〒113-0023&nbsp;&nbsp;東京都文京区向丘2丁目18番2号</span>
+    </div>
+    <div class="row">
+      <svg width="26" height="26" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M5 4H9L11 9L8.5 10.5C9.5 12.5 11.5 14.5 13.5 15.5L15 13L20 15V19C20 20 19 21 18 21C10.8 20.6 3.4 13.2 3 6C3 5 4 4 5 4Z"
+          stroke="#0F2A47" stroke-width="1.8" fill="none" stroke-linejoin="round"/>
+      </svg>
+      <span>070-8311-7053</span>
+    </div>
+    <div class="row">
+      <svg width="26" height="26" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect x="3" y="5" width="18" height="14" rx="2" stroke="#0F2A47" stroke-width="1.8" fill="none"/>
+        <path d="M4 7L12 13L20 7" stroke="#0F2A47" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      <span>kawano@mirai-edit.com</span>
+    </div>
+  </div>
+
+  <div class="tagline">中小企業の売上アップと、コストダウンを。</div>
+</div>
+
+</body>
+</html>
