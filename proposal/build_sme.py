@@ -27,6 +27,27 @@ def cover(prs, i, n):
     footer(s,i,n,'表紙',dark=True)
 
 @reg
+def company_short(prs, i, n):
+    # 二段構えの一段目：序盤の“短い会社紹介”（実績・数字は載せない＝06§7/02⓪）
+    s=slide(prs); kicker(s,'ごあいさつ')
+    title(s,[[('はじめに、私たちについて少しだけ。',{'size':29,'color':INK,'bold':True})]])
+    textbox(s,MX,Inches(1.95),Inches(7.4),Inches(1.6),
+        [[('株式会社AIスキルは、最先端のAIスキルを体系的・実践的に学べる',{'size':15,'color':SUB})],
+         [('教育環境を提供する会社です。AIの「導入」から「運用・定着」までを',{'size':15,'color':SUB})],
+         [('一貫して支援し、“使いこなせる人材”を育てることを大切にしています。',{'size':15,'color':SUB})]],line=1.85)
+    textbox(s,MX,Inches(3.95),Inches(4),Inches(0.3),[[('提供サービス',{'size':11,'color':FAINT,'spacing':0.8})]])
+    pill_row(s,['AI活用サポート事業','教育事業','コミュニティ事業','SNS事業'],MX,Inches(4.32))
+    cx=EW-MX-Inches(3.7); rect(s,cx,Inches(1.95),Inches(3.7),Inches(2.7),fill=PANEL,line_color=LINE,rounded=True,radius=0.05)
+    textbox(s,cx+Inches(0.32),Inches(2.18),Inches(3.1),Inches(0.4),[[('「AIで、人を、社会を、未来を変える。」',{'size':12,'color':BLUE_D,'bold':True})]],line=1.3)
+    info=[('会社名','株式会社AIスキル'),('代表者','立石 亮介'),('設立','2024年12月'),('所在地','東京都渋谷区神南1-11-4')]
+    iy=Inches(2.78)
+    for k,v in info:
+        textbox(s,cx+Inches(0.32),iy,Inches(1.0),Inches(0.4),[[(k,{'size':10.5,'color':FAINT})]])
+        textbox(s,cx+Inches(1.25),iy,Inches(2.3),Inches(0.5),[[(v,{'size':11.5,'color':INK,'bold':True})]],line=1.15)
+        iy+=Inches(0.47)
+    footer(s,i,n,'ごあいさつ')
+
+@reg
 def peer(prs, i, n):
     s=slide(prs); kicker(s,'いま、中小企業で起きていること')
     title(s,[[('先進的な大企業ではなく、',{'size':28,'color':INK,'bold':True})],
@@ -182,27 +203,19 @@ def pillars(prs, i, n):
 
 @reg
 def credibility(prs, i, n):
+    # 二段構えの二段目：課題が見えた“後”に置く「効く実績・監修」の証拠（01§79）
     s=slide(prs); kicker(s,'信頼の裏づけ')
     title(s,[[('研修屋ではなく、',{'size':27,'color':INK,'bold':True}),('AIの専門性と事業の両方',{'size':27,'color':BLUE,'bold':True}),('を持つチーム。',{'size':27,'color':INK,'bold':True})]])
-    # left: company
-    rect(s,MX,Inches(2.05),Inches(5.2),Inches(3.0),fill=PANEL,line_color=LINE,rounded=True,radius=0.05)
-    textbox(s,MX+Inches(0.4),Inches(2.3),Inches(4.4),Inches(0.5),[[('株式会社AIスキル',{'size':17,'color':INK,'bold':True})]])
-    textbox(s,MX+Inches(0.4),Inches(2.78),Inches(4.5),Inches(0.6),[[('「AIで、人を、社会を、未来を変える。」',{'size':12.5,'color':BLUE_D,'bold':True})]],line=1.3)
-    info=[('代表者','立石 亮介'),('設立','2024年12月'),('所在地','東京都渋谷区神南1-11-4'),('事業','AI活用支援／教育／コミュニティ')]
-    iy=Inches(3.4)
-    for kk,(k,v) in enumerate(info):
-        textbox(s,MX+Inches(0.4),iy,Inches(1.1),Inches(0.4),[[(k,{'size':10.5,'color':FAINT})]])
-        textbox(s,MX+Inches(1.45),iy,Inches(3.6),Inches(0.4),[[(v,{'size':12,'color':INK,'bold':True})]],line=1.2)
-        iy+=Inches(0.4)
-    # right: supervisor
-    bx=MX+Inches(5.6)
-    textbox(s,bx,Inches(2.1),Inches(6),Inches(0.3),[[('研修プログラム監修',{'size':11,'color':BLUE,'bold':True,'spacing':1.0})]])
-    textbox(s,bx,Inches(2.42),Inches(6),Inches(0.5),[[('鈴木 章央',{'size':22,'color':INK,'bold':True}),('  Suzuki Akihiro',{'size':12,'color':FAINT})]])
-    textbox(s,bx,Inches(3.1),Inches(5.4),Inches(1.3),
-        [[('国立大学大学院でAIを研究し、修士・博士号を取得。',{'size':13,'color':SUB})],
-         [('2017年にAI企業を創業し、開発・技術顧問・教育を展開。',{'size':13,'color':SUB})],
-         [('企業のAI導入支援を多数手がけ、AI講座の講師歴は5年。',{'size':13,'color':SUB})]],line=1.7)
-    pill_row(s,['AI研究 修士・博士','AI受託開発・技術顧問','講師歴5年'],bx,Inches(4.45),size=11)
+    px=MX; py=Inches(2.15); rect(s,px,py,Inches(2.7),Inches(2.7),fill=PANEL,line_color=LINE,rounded=True,radius=0.05)
+    textbox(s,px,py+Inches(2.15),Inches(2.7),Inches(0.4),[[('監修者',{'size':12,'color':FAINT,'bold':True})]],align=PP_ALIGN.CENTER)
+    bx=px+Inches(3.1)
+    textbox(s,bx,Inches(2.2),Inches(7),Inches(0.3),[[('研修プログラム監修',{'size':11,'color':BLUE,'bold':True,'spacing':1.0})]])
+    textbox(s,bx,Inches(2.55),Inches(7),Inches(0.6),[[('鈴木 章央',{'size':24,'color':INK,'bold':True}),('  Suzuki Akihiro',{'size':13,'color':FAINT})]])
+    textbox(s,bx,Inches(3.35),Inches(5.5),Inches(1.4),
+        [[('国立大学大学院でAIを研究し、修士・博士号を取得。',{'size':13.5,'color':SUB})],
+         [('2017年にAI企業を創業し、開発・技術顧問・教育を展開。',{'size':13.5,'color':SUB})],
+         [('企業のAI導入支援を多数手がけ、AI講座の講師歴は5年。',{'size':13.5,'color':SUB})]],line=1.7)
+    pill_row(s,['AI研究 修士・博士','AI受託開発・技術顧問','講師歴5年'],bx,Inches(4.75),size=11)
     footer(s,i,n,'信頼の裏づけ')
 
 @reg
@@ -429,6 +442,15 @@ def faq(prs, i, n):
         textbox(s,x,yy+Inches(0.38),cw,Inches(0.7),[[(a,{'size':12,'color':SUB})]],line=1.5)
     footer(s,i,n,'付録｜FAQ')
 
+# 営業マニュアルの商談フロー（06§7／00-02）に忠実な並び。
+# 二段構えの会社紹介：序盤=短い名乗り(company_short)／中盤=効く実績・監修(track→credibility)。
+ORDER=[cover, company_short, peer, excuses, fear, problem, pain,
+       value, compare, pillars,
+       track, credibility, retention, cases,
+       curriculum, process, subsidy, price, whynow,
+       summary, nextstep, contact,
+       appendix_div, price_detail, faq]
+
 if __name__=='__main__':
     out=os.path.join(os.path.dirname(os.path.abspath(__file__)),'ai-training-proposal-sme.pptx')
-    render(new_prs(), S, out)
+    render(new_prs(), ORDER, out)
