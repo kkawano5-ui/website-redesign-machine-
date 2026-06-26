@@ -47,8 +47,8 @@ def track(prs, i, n):
     title(s,[[('“教える”だけでなく“成果を出す”研修を、',{'size':27,'color':INK,'bold':True})],
              [('数多くの企業・経営者に。',{'size':27,'color':INK,'bold':True})]],y=Inches(1.0),line=1.25)
     stats=[('200','社超','研修・セミナー\n導入企業'),('150,000','名超','のべセミナー\n参加者数'),
-           ('15,000','名超','AI学習コミュニティ\n会員数'),('3,000','名超','経営者が\n研修・セミナー受講'),
-           ('700','本超','自社制作の\nAI動画教材')]
+           ('20,000','名超','AI学習コミュニティ\n参加者数'),('3,000','名超','経営者が\n研修・セミナー受講'),
+           ('800','本超','自社制作の\nAI動画教材')]
     nn=len(stats); gap=Inches(0.24); cw=(CW-gap*(nn-1))/nn; y=Inches(2.55); h=Inches(2.3)
     for k,(num,unit,lab) in enumerate(stats):
         x=MX+k*(cw+gap); rect(s,x,y,cw,h,fill=WHITE,line_color=LINE,rounded=True,radius=0.06)
