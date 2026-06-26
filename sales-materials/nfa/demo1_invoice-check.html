@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>請求・給与ダブルチェック自動化｜NFA様 デモ</title>
+<style>
+:root{--navy:#13294b;--blue:#1f5fa8;--teal:#1aa3a3;--bg:#f4f6fa;--card:#fff;--ink:#1f2733;--soft:#5b6675;--line:#e2e7ef;--red:#d64545;--amber:#d99211;--green:#2f9e54;}
+*{box-sizing:border-box;margin:0;padding:0;font-family:"Hiragino Kaku Gothic ProN","Yu Gothic","Meiryo",sans-serif}
+body{background:var(--bg);color:var(--ink);line-height:1.6;padding:0 0 60px}
+header{background:linear-gradient(120deg,var(--navy),var(--blue));color:#fff;padding:22px 30px}
+header h1{font-size:22px}
+header p{font-size:13px;opacity:.85;margin-top:4px}
+.tag{display:inline-block;background:rgba(255,255,255,.18);padding:3px 10px;border-radius:20px;font-size:12px;margin-top:8px}
+.wrap{max-width:1180px;margin:22px auto;padding:0 20px}
+.panel{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:18px 20px;margin-bottom:20px}
+.panel h2{font-size:16px;color:var(--navy);margin-bottom:4px;display:flex;align-items:center;gap:8px}
+.panel .desc{font-size:12.5px;color:var(--soft);margin-bottom:12px}
+.num{display:inline-flex;width:22px;height:22px;background:var(--blue);color:#fff;border-radius:50%;align-items:center;justify-content:center;font-size:13px;font-weight:700}
+table{width:100%;border-collapse:collapse;font-size:13px}
+th,td{border:1px solid var(--line);padding:7px 9px;text-align:left}
+th{background:#eef2f8;color:var(--navy);font-weight:700;font-size:12px;white-space:nowrap}
+td input{width:100%;border:none;background:transparent;font-size:13px;font-family:inherit}
+td input:focus{outline:2px solid var(--blue);border-radius:4px}
+td.n input,td.n{text-align:right}
+.btns{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}
+button{font-family:inherit;font-size:13.5px;font-weight:700;border:none;border-radius:8px;padding:10px 18px;cursor:pointer}
+.primary{background:var(--blue);color:#fff}
+.primary:hover{background:#19508f}
+.ghost{background:#fff;color:var(--blue);border:1.5px solid var(--blue)}
+.ghost:hover{background:#eef4fb}
+.small{font-size:12px;padding:6px 12px}
+.kpis{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-bottom:18px}
+.kpi{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px;text-align:center}
+.kpi .v{font-size:22px;font-weight:800;color:var(--navy)}
+.kpi .l{font-size:11.5px;color:var(--soft);margin-top:2px}
+.kpi.alert .v{color:var(--red)}
+.kpi.good .v{color:var(--green)}
+.report td .st{font-weight:700;font-size:12px;white-space:nowrap}
+.r-red{background:#fdecec}.r-amber{background:#fdf6e6}.r-green{}
+.badge{display:inline-block;padding:2px 8px;border-radius:6px;font-size:11px;font-weight:700;color:#fff}
+.b-red{background:var(--red)}.b-amber{background:var(--amber)}.b-green{background:var(--green)}
+.flag{font-size:11.5px;color:var(--red)}
+.flag.amber{color:#a9740a}
+.muted{color:var(--soft);font-size:12px}
+.foot{font-size:11.5px;color:var(--soft);margin-top:6px}
+.hl{background:#fff7d6}
+.legend{font-size:12px;color:var(--soft);margin-top:10px}
+@media(max-width:760px){.kpis{grid-template-columns:repeat(2,1fr)}}
+</style>
+</head>
+<body>
+<header>
+  <h1>請求・給与 ダブルチェック自動化ツール</h1>
+  <p>勤怠データ × 契約マスタ から、請求額・給与額・粗利を自動計算し、差異/労務リスクを自動検出します。</p>
+  <span class="tag">株式会社エヌエフエー様 ご提案デモ ｜ AI研修サンプル</span>
+</header>
+
+<div class="wrap">
+
+  <div class="panel">
+    <h2><span class="num">1</span> 契約マスタ（派遣先 × 職種ごとの単価）</h2>
+    <p class="desc">通常はシステム管理。請求単価＝派遣先へ請求する時給、給与単価＝派遣社員へ支払う時給。残業は1.25倍で自動計算します。</p>
+    <table id="master"><thead><tr>
+      <th>派遣先</th><th>職種</th><th>請求単価(円/h)</th><th>給与単価(円/h)</th><th></th>
+    </tr></thead><tbody></tbody></table>
+    <div class="btns"><button class="ghost small" onclick="addMaster()">＋ マスタ行を追加</button></div>
+  </div>
+
+  <div class="panel">
+    <h2><span class="num">2</span> 当月の勤怠データ（派遣社員ごと）</h2>
+    <p class="desc">各拠点・媒体からバラバラに上がってくる勤怠を、ここに集約した想定。「既存請求額」は現行の手作業請求書の金額（突合用・任意）。</p>
+    <table id="attend"><thead><tr>
+      <th>派遣社員</th><th>派遣先</th><th>職種</th><th>通常(h)</th><th>残業(h)</th><th>既存請求額(円)<br><span class="muted">※任意・突合用</span></th><th></th>
+    </tr></thead><tbody></tbody></table>
+    <div class="btns">
+      <button class="ghost small" onclick="addAttend()">＋ 勤怠行を追加</button>
+      <button class="primary" onclick="runCheck()">▶ ダブルチェックを実行</button>
+    </div>
+  </div>
+
+  <div id="result" style="display:none">
+    <div class="kpis" id="kpis"></div>
+    <div class="panel">
+      <h2>📋 自動チェックレポート</h2>
+      <p class="desc">単価マスタ照合・残業計算・既存請求書との突合・労務リスク・重複を自動判定しました。</p>
+      <table class="report"><thead><tr>
+        <th>状態</th><th>派遣社員</th><th>派遣先 / 職種</th><th class="n">請求額</th><th class="n">給与額</th><th class="n">粗利</th><th>検出された指摘</th>
+      </tr></thead><tbody id="repbody"></tbody></table>
+      <div class="legend">🔴 要修正（差異・マスタ欠落）　🟡 要確認（労務リスク・重複）　🟢 問題なし</div>
+      <div class="btns">
+        <button class="ghost small" onclick="exportCsv()">⬇ チェック結果をCSVで出力</button>
+        <button class="ghost small" onclick="window.print()">🖨 レポートを印刷 / PDF</button>
+      </div>
+      <p class="foot">※ 本デモはルールベースの自動計算・突合です。実装では既存の勤怠/販売管理システムやExcelと連携し、毎月のチェックを自動化します。AIは原稿生成や問い合わせ対応など“判断を伴う業務”に活用します。</p>
+    </div>
+  </div>
+
+</div>
+
+<script>
+// ---- sample data ----
+let master=[
+  {client:"A物流センター",job:"倉庫内ピッキング",bill:2200,pay:1450},
+  {client:"A物流センター",job:"フォークリフト",bill:2600,pay:1700},
+  {client:"B食品工場",job:"食品加工",bill:2000,pay:1300},
+  {client:"Cコールセンター",job:"電話応対",bill:2400,pay:1600},
+];
+let attend=[
+  {name:"佐藤 健",client:"A物流センター",job:"倉庫内ピッキング",normal:160,ot:12,exist:385000},   // 正常一致
+  {name:"鈴木 一郎",client:"A物流センター",job:"フォークリフト",normal:168,ot:8,exist:480000},      // 既存請求が誤り→差異
+  {name:"高橋 美咲",client:"B食品工場",job:"食品加工",normal:152,ot:6,exist:""},                    // OK
+  {name:"田中 翔",client:"Cコールセンター",job:"電話応対",normal:160,ot:52,exist:""},                // 残業過多→労務リスク
+  {name:"伊藤 彩",client:"B食品工場",job:"検品",normal:140,ot:0,exist:""},                          // マスタに職種なし
+  {name:"高橋 美咲",client:"B食品工場",job:"食品加工",normal:152,ot:6,exist:""},                    // 重複
+];
+const OT=1.25;
+const yen=n=>"¥"+Math.round(n).toLocaleString("ja-JP");
+
+function mRow(r,i){return `<tr>
+ <td><input value="${r.client}" oninput="master[${i}].client=this.value"></td>
+ <td><input value="${r.job}" oninput="master[${i}].job=this.value"></td>
+ <td class="n"><input class="n" type="number" value="${r.bill}" oninput="master[${i}].bill=+this.value"></td>
+ <td class="n"><input class="n" type="number" value="${r.pay}" oninput="master[${i}].pay=+this.value"></td>
+ <td><button class="ghost small" onclick="master.splice(${i},1);renderMaster()">×</button></td></tr>`}
+function aRow(r,i){return `<tr>
+ <td><input value="${r.name}" oninput="attend[${i}].name=this.value"></td>
+ <td><input value="${r.client}" oninput="attend[${i}].client=this.value"></td>
+ <td><input value="${r.job}" oninput="attend[${i}].job=this.value"></td>
+ <td class="n"><input class="n" type="number" value="${r.normal}" oninput="attend[${i}].normal=+this.value"></td>
+ <td class="n"><input class="n" type="number" value="${r.ot}" oninput="attend[${i}].ot=+this.value"></td>
+ <td class="n"><input class="n" type="number" value="${r.exist}" placeholder="—" oninput="attend[${i}].exist=this.value===''?'':+this.value"></td>
+ <td><button class="ghost small" onclick="attend.splice(${i},1);renderAttend()">×</button></td></tr>`}
+function renderMaster(){document.querySelector("#master tbody").innerHTML=master.map(mRow).join("")}
+function renderAttend(){document.querySelector("#attend tbody").innerHTML=attend.map(aRow).join("")}
+function addMaster(){master.push({client:"",job:"",bill:0,pay:0});renderMaster()}
+function addAttend(){attend.push({name:"",client:"",job:"",normal:0,ot:0,exist:""});renderAttend()}
+
+let lastReport=[];
+function runCheck(){
+  const seen={}; lastReport=[];
+  const rows=attend.map(a=>{
+    const m=master.find(x=>x.client===a.client&&x.job===a.job);
+    const flags=[]; let level="green";
+    let bill=null,pay=null,profit=null;
+    if(!m){flags.push("契約マスタに単価が未登録（"+a.client+"／"+a.job+"）");level="red";}
+    else{
+      bill=m.bill*a.normal+m.bill*a.ot*OT;
+      pay =m.pay *a.normal+m.pay *a.ot*OT;
+      profit=bill-pay;
+      if(a.exist!==""&&a.exist!=null){
+        const diff=a.exist-bill;
+        if(Math.abs(diff)>=1){flags.push("既存請求額と差異 "+(diff>0?"+":"")+yen(diff)+"（正＝"+yen(bill)+"）");level="red";}
+      }
+      if(a.ot>45){flags.push("残業 "+a.ot+"h（月45h超：36協定・労務リスク）");if(level!=="red")level="amber";}
+      if(a.normal<=0||a.normal>300){flags.push("通常時間が異常値（"+a.normal+"h）");if(level!=="red")level="amber";}
+    }
+    const key=a.name+"|"+a.client+"|"+a.job;
+    if(seen[key]){flags.push("勤怠の重複入力の可能性（同一社員・派遣先・職種）");if(level!=="red")level="amber";}
+    seen[key]=1;
+    return {a,bill,pay,profit,flags,level};
+  });
+  lastReport=rows;
+  // KPI
+  const tBill=rows.reduce((s,r)=>s+(r.bill||0),0);
+  const tPay =rows.reduce((s,r)=>s+(r.pay||0),0);
+  const tProf=tBill-tPay;
+  const nRed=rows.filter(r=>r.level==="red").length;
+  const nAmber=rows.filter(r=>r.level==="amber").length;
+  const minutes=rows.length*6; // 手作業1件約6分想定
+  document.getElementById("kpis").innerHTML=`
+   <div class="kpi"><div class="v">${rows.length}</div><div class="l">チェック対象 件数</div></div>
+   <div class="kpi ${nRed?'alert':''}"><div class="v">${nRed}</div><div class="l">🔴 要修正</div></div>
+   <div class="kpi"><div class="v">${nAmber}</div><div class="l">🟡 要確認</div></div>
+   <div class="kpi good"><div class="v">${(tProf/ (tBill||1)*100).toFixed(1)}%</div><div class="l">粗利率（自動算出）</div></div>
+   <div class="kpi good"><div class="v">${minutes}分</div><div class="l">手作業なら要した時間*</div></div>`;
+  // report rows
+  document.getElementById("repbody").innerHTML=rows.map(r=>{
+    const badge={red:'<span class="badge b-red">要修正</span>',amber:'<span class="badge b-amber">要確認</span>',green:'<span class="badge b-green">OK</span>'}[r.level];
+    const cls={red:'r-red',amber:'r-amber',green:'r-green'}[r.level];
+    const flag=r.flags.length?r.flags.map(f=>`<div class="flag ${r.level==='amber'?'amber':''}">⚠ ${f}</div>`).join(""):'<span class="muted">指摘なし</span>';
+    return `<tr class="${cls}">
+      <td class="st">${badge}</td>
+      <td>${r.a.name||'<span class="muted">—</span>'}</td>
+      <td>${r.a.client}<br><span class="muted">${r.a.job}</span></td>
+      <td class="n">${r.bill!=null?yen(r.bill):'—'}</td>
+      <td class="n">${r.pay!=null?yen(r.pay):'—'}</td>
+      <td class="n">${r.profit!=null?yen(r.profit):'—'}</td>
+      <td>${flag}</td></tr>`}).join("");
+  document.getElementById("result").style.display="block";
+  document.getElementById("result").scrollIntoView({behavior:"smooth"});
+}
+function exportCsv(){
+  let csv="状態,派遣社員,派遣先,職種,請求額,給与額,粗利,指摘\n";
+  lastReport.forEach(r=>{
+    const st={red:"要修正",amber:"要確認",green:"OK"}[r.level];
+    csv+=[st,r.a.name,r.a.client,r.a.job,r.bill??"",r.pay??"",r.profit??"",'"'+r.flags.join(" / ")+'"'].join(",")+"\n";
+  });
+  const blob=new Blob(["﻿"+csv],{type:"text/csv"});
+  const a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download="請求チェック結果.csv";a.click();
+}
+renderMaster();renderAttend();
+</script>
+</body>
+</html>
