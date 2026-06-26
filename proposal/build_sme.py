@@ -38,8 +38,7 @@ def peer(prs, i, n):
     pill_row(s,['建設・不動産','運輸・物流','製造','福祉・介護','商社・小売','ホテル・サービス','医療','士業・コンサル','IT・通信','北海道〜九州'],MX,Inches(4.15))
     rect(s,MX,Inches(5.2),CW,Inches(0.95),fill=PANEL,rounded=True,radius=0.06)
     textbox(s,MX+Inches(0.4),Inches(5.36),CW-Inches(0.8),Inches(0.7),
-        [[('むしろ ',{'size':14.5,'color':INK}),('50名いかない会社・事務3〜5名の会社',{'size':14.5,'color':BLUE_D,'bold':True}),('が一番多く始めています。',{'size':14.5,'color':INK}),
-          ('  「うちはまだ早い」ということは、もうありません。',{'size':14.5,'color':INK})]],line=1.5,anchor=MSO_ANCHOR.MIDDLE)
+        [[('実際には、',{'size':14.5,'color':INK}),('数名〜数十名規模の会社',{'size':14.5,'color':BLUE_D,'bold':True}),('から始めるケースも多く、特別な準備がなくても始められます。',{'size':14.5,'color':INK})]],line=1.5,anchor=MSO_ANCHOR.MIDDLE)
     footer(s,i,n,'現状認識')
 
 @reg
@@ -68,13 +67,13 @@ def track(prs, i, n):
 
 @reg
 def excuses(prs, i, n):
-    s=slide(prs,bg=PAPER); kicker(s,'よくある“やらない理由”')
-    title(s,[[('御社が思う「やらない理由」は、',{'size':28,'color':INK,'bold':True})],
-             [('同じような会社が、',{'size':28,'color':INK,'bold':True}),('もう越えています。',{'size':28,'color':BLUE,'bold':True})]],line=1.25)
-    items=[('「うちはまだ早い」','むしろ50名いかない・事務3〜5名の会社が一番多く始めています。'),
-           ('「もう乗り遅れた」','まだ“触り始め”の会社がほとんど。今なら十分に先頭集団です。'),
-           ('「うちの業界は特殊」','建設・運送・医療・士業…同じ業界でも、皆さん最初はそう言われます。'),
-           ('「高齢の社員が多くて無理」','20〜60代の全世代で好評。むしろ年配の方が“ラクになった”と。')]
+    s=slide(prs,bg=PAPER); kicker(s,'最初によくいただくお声')
+    title(s,[[('最初は、皆さま同じご不安からスタートします。',{'size':28,'color':INK,'bold':True})],
+             [('同じような会社も、',{'size':28,'color':INK,'bold':True}),('無理なく始めています。',{'size':28,'color':BLUE,'bold':True})]],line=1.25)
+    items=[('「うちはまだ早い」','数名〜数十名規模の会社から始める例も多くあります。'),
+           ('「もう乗り遅れた」','まだ“触り始め”の会社が多く、今からでも十分に間に合います。'),
+           ('「うちの業界は特殊」','同じ業界の会社でも、共通して使える場面は数多くあります。'),
+           ('「高齢の社員が多くて無理」','幅広い年代の方に、ご好評をいただいています。')]
     gap=Inches(0.4); cw=(CW-gap)/2; y=Inches(2.55); rh=Inches(1.45)
     for k,(q,a) in enumerate(items):
         c=k%2; r=k//2; x=MX+c*(cw+gap); yy=y+r*rh
