@@ -224,6 +224,40 @@
   .reveal.in{opacity:1;transform:none}
   .reveal.d1{transition-delay:.08s}.reveal.d2{transition-delay:.16s}.reveal.d3{transition-delay:.24s}
   @media(prefers-reduced-motion:reduce){.reveal{opacity:1;transform:none}}
+
+  /* ===== richer backgrounds (v2.1) ===== */
+  @keyframes spin{to{transform:rotate(1turn)}}
+  /* hero: starfield dots + slow conic aurora */
+  .hero{background:
+    radial-gradient(circle at 1px 1px, rgba(255,255,255,.05) 1px, transparent 1.6px) 0 0/26px 26px,
+    radial-gradient(120% 120% at 82% -18%,#23347f 0%,var(--navy) 46%,#060b22 100%);}
+  .hero::before{content:"";position:absolute;inset:-45% -15%;z-index:0;pointer-events:none;opacity:.55;filter:blur(46px);
+    background:conic-gradient(from 0deg at 50% 50%, rgba(59,99,255,0), rgba(124,77,255,.22), rgba(246,196,81,.12), rgba(59,99,255,.18), rgba(59,99,255,0));
+    animation:spin 36s linear infinite;}
+  /* metrics: gradient hairline on top */
+  .metrics{position:relative;background:linear-gradient(180deg,#0a1024,#0c1330)}
+  .metrics::before{content:"";position:absolute;left:0;right:0;top:0;height:1px;
+    background:linear-gradient(90deg,transparent,rgba(124,77,255,.7),rgba(246,196,81,.6),transparent)}
+  /* light sections: subtle dot grid + corner glow orbs */
+  .problems{background:
+    radial-gradient(circle at 1px 1px, rgba(20,30,90,.05) 1px, transparent 1.6px) 0 0/24px 24px,
+    radial-gradient(80% 60% at 100% 0,rgba(124,77,255,.08),transparent),
+    radial-gradient(60% 50% at 0 100%,rgba(59,99,255,.08),transparent),
+    var(--cream);}
+  #services{position:relative;overflow:hidden;background:
+    radial-gradient(circle at 1px 1px, rgba(20,30,90,.045) 1px, transparent 1.6px) 0 0/24px 24px,#fff;}
+  #flow{position:relative;overflow:hidden;background:
+    radial-gradient(circle at 1px 1px, rgba(20,30,90,.045) 1px, transparent 1.6px) 13px 13px/24px 24px,#fff;}
+  #services::before,#flow::before{content:"";position:absolute;width:520px;height:520px;border-radius:50%;
+    top:-170px;left:-150px;pointer-events:none;background:radial-gradient(circle,rgba(124,77,255,.13),transparent 68%)}
+  #services::after,#flow::after{content:"";position:absolute;width:480px;height:480px;border-radius:50%;
+    bottom:-180px;right:-150px;pointer-events:none;background:radial-gradient(circle,rgba(59,99,255,.13),transparent 68%)}
+  #services .wrap,#flow .wrap{position:relative;z-index:1}
+  /* dark sections: faint dot grid overlay */
+  .why::before{content:"";position:absolute;inset:0;z-index:1;pointer-events:none;opacity:.5;
+    background:radial-gradient(circle at 1px 1px, rgba(255,255,255,.06) 1px, transparent 1.6px) 0 0/30px 30px}
+  .cta-box::after{content:"";position:absolute;inset:0;z-index:1;pointer-events:none;opacity:.5;
+    background:radial-gradient(circle at 1px 1px, rgba(255,255,255,.06) 1px, transparent 1.6px) 0 0/28px 28px}
 </style>
 </head>
 <body>
