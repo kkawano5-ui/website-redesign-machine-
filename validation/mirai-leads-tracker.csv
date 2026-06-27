@@ -1,0 +1,2 @@
+batch,date_sent,company,industry,area,contact_name,email,subject_variant,body_variant,utm_content,delivered(y/n),opened(y/n),clicked(y/n),replied(y/n),cv(reply/call/form),stage(sent/open/click/cv/meeting/won/lost),status(active/optout/bounce),est_value_jpy,notes
+B1,,,,,,,,,,,,,,,sent,active,,
