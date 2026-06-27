@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>株式会社みらい編集｜中小企業を、元気に。</title>
+<meta name="description" content="コストを下げ、売上を上げる。地域企業のための経営パートナー。電気代削減・MEO・SNS・採用・AI研修・ポスティングをワンストップで。まずは無料診断から。">
+<meta property="og:title" content="株式会社みらい編集｜中小企業を、元気に。">
+<meta property="og:description" content="コストを下げ、売上を上げる。地域企業のための経営パートナー。">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://mirai-edit.com/">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy:#16225a;
+    --navy2:#1d2e72;
+    --cream:#fbf6e6;
+    --yellow:#f6c945;
+    --ink:#1f2333;
+    --muted:#5b6072;
+    --line:#e7e1cf;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{
+    font-family:"Noto Sans JP",system-ui,-apple-system,"Hiragino Kaku Gothic ProN",sans-serif;
+    color:var(--ink);background:#fff;line-height:1.8;-webkit-font-smoothing:antialiased;
+  }
+  a{color:inherit;text-decoration:none}
+  .wrap{max-width:1080px;margin:0 auto;padding:0 24px}
+  .accent{color:var(--yellow)}
+
+  /* header */
+  header{position:sticky;top:0;z-index:50;background:rgba(22,34,90,.96);backdrop-filter:blur(6px)}
+  .nav{display:flex;align-items:center;justify-content:space-between;height:64px;color:#fff}
+  .brand{font-weight:900;letter-spacing:.04em;font-size:19px}
+  .brand small{display:block;font-size:10px;letter-spacing:.3em;color:var(--yellow);font-weight:700}
+  .nav-links{display:flex;gap:26px;font-size:14px;font-weight:500}
+  .nav-links a{opacity:.85;transition:.2s}
+  .nav-links a:hover{opacity:1;color:var(--yellow)}
+  .nav-cta{background:var(--yellow);color:var(--navy);padding:9px 18px;border-radius:999px;font-weight:700;font-size:13px}
+  @media(max-width:760px){.nav-links{display:none}}
+
+  /* hero */
+  .hero{background:
+      radial-gradient(1200px 500px at 80% -10%, rgba(246,201,69,.18), transparent),
+      linear-gradient(160deg,var(--navy),var(--navy2));
+    color:#fff;padding:96px 0 110px;position:relative;overflow:hidden}
+  .hero h1{font-size:clamp(30px,5.4vw,56px);font-weight:900;line-height:1.35;letter-spacing:.02em}
+  .hero h1 .y{color:var(--yellow)}
+  .hero p.lead{margin-top:22px;font-size:clamp(15px,2vw,19px);opacity:.92;font-weight:400}
+  .hero .tags{display:flex;flex-wrap:wrap;gap:10px;margin-top:30px}
+  .hero .tags span{border:1px solid rgba(255,255,255,.28);border-radius:999px;padding:6px 14px;font-size:13px;font-weight:500}
+  .hero .btns{display:flex;flex-wrap:wrap;gap:14px;margin-top:38px}
+  .btn{display:inline-flex;align-items:center;gap:8px;padding:15px 28px;border-radius:999px;font-weight:700;font-size:15px;transition:.2s}
+  .btn-y{background:var(--yellow);color:var(--navy)}
+  .btn-y:hover{transform:translateY(-2px);box-shadow:0 10px 24px rgba(246,201,69,.35)}
+  .btn-o{border:1.5px solid rgba(255,255,255,.5);color:#fff}
+  .btn-o:hover{background:rgba(255,255,255,.1)}
+
+  /* section common */
+  section.block{padding:84px 0}
+  .eyebrow{color:var(--yellow);font-weight:700;letter-spacing:.25em;font-size:12px;text-transform:uppercase}
+  .sec-head{text-align:center;margin-bottom:52px}
+  .sec-head h2{font-size:clamp(24px,3.4vw,34px);font-weight:900;margin-top:10px;color:var(--navy)}
+  .sec-head p{color:var(--muted);margin-top:12px;font-size:15px}
+
+  /* problems */
+  .problems{background:var(--cream)}
+  .pgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
+  .pcard{background:#fff;border:1px solid var(--line);border-radius:16px;padding:30px 26px}
+  .pcard .no{color:var(--yellow);font-weight:900;font-size:30px;line-height:1}
+  .pcard h3{margin:12px 0 8px;font-size:18px;color:var(--navy)}
+  .pcard p{color:var(--muted);font-size:14px}
+  @media(max-width:760px){.pgrid{grid-template-columns:1fr}}
+
+  /* services */
+  .sgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
+  .scard{border:1px solid var(--line);border-radius:18px;padding:28px;transition:.2s;background:#fff;display:flex;flex-direction:column}
+  .scard:hover{transform:translateY(-4px);box-shadow:0 16px 38px rgba(22,34,90,.10);border-color:transparent}
+  .scat{display:inline-block;background:var(--navy);color:#fff;font-size:11px;font-weight:700;padding:4px 12px;border-radius:999px;letter-spacing:.05em}
+  .scard h3{font-size:20px;color:var(--navy);margin:16px 0 6px;font-weight:900}
+  .scard p.desc{color:var(--muted);font-size:14px;flex:1}
+  .scard .price{margin-top:16px;padding-top:14px;border-top:1px dashed var(--line);font-weight:700;color:var(--ink);font-size:14px}
+  .scard .price b{color:var(--navy);font-size:17px}
+  @media(max-width:880px){.sgrid{grid-template-columns:1fr 1fr}}
+  @media(max-width:600px){.sgrid{grid-template-columns:1fr}}
+
+  /* why */
+  .why{background:linear-gradient(160deg,var(--navy),var(--navy2));color:#fff}
+  .why .sec-head h2{color:#fff}
+  .wgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:20px}
+  .wcard{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);border-radius:16px;padding:26px 22px}
+  .wcard .ic{width:42px;height:42px;border-radius:12px;background:var(--yellow);color:var(--navy);display:flex;align-items:center;justify-content:center;font-weight:900;font-size:20px}
+  .wcard h3{margin:14px 0 8px;font-size:16px}
+  .wcard p{font-size:13px;opacity:.82}
+  @media(max-width:880px){.wgrid{grid-template-columns:1fr 1fr}}
+  @media(max-width:480px){.wgrid{grid-template-columns:1fr}}
+
+  /* cta */
+  .cta{background:var(--cream);text-align:center}
+  .cta .box{background:#fff;border:1px solid var(--line);border-radius:24px;padding:54px 28px;max-width:760px;margin:0 auto}
+  .cta h2{font-size:clamp(22px,3.4vw,32px);color:var(--navy);font-weight:900}
+  .cta p{color:var(--muted);margin:14px 0 8px}
+  .contact-row{display:flex;flex-wrap:wrap;gap:14px;justify-content:center;margin-top:28px}
+  .contact-row .btn-navy{background:var(--navy);color:#fff}
+  .contact-row .btn-navy:hover{background:var(--navy2)}
+  .contact-line{margin-top:26px;color:var(--muted);font-size:14px}
+  .contact-line b{color:var(--navy);font-size:20px;letter-spacing:.02em}
+
+  /* footer */
+  footer{background:var(--navy);color:#fff;padding:44px 0}
+  .foot{display:flex;flex-wrap:wrap;justify-content:space-between;gap:20px;align-items:center}
+  .foot .fb{font-weight:900;font-size:18px}
+  .foot .fb small{display:block;font-size:10px;letter-spacing:.3em;color:var(--yellow)}
+  .foot .fmeta{font-size:13px;opacity:.8;text-align:right;line-height:1.9}
+  .copy{text-align:center;opacity:.6;font-size:12px;margin-top:30px}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap nav">
+    <div class="brand">みらい編集<small>MIRAI HENSHU</small></div>
+    <nav class="nav-links">
+      <a href="#problems">課題</a>
+      <a href="#services">サービス</a>
+      <a href="#why">選ばれる理由</a>
+      <a href="#contact">お問い合わせ</a>
+    </nav>
+    <a href="#contact" class="nav-cta">無料診断はこちら</a>
+  </div>
+</header>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="wrap">
+    <h1>中小企業を、<span class="y">元気に。</span></h1>
+    <p class="lead">コストを下げ、売上を上げる。<br>地域企業のための経営パートナー。</p>
+    <div class="tags">
+      <span>電気代削減</span><span>MEO集客</span><span>SNS発信</span>
+      <span>求人・採用</span><span>AI研修</span><span>ポスティング</span>
+    </div>
+    <div class="btns">
+      <a href="#contact" class="btn btn-y">まずは無料診断を相談する →</a>
+      <a href="#services" class="btn btn-o">サービスを見る</a>
+    </div>
+  </div>
+</section>
+
+<!-- PROBLEMS -->
+<section class="block problems" id="problems">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="eyebrow">The Reality</div>
+      <h2>中小企業の利益を圧迫する、3つの壁</h2>
+      <p>みらい編集は、この3つすべてに「ワンストップ」で手を打ちます。</p>
+    </div>
+    <div class="pgrid">
+      <div class="pcard"><div class="no">01</div><h3>コストの高騰</h3><p>電気代をはじめ固定費が上がり続け、利益がそのまま削られていく。</p></div>
+      <div class="pcard"><div class="no">02</div><h3>集客の頭打ち</h3><p>店も商品も良いのに、Web上で見つけてもらえず機会を逃している。</p></div>
+      <div class="pcard"><div class="no">03</div><h3>人手不足</h3><p>募集してもなかなか応募が来ず、採用コストだけがかさんでいく。</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- SERVICES -->
+<section class="block" id="services">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="eyebrow">Services</div>
+      <h2>6つのサービスで、利益を出す体質へ</h2>
+      <p>「電気代の無料診断」を入口に、必要なものから順に始められます。</p>
+    </div>
+    <div class="sgrid">
+      <div class="scard">
+        <span class="scat">コスト削減</span>
+        <h3>エネパル電気</h3>
+        <p class="desc">電気の品質・停電リスクはそのまま、料金プランだけを最適化。工事不要で固定費を削減します。</p>
+        <div class="price"><b>無料診断</b>・初期費用なし</div>
+      </div>
+      <div class="scard">
+        <span class="scat">集客</span>
+        <h3>MEO</h3>
+        <p class="desc">「地域名＋業種」で探す“今すぐ客”に届く。Googleマップの情報・写真・口コミを整え、来店・問合せを増やします。</p>
+        <div class="price"><b>月 10,000円〜</b>（税抜）</div>
+      </div>
+      <div class="scard">
+        <span class="scat">信用</span>
+        <h3>SNSブランディング</h3>
+        <p class="desc">社長・社員の顔が見える動画で「信頼される会社」に。企画・台本・編集まで丸ごとお任せ（RAHA KENYA提供）。</p>
+        <div class="price"><b>月 62,500円〜</b>（税抜）</div>
+      </div>
+      <div class="scard">
+        <span class="scat">採用</span>
+        <h3>FREE JOB</h3>
+        <p class="desc">1回の入稿で最大20媒体へ一括掲載。応募の一次受付も代行し、取りこぼしを防ぎます。</p>
+        <div class="price"><b>月 54,780円</b>（税込）/ 報酬0円</div>
+      </div>
+      <div class="scard">
+        <span class="scat">育成</span>
+        <h3>AI研修</h3>
+        <p class="desc">“使える社員”を育て、業務効率を底上げ。基礎〜実務の双方向型研修で、その場から業務が変わります。</p>
+        <div class="price"><b>実質 98,675円/人〜</b>（中小・助成金活用後）</div>
+      </div>
+      <div class="scard">
+        <span class="scat">認知</span>
+        <h3>ポスティング</h3>
+        <p class="desc">チラシを戸別ポストへ。エリアを絞って確実に届ける、全国対応の紙配布。</p>
+        <div class="price"><b>1枚 6.0円〜</b>（税抜）</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- WHY -->
+<section class="block why" id="why">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="eyebrow">Why Mirai</div>
+      <h2>売って終わりではなく、利益が出るまで一緒に。</h2>
+    </div>
+    <div class="wgrid">
+      <div class="wcard"><div class="ic">◎</div><h3>ワンストップ</h3><p>コスト削減・集客・SNS・採用・育成・認知を、窓口ひとつでまとめて相談できます。</p></div>
+      <div class="wcard"><div class="ic">◍</div><h3>地域密着</h3><p>地域の中小企業の事情を理解した上で、身の丈に合った打ち手を提案します。</p></div>
+      <div class="wcard"><div class="ic">↗</div><h3>成果ベースの伴走</h3><p>提案して終わりにせず、数字を見ながら改善を続ける営業パートナーです。</p></div>
+      <div class="wcard"><div class="ic">✓</div><h3>リスクの低い入口</h3><p>まずは電気代の無料診断から。費用負担なく、効果を確かめて広げられます。</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA / CONTACT -->
+<section class="block cta" id="contact">
+  <div class="wrap">
+    <div class="box">
+      <div class="eyebrow">Contact</div>
+      <h2>まずは、無料の電気代診断から。</h2>
+      <p>検針票を1枚見せていただくだけ。<br>そこから、御社に本当に必要な打ち手を一緒に考えます。</p>
+      <div class="contact-row">
+        <a href="tel:07083117053" class="btn btn-navy">📞 070-8311-7053</a>
+        <a href="mailto:kawano@tv-hospital.com" class="btn btn-y">✉ メールで相談する</a>
+      </div>
+      <div class="contact-line">
+        TEL <b>070-8311-7053</b><br>
+        MAIL kawano@tv-hospital.com
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="foot">
+      <div class="fb">株式会社みらい編集<small>MIRAI HENSHU</small></div>
+      <div class="fmeta">
+        中小企業の売上を上げ、コストを下げる経営パートナー<br>
+        TEL 070-8311-7053 ／ MAIL kawano@tv-hospital.com
+      </div>
+    </div>
+    <div class="copy">© 2026 株式会社みらい編集 / mirai-edit.com</div>
+  </div>
+</footer>
+
+</body>
+</html>
