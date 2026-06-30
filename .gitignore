@@ -1,0 +1,10 @@
+# 個人情報・営業データはリポジトリに含めない（電話/メール/コールリスト等）
+data/outputs/phones.csv
+data/outputs/call_list*.csv
+data/outputs/emails*.csv
+data/outputs/*-import.csv
+
+# 生成物・依存・OS
+node_modules/
+.DS_Store
+sites/assets/
