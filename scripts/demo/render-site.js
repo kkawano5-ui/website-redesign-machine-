@@ -37,6 +37,7 @@ function workTiles(v) {
     { length: 6 },
     (_, i) => `
         <figure class="tile">
+          <img src="../../assets/${v.key}/${i + 1}.png" alt="" loading="lazy" onerror="this.remove()">
           <span>${esc(v.workLabel)} ${i + 1}</span>
           <small>写真 差替</small>
         </figure>`
@@ -129,7 +130,8 @@ export function renderSite(company) {
   .btns{display:flex;flex-wrap:wrap;gap:12px;margin-top:30px}
   .chips{margin-top:26px;display:flex;flex-wrap:wrap;gap:10px}
   .chip{display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.22);padding:7px 13px;border-radius:999px;font-size:12.5px;font-weight:500}
-  .hero-card{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.22);border-radius:20px;padding:22px;backdrop-filter:blur(6px)}
+  .hero-card{position:relative;overflow:hidden;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.22);border-radius:20px;padding:22px;backdrop-filter:blur(6px)}
+  .hero-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:2}
   .hero-card .mock{height:148px;border-radius:12px;background:linear-gradient(135deg,rgba(255,255,255,.9),rgba(255,255,255,.62));display:flex;align-items:center;justify-content:center;color:var(--accent-d);font-weight:900;font-size:19px;text-align:center;padding:0 14px}
   .hero-card .row{display:flex;gap:10px;margin-top:14px}
   .hero-card .row span{flex:1;height:46px;border-radius:10px;background:rgba(255,255,255,.18)}
@@ -151,7 +153,8 @@ export function renderSite(company) {
   @media(max-width:820px){.svc-grid{grid-template-columns:1fr}}
 
   .tiles{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:44px}
-  .tile{aspect-ratio:4/3;border-radius:14px;background:linear-gradient(135deg,var(--tint),#fff);border:1px dashed #d6dde6;display:flex;flex-direction:column;align-items:center;justify-content:center;color:var(--accent-d);margin:0}
+  .tile{position:relative;overflow:hidden;aspect-ratio:4/3;border-radius:14px;background:linear-gradient(135deg,var(--tint),#fff);border:1px dashed #d6dde6;display:flex;flex-direction:column;align-items:center;justify-content:center;color:var(--accent-d);margin:0}
+  .tile img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:1}
   .tile span{font-weight:700;font-size:14px}
   .tile small{color:var(--muted);font-size:11px;margin-top:3px}
   @media(max-width:820px){.tiles{grid-template-columns:1fr 1fr}}
@@ -215,6 +218,7 @@ export function renderSite(company) {
       </div>
     </div>
     <div class="hero-card" aria-hidden="true">
+      <img class="hero-img" src="../../assets/${v.key}/hero.png" alt="" onerror="this.remove()">
       <div class="mock">${esc(c.name)}</div>
       <div class="row"><span></span><span></span><span></span></div>
     </div>

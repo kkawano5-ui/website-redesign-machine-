@@ -177,6 +177,14 @@ async function main() {
   // 静的ディレクトリはそのまま配信されるため設定ファイルは不要。デモは noindex にしたいので
   // _headers だけ置く。
   await writeFileEnsured(path.join(outDir, '_headers'), '/*\n  X-Robots-Tag: noindex\n');
+  // 画像アセット（任意）: リポの assets/<業種>/ があれば公開ディレクトリにコピー。
+  // 無ければデモは従来のプレースホルダ表示のまま（onerror フォールバックで壊れない）。
+  try {
+    await fs.access(path.resolve('assets'));
+    await fs.cp(path.resolve('assets'), path.join(outDir, 'assets'), { recursive: true });
+  } catch {
+    /* assets 無し → スキップ */
+  }
   // 顧客リスト由来のURL一覧は公開ディレクトリ(sites/)の外に出す（デプロイで全件が公開されるのを防ぐ）。
   const urlsCsvPath = path.resolve('data/outputs/demo-urls.csv');
   await writeFileEnsured(urlsCsvPath, renderUrlsCsv(generated, baseUrl));
