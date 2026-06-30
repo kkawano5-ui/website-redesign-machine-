@@ -93,3 +93,41 @@ npm run run:one -- data/inputs/sample.json
 ```bash
 npm run run:one -- data/inputs/memorial-sample.json
 ```
+
+## 新業種デモサイトの量産（MEO×Website 営業用）
+
+スキャンで作った企業リストから、社名・エリアを差し込んだ提案用デモサイトを一括生成する。
+
+対象業種（新4種）: 建築・外装 / フィットネス / ペット / 美容医療
+（整体・鍼灸は既存「治療院」テンプレで代替するため対象外）
+
+### 使い方
+
+```bash
+# 入力は JSON か CSV。CSVは leads_*.csv / 統合営業CRM をそのまま使える。
+# 認識フィールド: 会社名 / エリア / 業種 / 口コミ数 / 既存website / place_id
+#   （別名は scripts/generate-demo-sites.js の FIELD を参照）
+npm run generate:sites -- data/companies/sample-companies.json --base-url https://<公開先>
+```
+
+出力:
+
+- `sites/demo/<id>/index.html` … 1社1サイト（id例: k001 / f001 / p001 / c001）
+- `sites/index.html` … 一覧ギャラリー
+- `sites/demo-urls.csv` … id・会社名・エリア・デモURL（CRMの「うちのデモURL」列に貼る）
+- `sites/vercel.json` … 静的デプロイ設定（`outputDirectory: "."`）
+
+`--base-url` を渡すと `demo-urls.csv` の「デモURL」列が公開URLで埋まる
+（例: `https://<公開先>/demo/k001/`）。`sites/` は静的ファイルのみなので
+Vercel / Cloudflare Pages にそのまま公開できる。
+
+### スキャン（手順1）
+
+Places API のスキャナ（`scan_area.py`）と `PLACES_API_KEY` はローカル専用。
+新業種のキーワード追加と実行手順は
+[docs/meo-new-verticals-scan.md](docs/meo-new-verticals-scan.md) を参照。
+
+### 注意
+
+- 写真・実績・お客様の声・料金・連絡先はすべて仮置き（差し替え前提）。掲載情報は捏造しない。
+- 美容医療は医療広告ガイドライン・薬機法に配慮（効果断定・ビフォーアフター・体験談での効果保証は不可）。

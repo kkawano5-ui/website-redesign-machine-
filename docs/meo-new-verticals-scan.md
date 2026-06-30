@@ -1,0 +1,89 @@
+# 新業種スキャン手順（Places API New）＋デモ量産への受け渡し
+
+みらい編集 MEO×Website。既存7エリアに新4業種を追加スキャンし、企業リスト化 →
+デモサイト量産につなぐための手順書。
+
+- 対象業種: 建築・外装 / フィットネス / ペット / 美容医療
+  （整体・鍼灸は既存「治療院」テンプレで代替するため対象外）
+- 対象エリア: 大宮東口 / 北千住 / 松戸 / 川口 / 鶴見 / 西川口 / 蕨（既存7エリア）
+
+> **スキャナ本体はこのリポジトリに含まれない。**
+> `scan_area.py` / `build_master.py` と `PLACES_API_KEY` はローカル専用（`/Users/kuni/omiya-meo-scan/`）。
+> スキャンはローカルで実行する。ここにあるのは「追記するキーワード定義」と「実行 → 量産」の手順。
+
+## 1. scan_area.py の VERTICALS に追記するキーワード
+
+Places API (New) は日本語の `textQuery` が最も再現性が高い。`includedType` は補助
+（API の最新の型表で要確認）。既存の `VERTICALS` dict の構造に合わせて以下を追記する。
+
+```python
+# 新4業種。整体・鍼灸は既存「治療院」で代替するため入れない。
+NEW_VERTICALS = {
+    "建築・外装": {
+        "keywords": ["外壁塗装", "屋根工事", "屋根修理", "防水工事", "リフォーム", "塗装業者"],
+        "included_types": ["painter", "roofing_contractor", "general_contractor"],  # 補助
+    },
+    "フィットネス": {
+        "keywords": ["パーソナルジム", "パーソナルトレーニング", "ピラティススタジオ", "ピラティス"],
+        "included_types": ["gym", "fitness_center"],
+    },
+    "ペット": {
+        "keywords": ["ペットサロン", "トリミングサロン", "トリミング", "ペット美容室"],
+        "included_types": ["pet_store"],  # New API に groomer 型が無いため text で絞る
+    },
+    "美容医療": {
+        "keywords": ["美容クリニック", "美容皮膚科", "美容外科", "医療脱毛クリニック"],
+        "included_types": ["doctor"],  # 一般診療を除外したいので textQuery 主体推奨
+    },
+}
+```
+
+業種キーは量産ジェネレータ側（`scripts/demo/verticals.js`）の別名と揃えてある
+（建築・外装 / フィットネス / ペット / 美容医療）。出力 CSV の業種列にこの表記を入れておくと、
+ジェネレータがそのまま正しいテンプレに割り当てる。
+
+## 2. エリア座標
+
+7エリアの緯度経度は **既存の scan ログ／駅座標をそのまま再利用** する
+（課金が絡むため、新しい座標で叩き直さない）。手元に無い場合のみ各駅
+（大宮駅東口・北千住駅・松戸駅・川口駅・鶴見駅・西川口駅・蕨駅）の座標を取得して使う。
+
+## 3. 実行（ローカル）
+
+```bash
+cd /Users/kuni/omiya-meo-scan
+export PLACES_API_KEY=...            # 既存の鍵
+
+# 1エリア分を叩く（実引数は scan_area.py の定義に合わせる）。
+# VERTICALS に NEW_VERTICALS をマージ済みの状態で実行する。
+python scan_area.py --area-name "大宮東口" --lat <lat> --lng <lng>
+# … 7エリア分くり返す
+
+python build_master.py               # leads_*.csv → MEO_FSリスト_master.xlsx に自動統合
+```
+
+口コミ数・Website 有無に関わらず **全件** を出力する（A/B/C/D 区分はそのまま埋める）。
+
+## 4. デモ量産への受け渡し（このリポジトリ）
+
+スキャン出力（`leads_*.csv` または統合営業CRM）をそのまま量産ジェネレータに渡す。
+
+```bash
+cd <this repo>
+npm run generate:sites -- /path/to/leads_omiya.csv --base-url https://<公開先>
+```
+
+- 認識フィールド（別名は `scripts/generate-demo-sites.js` の `FIELD`）:
+  `会社名` / `エリア` / `業種` / `口コミ数` / `既存website` / `place_id`
+- 「業種」列が無い場合は社名から推定。判別不能はスキップ（実行ログに出る）。
+- 出力 `sites/demo-urls.csv` の「デモURL」列を、CRM の「うちのデモURL」列に貼る。
+- 注意: CRM の「サイト区分」は自社サイト有無の区分（A/B/C/D）であって業種ではない。
+  業種は別列で渡すこと。
+
+## 5. 注意
+
+- API 課金あり（$200 無料枠内見込み）。Text Search は60件上限で最小零細を取りこぼす
+  → 実測は真値のやや過小。
+- 掲載情報（写真・実績・口コミ・料金・連絡先）は捏造しない＝差し替え枠。
+- 美容医療は医療広告ガイドライン・薬機法に配慮
+  （効果の断定・ビフォーアフター強調・体験談での効果保証は不可）。
