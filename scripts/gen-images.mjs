@@ -92,7 +92,7 @@ async function main() {
   const conf =
     provider === 'google'
       ? { envName: 'GOOGLE_API_KEY', key: process.env.GOOGLE_API_KEY || process.env.GEMINI_API_KEY, re: /^AIza[A-Za-z0-9_-]+$/, defaultModel: 'imagen-3.0-generate-002', hint: 'aistudio.google.com で発行した Gemini APIキー（AIza… の長い英数字）' }
-      : { envName: 'OPENAI_API_KEY', key: process.env.OPENAI_API_KEY, re: /^sk-[A-Za-z0-9_-]+$/, defaultModel: 'gpt-image-1', hint: 'platform.openai.com で発行した実際のキー（sk-proj-… の長い英数字）' };
+      : { envName: 'OPENAI_API_KEY', key: process.env.OPENAI_API_KEY, re: /^sk-[A-Za-z0-9_-]+$/, defaultModel: 'gpt-image-1.5', hint: 'platform.openai.com で発行した実際のキー（sk-proj-… の長い英数字）' };
 
   if (!conf.key) {
     console.error(`${conf.envName} が未設定です。  ${conf.envName}=... npm run gen:images${provider === 'google' ? ' -- --provider google' : ''}`);
