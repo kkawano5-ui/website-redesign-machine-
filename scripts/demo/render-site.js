@@ -37,7 +37,7 @@ function workTiles(v) {
     { length: 6 },
     (_, i) => `
         <figure class="tile">
-          <img src="../../assets/${v.key}/${i + 1}.png" alt="" loading="lazy" onerror="this.remove()">
+          <img src="../../assets/${v.key}/${i + 1}.jpg" alt="" loading="lazy" onerror="this.remove()">
           <span>${esc(v.workLabel)} ${i + 1}</span>
           <small>写真 差替</small>
         </figure>`
@@ -218,7 +218,7 @@ export function renderSite(company) {
       </div>
     </div>
     <div class="hero-card" aria-hidden="true">
-      <img class="hero-img" src="../../assets/${v.key}/hero.png" alt="" onerror="this.remove()">
+      <img class="hero-img" src="../../assets/${v.key}/hero.jpg" alt="" onerror="this.remove()">
       <div class="mock">${esc(c.name)}</div>
       <div class="row"><span></span><span></span><span></span></div>
     </div>
