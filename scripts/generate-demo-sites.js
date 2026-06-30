@@ -129,6 +129,9 @@ async function main() {
   const rawCompanies = await loadCompanies(inputPath);
   if (rawCompanies.length === 0) throw new Error(`入力にデータがありません: ${inputPath}`);
 
+  // 出力の demo/ を一旦クリア（前回入力で生成され、今回は対象外の会社の残骸を残さない）。
+  await fs.rm(path.join(outDir, 'demo'), { recursive: true, force: true });
+
   const counters = {};
   const generated = [];
   const skipped = [];
