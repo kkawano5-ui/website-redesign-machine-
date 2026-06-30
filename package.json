@@ -6,7 +6,8 @@
     "run:one": "node scripts/run-one.js",
     "generate:sites": "node scripts/generate-demo-sites.js",
     "gen:images": "node scripts/gen-images.mjs",
-    "fetch:phones": "node scripts/fetch-phones.mjs"
+    "fetch:phones": "node scripts/fetch-phones.mjs",
+    "fetch:emails": "node scripts/fetch-emails.mjs"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.39.0",
