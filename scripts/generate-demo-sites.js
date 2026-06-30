@@ -8,13 +8,14 @@ import { renderSite } from './demo/render-site.js';
 // 統合営業CRM / leads_*.csv の様々なヘッダ名を吸収するためのフィールド別名。
 // 注意: CRMの「サイト区分」は自社サイト有無の区分(A/B/C/D)であり、業種ではないため vertical には含めない。
 const FIELD = {
-  id: ['id', 'ID', 'slug', 'デモID'],
-  name: ['name', 'companyName', '会社名', '店舗名', '社名', '事業者名'],
-  area: ['area', 'エリア', '地域', '駅', 'エリア名'],
-  vertical: ['vertical', '業種', 'business', 'category', 'カテゴリ', '業種カテゴリ'],
-  reviewCount: ['reviewCount', '口コミ数', '口コミ', 'reviews', 'レビュー数', 'クチコミ数'],
-  website: ['website', '既存website', '既存サイト', 'url', 'site', 'HP'],
-  placeId: ['placeId', 'place_id', 'placeID'],
+  // place_id 等を id に拾うと URL が汚くなるので、明示の slug/デモID 指定時のみ採用（既定は k001 採番）。
+  id: ['slug', 'デモID'],
+  name: ['name', 'displayName', 'companyName', '会社名', '店名', '店舗名', '名称', '社名', '事業者名'],
+  area: ['area', 'area_name', 'エリア', 'エリア名', '地域', '駅'],
+  vertical: ['vertical', '業種', '業種名', 'business', 'category', 'カテゴリ'],
+  reviewCount: ['reviewCount', 'userRatingCount', '口コミ数', '口コミ件数', 'クチコミ数', 'クチコミ', '口コミ', 'reviews', 'レビュー数'],
+  website: ['website', 'websiteUri', '既存website', '既存サイト', 'サイト', 'サイトURL', 'url', 'HP'],
+  placeId: ['place_id', 'placeId', 'placeID', 'placeid'],
 };
 
 function parseArgs(argv) {
@@ -25,6 +26,7 @@ function parseArgs(argv) {
     else if (a.startsWith('--out=')) args.out = a.slice(6);
     else if (a === '--base-url') args.baseUrl = argv[(i += 1)];
     else if (a.startsWith('--base-url=')) args.baseUrl = a.slice(11);
+    else if (a === '--all') args.all = true;
     else args._.push(a);
   }
   return args;
@@ -40,6 +42,19 @@ function pick(obj, keys) {
 
 function pad(n, width = 3) {
   return String(n).padStart(width, '0');
+}
+
+// scan の leads CSV は is_target 列を持つ（1 = Webなし×口コミ≤10 のFS本命）。
+// 既定はターゲットのみ生成。--all で全件。is_target 列が無い入力（手書きJSON等）は全件扱い。
+function isTargetRow(raw, includeAll) {
+  if (includeAll) return true;
+  for (const k of ['is_target', 'isTarget', 'ターゲット', 'target']) {
+    if (raw[k] !== undefined && String(raw[k]).trim() !== '') {
+      const v = String(raw[k]).trim().toLowerCase();
+      return v === '1' || v === 'true' || v === 'yes' || v === 'y';
+    }
+  }
+  return true;
 }
 
 async function loadCompanies(inputPath) {
@@ -117,8 +132,13 @@ async function main() {
   const counters = {};
   const generated = [];
   const skipped = [];
+  let excluded = 0;
 
   for (const raw of rawCompanies) {
+    if (!isTargetRow(raw, args.all)) {
+      excluded += 1;
+      continue;
+    }
     const name = pick(raw, FIELD.name);
     if (!name) {
       skipped.push({ name: '(無名)', reason: '社名フィールドが空' });
@@ -168,6 +188,7 @@ async function main() {
     byVertical[g.verticalName] = (byVertical[g.verticalName] || 0) + 1;
   });
   Object.entries(byVertical).forEach(([n, ct]) => console.log(`  - ${n}: ${ct}件`));
+  if (excluded) console.log(`  対象外(is_target≠1)を除外: ${excluded}件（全件出すなら --all）`);
   console.log(`  ギャラリー : ${rel(path.join(outDir, 'index.html'))}`);
   console.log(`  デモURL一覧: ${rel(urlsCsvPath)}（sites/の外＝非公開）`);
   if (!baseUrl) console.log('  （--base-url <公開URL> を渡すと demo-urls.csv の「デモURL」列が埋まります）');
