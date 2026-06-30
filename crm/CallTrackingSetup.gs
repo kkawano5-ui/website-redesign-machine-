@@ -13,9 +13,11 @@
  *        - アポ形式 : オンライン / オフライン / 電話（プルダウン）
  *   4. ステータスに応じた色付け（条件付き書式）
  *   5. 「現在ステータス」列を新ステータス語彙に合わせて自動計算
- *   6. ステータスが「アポ獲得」「電話アポ」になった行を、
- *      商談CRMタブへ自動転送（onEditトリガー）。会社情報・アポ日時・形式を
- *      コピーし、商談ステータス/次アクション/商談メモを商談CRM側で管理。
+ *   6. 「担当」列（M列）に、最新の架電担当を自動表示（手動上書き可）
+ *   7. ステータスが「アポ獲得」「電話アポ」になった行を、
+ *      商談CRMタブへ自動転送（onEditトリガー）。会社情報・アポ日時・形式に加え、
+ *      サイト区分 / 既存website / 検出メール / うちのデモURL（AF〜AJ）も初期コピーし、
+ *      商談CRM上でマネージできるようにする。
  *      ※ 一度転送した行は商談が進んでも残り続けます（自動削除しません）。
  *
  *  使い方:
@@ -53,6 +55,38 @@ const CONFIG = {
   DEAL_STATUSES: ['訪問予定', '訪問済', '商談中', '成約', '見送り'],
 };
 
+/**
+ * 商談CRMタブの列定義。
+ *   role:
+ *     'auto'    … 転送のたびにCRMの最新値で上書き（グレー＝触らない）
+ *     'initial' … 転送時にCRMから初期コピー、以降は商談CRMで編集（薄黄＝編集可）
+ *     'managed' … スクリプトは触らない。商談CRMで手入力（白＝編集可）
+ *   from: roleが auto/initial のとき、CRM側のヘッダー名（値の取得元）
+ *   def : managed列の初期値
+ *   validation: プルダウンに使う CONFIG キー
+ */
+const DEAL_COLUMNS = [
+  { name: 'CRM行',          role: 'auto', from: '__ROW__' },
+  { name: 'place_id',       role: 'auto', from: 'place_id' },
+  { name: '会社名',         role: 'auto', from: '店名' },
+  { name: '業種',           role: 'auto', from: '業種・種別' },
+  { name: 'エリア',         role: 'auto', from: 'エリア' },
+  { name: '電話',           role: 'auto', from: '電話' },
+  { name: 'マップURL',      role: 'auto', from: 'マップURL' },
+  { name: 'サイト区分',     role: 'initial', from: 'サイト区分' },
+  { name: '既存website',    role: 'initial', from: '既存website' },
+  { name: '検出メール',     role: 'initial', from: '検出メール' },
+  { name: 'うちのデモURL',  role: 'initial', from: 'うちのデモURL' },
+  { name: 'アポ種別',       role: 'auto', from: '__STATUS__' },
+  { name: '架電担当',       role: 'auto', from: '__CALLER__' },
+  { name: 'アポ日',         role: 'auto', from: 'アポ日' },
+  { name: 'アポ時間',       role: 'auto', from: 'アポ時間' },
+  { name: '形式',           role: 'auto', from: 'アポ形式', validation: 'FORMATS' },
+  { name: '商談ステータス', role: 'managed', def: '訪問予定', validation: 'DEAL_STATUSES' },
+  { name: '次アクション日', role: 'managed' },
+  { name: '商談メモ',       role: 'managed' },
+];
+
 // ----------------------------------------------------------------------------
 //  メイン: 一度だけ実行する
 // ----------------------------------------------------------------------------
@@ -63,29 +97,15 @@ function setupCallTracking() {
     throw new Error('「' + CONFIG.CRM_SHEET + '」タブが見つかりません。タブ名をご確認ください。');
   }
 
-  // 1) メモ列・アポ列を整備（ヘッダー名基準で挿入）
-  ensureCrmColumns_(crm);
-
-  // 2) プルダウン（データ入力規則）
-  applyCrmValidations_(crm);
-
-  // 3) 条件付き書式（色付け）
-  applyCrmConditionalFormat_(crm);
-
-  // 4) 現在ステータスの自動計算
-  applyCurrentStatusFormula_(crm);
-
-  // 5) 列幅など軽い体裁
-  tidyCrmLayout_(crm);
-
-  // 6) 商談CRMタブの整備（ヘッダー・プルダウン）
-  setupDealSheet_(ss);
-
-  // 7) アポ自動転送トリガーのインストール
-  installEditTrigger_(ss);
-
-  // 8) 運用ガイドの更新
-  refreshGuideSheet_(ss);
+  ensureCrmColumns_(crm);          // 1) メモ列・アポ列を整備
+  applyCrmValidations_(crm);       // 2) プルダウン
+  applyCrmConditionalFormat_(crm); // 3) 条件付き書式
+  applyCurrentStatusFormula_(crm); // 4) 現在ステータス自動計算
+  applyOwnerFormula_(crm);         // 5) 担当（M列）に最新架電担当を自動表示
+  tidyCrmLayout_(crm);             // 6) 体裁
+  setupDealSheet_(ss);             // 7) 商談CRM整備
+  installEditTrigger_(ss);         // 8) アポ自動転送トリガー
+  refreshGuideSheet_(ss);          // 9) 運用ガイド更新
 
   ss.toast('架電シートのセットアップが完了しました。', '✅ 完了', 6);
 }
@@ -94,11 +114,9 @@ function setupCallTracking() {
 //  CRM: 列の整備（メモ列・アポ列）
 // ----------------------------------------------------------------------------
 function ensureCrmColumns_(sheet) {
-  // 各回のステータスの直後に「N回目_メモ」を追加
   for (let n = 1; n <= CONFIG.ROUNDS; n++) {
     ensureColumnAfter_(sheet, n + '回目_メモ', n + '回目_ステータス');
   }
-  // アポ日 → アポ時間 → アポ形式 の順で整備
   ensureColumnAfter_(sheet, 'アポ時間', 'アポ日');
   ensureColumnAfter_(sheet, 'アポ形式', 'アポ時間');
 }
@@ -148,7 +166,6 @@ function applyCrmConditionalFormat_(sheet) {
   const map = headerMap_(sheet);
   const maxRows = sheet.getMaxRows();
 
-  // ステータス列（3回分）の範囲
   const statusRanges = [];
   for (let n = 1; n <= CONFIG.ROUNDS; n++) {
     const c = map[n + '回目_ステータス'];
@@ -156,13 +173,13 @@ function applyCrmConditionalFormat_(sheet) {
   }
 
   const statusColors = {
-    'アポ獲得': '#b7e1cd',     // 緑
-    '電話アポ': '#b7e1cd',     // 緑
-    '後日掛け直し': '#ffe599', // 黄
-    '資料送付': '#cfe2f3',     // 青
-    'お断り': '#f4cccc',       // 赤
-    '留守': '#fff2cc',         // 薄黄
-    '廃業': '#d9d9d9',         // グレー
+    'アポ獲得': '#b7e1cd',
+    '電話アポ': '#b7e1cd',
+    '後日掛け直し': '#ffe599',
+    '資料送付': '#cfe2f3',
+    'お断り': '#f4cccc',
+    '留守': '#fff2cc',
+    '廃業': '#d9d9d9',
   };
 
   const rules = [];
@@ -178,7 +195,6 @@ function applyCrmConditionalFormat_(sheet) {
     });
   }
 
-  // 現在ステータス列
   const cur = map['現在ステータス'];
   if (cur) {
     const curRange = [sheet.getRange(2, cur, maxRows - 1, 1)];
@@ -201,7 +217,6 @@ function applyCrmConditionalFormat_(sheet) {
     });
   }
 
-  // アポ行でアポ日/時間/形式が未入力なら警告色
   const apoDate = map['アポ日'], apoTime = map['アポ時間'], apoFmt = map['アポ形式'];
   if (cur && apoDate && apoTime && apoFmt) {
     const warnRange = [
@@ -214,7 +229,7 @@ function applyCrmConditionalFormat_(sheet) {
     rules.push(
       SpreadsheetApp.newConditionalFormatRule()
         .whenFormulaSatisfied('=AND($' + curA1 + '2="アポ",$' + apoDateA1 + '2="")')
-        .setBackground('#fce5cd') // アポなのにアポ日未入力
+        .setBackground('#fce5cd')
         .setRanges(warnRange)
         .build()
     );
@@ -254,6 +269,33 @@ function applyCurrentStatusFormula_(sheet) {
 }
 
 // ----------------------------------------------------------------------------
+//  CRM: 担当（M列）= 最新の架電担当を自動表示（手動上書き可）
+// ----------------------------------------------------------------------------
+function applyOwnerFormula_(sheet) {
+  const map = headerMap_(sheet);
+  const owner = map['担当'];
+  if (!owner) return;
+
+  const c1 = colLetter_(map['1回目_架電担当']);
+  const c2 = colLetter_(map['2回目_架電担当']);
+  const c3 = colLetter_(map['3回目_架電担当']);
+
+  const lastRow = sheet.getLastRow();
+  if (lastRow < 2) return;
+
+  const formulas = [];
+  for (let r = 2; r <= lastRow; r++) {
+    // 後の回を優先。どこにも担当が無ければ空欄
+    formulas.push([
+      '=IF(' + c3 + r + '<>"",' + c3 + r +
+      ',IF(' + c2 + r + '<>"",' + c2 + r +
+      ',IF(' + c1 + r + '<>"",' + c1 + r + ',"")))'
+    ]);
+  }
+  sheet.getRange(2, owner, formulas.length, 1).setFormulas(formulas);
+}
+
+// ----------------------------------------------------------------------------
 //  CRM: 軽い体裁
 // ----------------------------------------------------------------------------
 function tidyCrmLayout_(sheet) {
@@ -265,60 +307,52 @@ function tidyCrmLayout_(sheet) {
 }
 
 // ----------------------------------------------------------------------------
-//  商談CRM: ヘッダー・プルダウン整備
+//  商談CRM: ヘッダー・プルダウン・色分け整備
 // ----------------------------------------------------------------------------
-const DEAL_HEADERS = [
-  'CRM行',        // A 転送元キー（自動・編集しない）
-  'place_id',     // B 自動
-  '会社名',       // C 自動
-  '業種',         // D 自動
-  'エリア',       // E 自動
-  '電話',         // F 自動
-  'マップURL',    // G 自動
-  'アポ種別',     // H 自動（アポ獲得/電話アポ）
-  '架電担当',     // I 自動（アポを取った担当）
-  'アポ日',       // J 自動（CRMから同期）
-  'アポ時間',     // K 自動（CRMから同期）
-  '形式',         // L 自動（CRMから同期）
-  '商談ステータス', // M 手動管理
-  '次アクション日', // N 手動管理
-  '商談メモ',     // O 手動管理
-];
-const DEAL_AUTO_COLS = 12; // A..L は自動同期、M以降は手動管理（上書きしない）
-
 function setupDealSheet_(ss) {
   let sheet = getSheet_(ss, CONFIG.DEAL_SHEET);
   if (!sheet) sheet = ss.insertSheet(CONFIG.DEAL_SHEET);
 
-  // 既存の見出し/プレースホルダを掃除してヘッダーを敷き直す（データ行は保持）
+  const headers = DEAL_COLUMNS.map(function (c) { return c.name; });
   const lastRow = sheet.getLastRow();
-  const existingHeader = lastRow >= 1
-    ? sheet.getRange(1, 1, 1, Math.max(sheet.getLastColumn(), 1)).getValues()[0]
-    : [];
-  const alreadySetup = existingHeader[0] === 'CRM行';
+  const dataRows = Math.max(lastRow - 1, 0);
 
-  if (!alreadySetup) {
-    // 旧プレースホルダ（「アポ取得行なし…」など）を消す
-    sheet.clearContents();
-  }
-  sheet.getRange(1, 1, 1, DEAL_HEADERS.length).setValues([DEAL_HEADERS]);
+  // データが無ければ完全リセット（書式・入力規則も含めて敷き直す）
+  if (dataRows <= 0) sheet.clear();
+
+  sheet.getRange(1, 1, 1, headers.length).setValues([headers]);
   sheet.setFrozenRows(1);
-  sheet.getRange(1, 1, 1, DEAL_HEADERS.length).setFontWeight('bold').setBackground('#d9ead3');
+  sheet.getRange(1, 1, 1, headers.length).setFontWeight('bold').setBackground('#d9ead3');
 
-  const map = dealHeaderMap_(sheet);
+  const map = headerMap_(sheet);
   const numRows = Math.max(sheet.getMaxRows() - 1, 1);
-  setListValidation_(sheet, map['形式'], CONFIG.FORMATS, 2, numRows);
-  setListValidation_(sheet, map['商談ステータス'], CONFIG.DEAL_STATUSES, 2, numRows);
 
-  // 自動列はうっすらグレーで「触らない」ことを明示
-  sheet.getRange(2, 1, numRows, DEAL_AUTO_COLS).setBackground('#f3f3f3');
+  const lists = { FORMATS: CONFIG.FORMATS, DEAL_STATUSES: CONFIG.DEAL_STATUSES };
+  DEAL_COLUMNS.forEach(function (col) {
+    if (col.validation && map[col.name]) {
+      setListValidation_(sheet, map[col.name], lists[col.validation], 2, numRows);
+    }
+  });
+
+  // 役割に応じた色分け
+  paintDealRoles_(sheet, 2, numRows, map);
+}
+
+function paintDealRoles_(sheet, startRow, numRows, map) {
+  DEAL_COLUMNS.forEach(function (col) {
+    const c = map[col.name];
+    if (!c) return;
+    let bg = null;
+    if (col.role === 'auto') bg = '#f3f3f3';        // 自動同期＝触らない
+    else if (col.role === 'initial') bg = '#fff2cc'; // 初期コピー＝編集可
+    if (bg) sheet.getRange(startRow, c, numRows, 1).setBackground(bg);
+  });
 }
 
 // ----------------------------------------------------------------------------
 //  トリガー: アポ自動転送
 // ----------------------------------------------------------------------------
 function installEditTrigger_(ss) {
-  // 既存の onCrmEdit トリガーを除去（重複防止）
   ScriptApp.getProjectTriggers().forEach(function (t) {
     if (t.getHandlerFunction() === 'onCrmEdit') ScriptApp.deleteTrigger(t);
   });
@@ -336,7 +370,7 @@ function onCrmEdit(e) {
     if (sheet.getName() !== CONFIG.CRM_SHEET) return;
 
     const row = e.range.getRow();
-    if (row < 2) return; // ヘッダー
+    if (row < 2) return;
 
     const map = headerMap_(sheet);
     const editedCol = e.range.getColumn();
@@ -359,7 +393,7 @@ function onCrmEdit(e) {
     };
 
     // アポを取った回（後の回を優先）を特定
-    let appt = null; // {status, caller}
+    let appt = null;
     for (let n = CONFIG.ROUNDS; n >= 1; n--) {
       const st = get(n + '回目_ステータス');
       if (CONFIG.APPT_STATUSES.indexOf(st) >= 0) {
@@ -367,44 +401,38 @@ function onCrmEdit(e) {
         break;
       }
     }
-    if (!appt) return; // この行はアポ対象でない
+    if (!appt) return;
 
     const ss = e.source || SpreadsheetApp.getActiveSpreadsheet();
     upsertDealRow_(ss, row, get, appt);
 
-    // アポ日/時間/形式が未入力なら入力を促す
     if (!get('アポ日') || !get('アポ時間') || !get('アポ形式')) {
       ss.toast('アポ獲得！ アポ日・時間・形式を入力してください（商談CRMにも反映されます）。', '📅 入力をお願いします', 6);
     }
   } catch (err) {
-    // トリガー内の例外は握りつぶす（編集を妨げない）
     console.error('onCrmEdit error: ' + err);
+  }
+}
+
+/** DEAL_COLUMNS の from 定義に従って、CRM側の値を解決する */
+function dealValueFor_(col, crmRow, get, appt) {
+  switch (col.from) {
+    case '__ROW__': return crmRow;
+    case '__STATUS__': return appt.status;
+    case '__CALLER__': return appt.caller;
+    default: return col.from ? get(col.from) : '';
   }
 }
 
 function upsertDealRow_(ss, crmRow, get, appt) {
   const deal = getSheet_(ss, CONFIG.DEAL_SHEET);
   if (!deal) return;
-  const map = dealHeaderMap_(deal);
-
-  const autoValues = {
-    'CRM行': crmRow,
-    'place_id': get('place_id'),
-    '会社名': get('店名'),
-    '業種': get('業種・種別'),
-    'エリア': get('エリア'),
-    '電話': get('電話'),
-    'マップURL': get('マップURL'),
-    'アポ種別': appt.status,
-    '架電担当': appt.caller,
-    'アポ日': get('アポ日'),
-    'アポ時間': get('アポ時間'),
-    '形式': get('アポ形式'),
-  };
+  const map = headerMap_(deal);
+  const keyCol = map['CRM行'];
+  if (!keyCol) return;
 
   // CRM行 をキーに既存行を探す
   const lastRow = deal.getLastRow();
-  const keyCol = map['CRM行'];
   let targetRow = -1;
   if (lastRow >= 2) {
     const keys = deal.getRange(2, keyCol, lastRow - 1, 1).getValues();
@@ -414,17 +442,24 @@ function upsertDealRow_(ss, crmRow, get, appt) {
   }
 
   if (targetRow === -1) {
-    // 新規追加（手動管理列はデフォルトのみ）
+    // 新規追加: auto/initial はCRMから、managed は初期値のみ
     const newRow = lastRow < 1 ? 2 : lastRow + 1;
-    Object.keys(autoValues).forEach(function (name) {
-      if (map[name]) deal.getRange(newRow, map[name]).setValue(autoValues[name]);
+    DEAL_COLUMNS.forEach(function (col) {
+      const c = map[col.name];
+      if (!c) return;
+      if (col.role === 'auto' || col.role === 'initial') {
+        deal.getRange(newRow, c).setValue(dealValueFor_(col, crmRow, get, appt));
+      } else if (col.def) {
+        deal.getRange(newRow, c).setValue(col.def);
+      }
     });
-    if (map['商談ステータス']) deal.getRange(newRow, map['商談ステータス']).setValue('訪問予定');
-    deal.getRange(newRow, 1, 1, DEAL_AUTO_COLS).setBackground('#f3f3f3');
+    paintDealRoles_(deal, newRow, 1, map);
   } else {
-    // 既存行は自動列だけ更新（商談ステータス/次アクション/商談メモは触らない）
-    Object.keys(autoValues).forEach(function (name) {
-      if (map[name]) deal.getRange(targetRow, map[name]).setValue(autoValues[name]);
+    // 既存行: auto 列だけ最新化（initial / managed は商談CRMの編集を尊重）
+    DEAL_COLUMNS.forEach(function (col) {
+      if (col.role !== 'auto') return;
+      const c = map[col.name];
+      if (c) deal.getRange(targetRow, c).setValue(dealValueFor_(col, crmRow, get, appt));
     });
   }
 }
@@ -439,7 +474,7 @@ function refreshGuideSheet_(ss) {
 
   const lines = [
     ['■ シート構成（4タブ）'],
-    ['CRM: ISの架電CRM（架電履歴3セット・各回メモ付き・現在ステータス自動）'],
+    ['CRM: ISの架電CRM（架電履歴3セット・各回メモ付き・現在ステータス/担当 自動）'],
     ['商談CRM: アポ獲得/電話アポを取った行を自動転送。FSが商談を管理'],
     ['集計: 月次/日次/担当者別/エリア別/業種別'],
     ['運用ガイド: このページ'],
@@ -449,6 +484,9 @@ function refreshGuideSheet_(ss) {
     [''],
     ['■ ステータス（プルダウン）'],
     ['後日掛け直し / 資料送付 / お断り / アポ獲得 / 電話アポ / 留守 / 廃業'],
+    [''],
+    ['■ 担当（M列・自動）'],
+    ['最新の架電回（3回目→2回目→1回目）で入っている架電担当を自動表示。手動上書き可。'],
     [''],
     ['■ 現在ステータス（自動・手動上書き可）'],
     ['アポ獲得 or 電話アポ → 「アポ」。商談日入力 → 「商談」。成約日入力 → 「成約」。'],
@@ -463,21 +501,26 @@ function refreshGuideSheet_(ss) {
     [''],
     ['■ FSの動き（商談・商談CRMタブ）'],
     ['1. 商談CRMで当日のアポを確認（会社名・業種・エリア・電話・マップURL）'],
-    ['2. 商談ステータス（訪問予定→訪問済→商談中→成約/見送り）を更新'],
-    ['3. 次アクション日・商談メモを記入'],
-    ['4. 成約時はCRMタブの 商談日/成約日/商品/売上 も入力（現在ステータスが自動更新）'],
+    ['2. サイト区分/既存website/検出メール/うちのデモURL を確認・更新（商談準備）'],
+    ['3. 商談ステータス（訪問予定→訪問済→商談中→成約/見送り）を更新'],
+    ['4. 次アクション日・商談メモを記入'],
+    ['5. 成約時はCRMタブの 商談日/成約日/商品/売上 も入力（現在ステータスが自動更新）'],
+    [''],
+    ['■ 商談CRMの列の色（役割）'],
+    ['グレー = 自動同期（CRMの最新値で上書き・触らない）'],
+    ['薄黄 = 初期コピー（転送時にCRMから取得、以降は商談CRMで編集）: サイト区分/既存website/検出メール/うちのデモURL'],
+    ['白 = 商談管理（手入力）: 商談ステータス/次アクション日/商談メモ'],
     [''],
     ['■ 通電の定義（集計用）'],
     ['通電 = ステータスが「後日掛け直し/資料送付/お断り/アポ獲得/電話アポ」のいずれか'],
     ['（留守・廃業は通電に含めない）'],
     [''],
     ['■ 注意'],
-    ['商談CRMの A〜L 列は自動同期（グレー）。M〜O 列（商談ステータス/次アクション/商談メモ）を手入力。'],
     ['一度転送した行は自動削除されません。'],
   ];
   sheet.getRange(1, 1, lines.length, 1).setValues(lines);
   sheet.getRange(1, 1).setFontWeight('bold');
-  sheet.setColumnWidth(1, 720);
+  sheet.setColumnWidth(1, 760);
 }
 
 // ----------------------------------------------------------------------------
@@ -525,10 +568,6 @@ function headerMap_(sheet) {
     if (key) map[key] = i + 1; // 1-based
   }
   return map;
-}
-
-function dealHeaderMap_(sheet) {
-  return headerMap_(sheet);
 }
 
 function colLetter_(col) {
