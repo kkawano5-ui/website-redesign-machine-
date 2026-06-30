@@ -1,0 +1,20 @@
+[
+  {"name":"ryoukai",   "text":"了解！",     "color":"#ff3b30"},
+  {"name":"arigatou",  "text":"ありがとう", "color":"#ff2d78"},
+  {"name":"otsukare",  "text":"おつかれ",   "color":"#7b4dff"},
+  {"name":"saikou",    "text":"最高！",     "color":"#ff7a00"},
+  {"name":"kami",      "text":"神",         "color":"#d4a017"},
+  {"name":"sugoi",     "text":"すごい",     "color":"#9b59b6"},
+  {"name":"naruhodo",  "text":"なるほど",   "color":"#0a84ff"},
+  {"name":"kakunin",   "text":"確認中",     "color":"#0aa1a1"},
+  {"name":"taiou_chu", "text":"対応中",     "color":"#e67e22"},
+  {"name":"kanryou",   "text":"完了！",     "color":"#22a447"},
+  {"name":"ok",        "text":"OK",         "color":"#22a447"},
+  {"name":"sasuga",    "text":"さすが！",   "color":"#ff7a00"},
+  {"name":"tasukaru",  "text":"助かる",     "color":"#16a085"},
+  {"name":"yoroshiku", "text":"よろしく",   "color":"#2d6cdf"},
+  {"name":"ganbaru",   "text":"がんばる",   "color":"#e8483d"},
+  {"name":"tensai",    "text":"天才",       "color":"#d4a017"},
+  {"name":"iine",      "text":"いいね！",   "color":"#ff2d78"},
+  {"name":"kusa",      "text":"草",         "color":"#22a447"}
+]
