@@ -12,7 +12,7 @@ const FIELD = {
   id: ['slug', 'デモID'],
   name: ['name', 'displayName', 'companyName', '会社名', '店名', '店舗名', '名称', '社名', '事業者名'],
   area: ['area', 'area_name', 'エリア', 'エリア名', '地域', '駅'],
-  vertical: ['vertical', '業種', '業種名', 'business', 'category', 'カテゴリ'],
+  vertical: ['vertical', '業種', '業種・種別', '業種名', '種別', 'business', 'category', 'カテゴリ'],
   reviewCount: ['reviewCount', 'review_count', 'userRatingCount', '口コミ数', '口コミ件数', 'クチコミ数', 'クチコミ', '口コミ', 'reviews', 'レビュー数'],
   website: ['website', 'websiteUri', '既存website', '既存サイト', 'サイト', 'サイトURL', 'url', 'HP'],
   placeId: ['place_id', 'placeId', 'placeID', 'placeid'],
@@ -201,6 +201,8 @@ async function main() {
   });
   Object.entries(byVertical).forEach(([n, ct]) => console.log(`  - ${n}: ${ct}件`));
   if (excluded) console.log(`  対象外(is_target≠1)を除外: ${excluded}件（全件出すなら --all）`);
+  const fallbackCount = generated.filter((g) => g.resolvedBy === 'fallback').length;
+  if (fallbackCount) console.log(`  うち汎用テンプレ(general)に着地: ${fallbackCount}件（業種名のエイリアスを足せば専用テーマに割当可）`);
   console.log(`  ギャラリー : ${rel(path.join(outDir, 'index.html'))}`);
   console.log(`  デモURL一覧: ${rel(urlsCsvPath)}（sites/の外＝非公開）`);
   if (!baseUrl) console.log('  （--base-url <公開URL> を渡すと demo-urls.csv の「デモURL」列が埋まります）');

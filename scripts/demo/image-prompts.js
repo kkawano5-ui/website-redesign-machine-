@@ -153,4 +153,37 @@ export const IMAGE_PROMPTS = {
       'An empty bright open room with wooden floor',
     ],
   },
+  dental: {
+    hero: 'A clean modern dental clinic reception and treatment room, bright hygienic and reassuring, no patients',
+    gallery: [
+      'A clean dental treatment chair in a bright operatory, no people',
+      'A tidy dental reception desk with soft lighting',
+      'A calm waiting room with comfortable seating',
+      'Dental instruments neatly arranged on a clean tray',
+      'A bright clean hallway in a dental clinic',
+      'A hygienic operatory with modern equipment, no people',
+    ],
+  },
+  professional: {
+    hero: 'A clean modern professional office meeting room (law or accounting firm) with a table and documents, trustworthy and tidy, no faces',
+    gallery: [
+      'A tidy meeting room with a table and chairs',
+      'A desk with neatly stacked documents and a pen, close-up',
+      'A calm reception area of a professional office',
+      'A bookshelf with professional reference books',
+      'A consultation table set for a meeting',
+      'A bright clean office hallway',
+    ],
+  },
+  general: {
+    hero: 'A clean welcoming small Japanese shop or service interior, bright tidy and friendly neighborhood atmosphere, no people',
+    gallery: [
+      'A tidy welcoming counter in a small shop',
+      'A clean bright interior of a small business',
+      'A neat service area, organized and friendly',
+      'A comfortable waiting space with a few chairs',
+      'A welcoming entrance with plants',
+      'Neatly arranged items on clean shelves',
+    ],
+  },
 };
