@@ -157,7 +157,9 @@ async function main() {
   // 静的ディレクトリはそのまま配信されるため設定ファイルは不要。デモは noindex にしたいので
   // _headers だけ置く。
   await writeFileEnsured(path.join(outDir, '_headers'), '/*\n  X-Robots-Tag: noindex\n');
-  await writeFileEnsured(path.join(outDir, 'demo-urls.csv'), renderUrlsCsv(generated, baseUrl));
+  // 顧客リスト由来のURL一覧は公開ディレクトリ(sites/)の外に出す（デプロイで全件が公開されるのを防ぐ）。
+  const urlsCsvPath = path.resolve('data/outputs/demo-urls.csv');
+  await writeFileEnsured(urlsCsvPath, renderUrlsCsv(generated, baseUrl));
 
   const rel = (p) => path.relative(process.cwd(), p);
   console.log(`\n生成完了: ${generated.length}件 → ${rel(outDir)}/`);
@@ -167,7 +169,7 @@ async function main() {
   });
   Object.entries(byVertical).forEach(([n, ct]) => console.log(`  - ${n}: ${ct}件`));
   console.log(`  ギャラリー : ${rel(path.join(outDir, 'index.html'))}`);
-  console.log(`  デモURL一覧: ${rel(path.join(outDir, 'demo-urls.csv'))}`);
+  console.log(`  デモURL一覧: ${rel(urlsCsvPath)}（sites/の外＝非公開）`);
   if (!baseUrl) console.log('  （--base-url <公開URL> を渡すと demo-urls.csv の「デモURL」列が埋まります）');
   if (skipped.length) {
     console.log(`\nスキップ: ${skipped.length}件`);

@@ -76,14 +76,16 @@ npm run generate:sites -- /path/to/leads_omiya.csv --base-url https://<公開先
 - 認識フィールド（別名は `scripts/generate-demo-sites.js` の `FIELD`）:
   `会社名` / `エリア` / `業種` / `口コミ数` / `既存website` / `place_id`
 - 「業種」列が無い場合は社名から推定。判別不能はスキップ（実行ログに出る）。
-- 出力 `sites/demo-urls.csv` の「デモURL」列を、CRM の「うちのデモURL」列に貼る。
+- 出力 `data/outputs/demo-urls.csv`（`sites/` の外＝非公開）の「デモURL」列を、
+  CRM の「うちのデモURL」列に貼る。
 - 注意: CRM の「サイト区分」は自社サイト有無の区分（A/B/C/D）であって業種ではない。
   業種は別列で渡すこと。
 
-公開は Cloudflare Pages（既存デモ `mihon-newbiz.pages.dev/demo/<id>` と同じ）:
+公開は Cloudflare Pages。既存テンプレ集（`mihon-newbiz`）とは**別プロジェクト**に出す
+（同名だと `k001` 等のパスが衝突する）:
 
 ```bash
-wrangler pages deploy sites --project-name mihon-newbiz
+wrangler pages deploy sites --project-name miraihen-demos
 ```
 
 ## 5. 注意

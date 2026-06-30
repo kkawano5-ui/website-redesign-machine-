@@ -114,22 +114,27 @@ npm run generate:sites -- data/companies/sample-companies.json --base-url https:
 
 - `sites/demo/<id>/index.html` … 1社1サイト（id例: k001 / f001 / p001 / c001）
 - `sites/index.html` … 一覧ギャラリー
-- `sites/demo-urls.csv` … id・会社名・エリア・デモURL（CRMの「うちのデモURL」列に貼る）
 - `sites/_headers` … Cloudflare Pages 用ヘッダ（全ページ noindex）
+- `data/outputs/demo-urls.csv` … id・会社名・エリア・デモURL（CRMの「うちのデモURL」列に貼る）
+  ※ 顧客リストなので `sites/` の**外**に出力＝公開されない
 
 `--base-url` を渡すと `demo-urls.csv` の「デモURL」列が公開URLで埋まる
 （例: `https://<公開先>/demo/k001/`）。
 
 ### デプロイ（Cloudflare Pages）
 
-デモは Cloudflare Pages に公開する（既存の `mihon-newbiz.pages.dev/demo/<id>` と同じ）。
-`sites/` は静的ファイルのみなので、そのままデプロイできる:
+デモは Cloudflare Pages に公開する。`sites/` は静的ファイルのみなので、そのままデプロイできる:
 
 ```bash
-wrangler pages deploy sites --project-name mihon-newbiz
+wrangler pages deploy sites --project-name miraihen-demos
 ```
 
-> 使い分け: このリポジトリ直下の**公式LP**（mirai-edit / wedding / concierge / ads）は **Vercel**。
+- 既存テンプレ集（`mihon-newbiz.pages.dev/demo/{k001,b001,...}`）とは**別プロジェクト**に出す。
+  同名だと `k001` 等のパスが衝突し、テンプレ側を上書きしてしまう。
+- 実リスト運用時は、顧客名が並ぶ一覧 `sites/index.html` を deploy 前に削除するか
+  Cloudflare Access で保護する（個別デモのURLだけを各社に送る）。
+
+> 使い分け: リポジトリ直下の**公式LP**（mirai-edit / wedding / concierge / ads）は **Vercel**、
 > **デモ量産サイト**（`sites/`）は **Cloudflare Pages**。
 
 ### スキャン（手順1）
