@@ -180,8 +180,9 @@ async function main() {
   // 静的ディレクトリはそのまま配信されるため設定ファイルは不要。デモは noindex にしたいので
   // _headers だけ置く。
   await writeFileEnsured(path.join(outDir, '_headers'), '/*\n  X-Robots-Tag: noindex\n');
-  // 画像アセット（任意）: リポの assets/<業種>/ があれば公開ディレクトリにコピー。
-  // 無ければデモは従来のプレースホルダ表示のまま（onerror フォールバックで壊れない）。
+  // 画像アセット（任意）: 公開ディレクトリの assets を一旦消してから、リポの assets/ を反映。
+  // （古い形式/不要ファイルを残さずアップロードを軽く保つ。無ければプレースホルダのまま＝壊れない）
+  await fs.rm(path.join(outDir, 'assets'), { recursive: true, force: true });
   try {
     await fs.access(path.resolve('assets'));
     await fs.cp(path.resolve('assets'), path.join(outDir, 'assets'), { recursive: true });
