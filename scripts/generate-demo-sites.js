@@ -13,7 +13,7 @@ const FIELD = {
   name: ['name', 'displayName', 'companyName', '会社名', '店名', '店舗名', '名称', '社名', '事業者名'],
   area: ['area', 'area_name', 'エリア', 'エリア名', '地域', '駅'],
   vertical: ['vertical', '業種', '業種名', 'business', 'category', 'カテゴリ'],
-  reviewCount: ['reviewCount', 'userRatingCount', '口コミ数', '口コミ件数', 'クチコミ数', 'クチコミ', '口コミ', 'reviews', 'レビュー数'],
+  reviewCount: ['reviewCount', 'review_count', 'userRatingCount', '口コミ数', '口コミ件数', 'クチコミ数', 'クチコミ', '口コミ', 'reviews', 'レビュー数'],
   website: ['website', 'websiteUri', '既存website', '既存サイト', 'サイト', 'サイトURL', 'url', 'HP'],
   placeId: ['place_id', 'placeId', 'placeID', 'placeid'],
 };
