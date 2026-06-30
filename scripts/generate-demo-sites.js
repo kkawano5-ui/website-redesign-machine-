@@ -18,6 +18,16 @@ const FIELD = {
   placeId: ['place_id', 'placeId', 'placeID', 'placeid'],
 };
 
+// --exclude-food 用: これらが業種に含まれる行は除外（GTM方針＝飲食は営業対象外）。
+const FOOD_KEYWORDS = [
+  '居酒屋', '和食', '洋食', '中華', '飲食', 'レストラン', 'カフェ', '喫茶', 'コーヒー',
+  'ラーメン', 'うどん', 'そば', '蕎麦', '寿司', 'すし', '焼肉', '焼き鳥', '焼鳥', '鳥料理',
+  'イタリア', 'フレンチ', 'スペイン', '韓国料理', 'タイ料理', 'ステーキ', 'ハンバーガー',
+  '定食', '食堂', '丼', 'カレー', 'ピザ', 'パスタ', 'バー', 'バル', 'ダイニング', 'ビストロ',
+  '居酒', '酒場', '串', '鍋', 'しゃぶ', 'すき焼', '餃子', 'お好み焼', 'たこ焼', '鉄板',
+  'パン', 'ベーカリー', 'スイーツ', 'ケーキ', '甘味', '弁当', '惣菜', '割烹', '料亭', '創作料理',
+];
+
 function parseArgs(argv) {
   const args = { _: [] };
   for (let i = 0; i < argv.length; i += 1) {
@@ -27,6 +37,7 @@ function parseArgs(argv) {
     else if (a === '--base-url') args.baseUrl = argv[(i += 1)];
     else if (a.startsWith('--base-url=')) args.baseUrl = a.slice(11);
     else if (a === '--all') args.all = true;
+    else if (a === '--exclude-food' || a === '--no-food') args.excludeFood = true;
     else args._.push(a);
   }
   return args;
@@ -136,6 +147,7 @@ async function main() {
   const generated = [];
   const skipped = [];
   let excluded = 0;
+  let foodExcluded = 0;
 
   for (const raw of rawCompanies) {
     if (!isTargetRow(raw, args.all)) {
@@ -148,6 +160,10 @@ async function main() {
       continue;
     }
     const rawVertical = pick(raw, FIELD.vertical);
+    if (args.excludeFood && FOOD_KEYWORDS.some((k) => rawVertical.includes(k))) {
+      foodExcluded += 1;
+      continue;
+    }
     const { key, resolvedBy } = resolveVertical(rawVertical, name);
     if (!key) {
       skipped.push({ name, reason: `業種を判別できません (区分=${rawVertical || '空'})` });
@@ -201,6 +217,7 @@ async function main() {
   });
   Object.entries(byVertical).forEach(([n, ct]) => console.log(`  - ${n}: ${ct}件`));
   if (excluded) console.log(`  対象外(is_target≠1)を除外: ${excluded}件（全件出すなら --all）`);
+  if (foodExcluded) console.log(`  飲食を除外: ${foodExcluded}件（--exclude-food）`);
   const fallbackCount = generated.filter((g) => g.resolvedBy === 'fallback').length;
   if (fallbackCount) console.log(`  うち汎用テンプレ(general)に着地: ${fallbackCount}件（業種名のエイリアスを足せば専用テーマに割当可）`);
   console.log(`  ギャラリー : ${rel(path.join(outDir, 'index.html'))}`);
