@@ -174,10 +174,11 @@ function buildAllKpi() {
     let o = ss.getSheetByName(CONFIG.outSheet);
     if (!o) o = ss.insertSheet(CONFIG.outSheet);
     o.clear();
+    o.setFrozenRows(0); o.setFrozenColumns(0); // 旧実行の固定が残っていると結合でエラーになるため先に解除
     o.getRange(1, 1, matrix.length, nCols).setValues(matrix);
 
-    // タイトル行
-    [1, dHead - 1].forEach((tr) => o.getRange(tr, 1, 1, nCols).merge()
+    // タイトル行（結合せず帯だけ。全幅結合は固定列をまたいでエラーになるため避ける）
+    [1, dHead - 1].forEach((tr) => o.getRange(tr, 1, 1, nCols)
       .setFontWeight('bold').setBackground('#e8eaed').setHorizontalAlignment('left'));
 
     formatBlock(o, mHead, groups, nCols, '年月', mRows.length - 2);
