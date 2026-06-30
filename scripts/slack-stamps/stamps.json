@@ -16,5 +16,31 @@
   {"name":"ganbaru",   "text":"がんばる",   "color":"#e8483d"},
   {"name":"tensai",    "text":"天才",       "color":"#d4a017"},
   {"name":"iine",      "text":"いいね！",   "color":"#ff2d78"},
-  {"name":"kusa",      "text":"草",         "color":"#22a447"}
+  {"name":"kusa",      "text":"草",         "color":"#22a447"},
+
+  {"name":"sorena",       "text":"それな！",   "color":"#ff3b30", "rotate":-7},
+  {"name":"wakaru",       "text":"わかる〜",   "color":"#0a84ff"},
+  {"name":"ukeru",        "text":"ウケる",     "color":"#ff7a00", "rotate":6},
+  {"name":"yabai",        "text":"ヤバい",     "color":"#e8483d"},
+  {"name":"muri",         "text":"むり。",     "color":"#7b4dff"},
+  {"name":"majika",       "text":"まじか",     "color":"#0aa1a1"},
+  {"name":"tashikani",    "text":"たしかに",   "color":"#2d6cdf"},
+  {"name":"donmai",       "text":"どんまい",   "color":"#22a447"},
+  {"name":"erai",         "text":"えらい！",   "color":"#ff2d78", "rotate":-6},
+  {"name":"nemui",        "text":"ねむい…",    "color":"#9b59b6"},
+  {"name":"kaeritai",     "text":"帰りたい",   "color":"#e67e22"},
+  {"name":"harahetta",    "text":"はらへった", "color":"#d4a017"},
+  {"name":"shirankedo",   "text":"知らんけど", "color":"#3f454d"},
+  {"name":"fight",        "text":"ファイト！", "color":"#ff3b30"},
+  {"name":"byoude",       "text":"秒で",       "color":"#0a84ff"},
+  {"name":"sokuretsu",    "text":"即レス",     "color":"#16a085"},
+  {"name":"iginashi",     "text":"異議なし",   "color":"#2d6cdf"},
+  {"name":"otsukare_nama","text":"お疲れ生です","color":"#e67e22"},
+
+  {"name":"yuushou",      "text":"優勝",       "color":"#ff2d78", "style":"burst"},
+  {"name":"bakushou",     "text":"爆笑",       "color":"#ff7a00", "style":"burst"},
+  {"name":"saikyou",      "text":"最強",       "color":"#e8483d", "style":"burst"},
+  {"name":"attou_kansha", "text":"圧倒的感謝", "color":"#7b4dff", "style":"burst"},
+  {"name":"kanpeki",      "text":"完璧！",     "color":"#22a447", "style":"burst"},
+  {"name":"tension_max",  "text":"テンションMAX","color":"#ff3b30","style":"burst"}
 ]
