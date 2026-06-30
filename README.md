@@ -115,11 +115,22 @@ npm run generate:sites -- data/companies/sample-companies.json --base-url https:
 - `sites/demo/<id>/index.html` … 1社1サイト（id例: k001 / f001 / p001 / c001）
 - `sites/index.html` … 一覧ギャラリー
 - `sites/demo-urls.csv` … id・会社名・エリア・デモURL（CRMの「うちのデモURL」列に貼る）
-- `sites/vercel.json` … 静的デプロイ設定（`outputDirectory: "."`）
+- `sites/_headers` … Cloudflare Pages 用ヘッダ（全ページ noindex）
 
 `--base-url` を渡すと `demo-urls.csv` の「デモURL」列が公開URLで埋まる
-（例: `https://<公開先>/demo/k001/`）。`sites/` は静的ファイルのみなので
-Vercel / Cloudflare Pages にそのまま公開できる。
+（例: `https://<公開先>/demo/k001/`）。
+
+### デプロイ（Cloudflare Pages）
+
+デモは Cloudflare Pages に公開する（既存の `mihon-newbiz.pages.dev/demo/<id>` と同じ）。
+`sites/` は静的ファイルのみなので、そのままデプロイできる:
+
+```bash
+wrangler pages deploy sites --project-name mihon-newbiz
+```
+
+> 使い分け: このリポジトリ直下の**公式LP**（mirai-edit / wedding / concierge / ads）は **Vercel**。
+> **デモ量産サイト**（`sites/`）は **Cloudflare Pages**。
 
 ### スキャン（手順1）
 

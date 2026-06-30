@@ -153,20 +153,10 @@ async function main() {
   if (generated.length === 0) throw new Error('生成対象が0件でした（入力フィールド名を確認してください）。');
 
   await writeFileEnsured(path.join(outDir, 'index.html'), renderGallery(generated));
-  await writeFileEnsured(
-    path.join(outDir, 'vercel.json'),
-    `${JSON.stringify(
-      {
-        $schema: 'https://openapi.vercel.sh/vercel.json',
-        framework: null,
-        buildCommand: 'true',
-        installCommand: 'true',
-        outputDirectory: '.',
-      },
-      null,
-      2
-    )}\n`
-  );
+  // デモは Cloudflare Pages に公開する（既存の mihon-newbiz.pages.dev/demo/<id> と同じ）。
+  // 静的ディレクトリはそのまま配信されるため設定ファイルは不要。デモは noindex にしたいので
+  // _headers だけ置く。
+  await writeFileEnsured(path.join(outDir, '_headers'), '/*\n  X-Robots-Tag: noindex\n');
   await writeFileEnsured(path.join(outDir, 'demo-urls.csv'), renderUrlsCsv(generated, baseUrl));
 
   const rel = (p) => path.relative(process.cwd(), p);

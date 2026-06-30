@@ -80,6 +80,12 @@ npm run generate:sites -- /path/to/leads_omiya.csv --base-url https://<公開先
 - 注意: CRM の「サイト区分」は自社サイト有無の区分（A/B/C/D）であって業種ではない。
   業種は別列で渡すこと。
 
+公開は Cloudflare Pages（既存デモ `mihon-newbiz.pages.dev/demo/<id>` と同じ）:
+
+```bash
+wrangler pages deploy sites --project-name mihon-newbiz
+```
+
 ## 5. 注意
 
 - API 課金あり（$200 無料枠内見込み）。Text Search は60件上限で最小零細を取りこぼす
