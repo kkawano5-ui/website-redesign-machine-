@@ -68,7 +68,14 @@ async function main() {
   const args = parseArgs(process.argv.slice(2));
   const key = process.env.OPENAI_API_KEY;
   if (!key) {
-    console.error('OPENAI_API_KEY が未設定です。  OPENAI_API_KEY=sk-... node scripts/gen-images.mjs');
+    console.error('OPENAI_API_KEY が未設定です。  OPENAI_API_KEY=sk-proj-... npm run gen:images');
+    process.exit(1);
+  }
+  if (!/^sk-[A-Za-z0-9_-]+$/.test(key)) {
+    console.error(`OPENAI_API_KEY の値が正しくないようです（受け取った値: "${key.slice(0, 14)}…"）。`);
+    console.error('「本物の鍵」「sk-...」などのプレースホルダではなく、platform.openai.com で発行した');
+    console.error('実際のキー（sk-proj-XXXX… のような長い英数字）をそのまま入れてください。');
+    console.error('例: OPENAI_API_KEY=sk-proj-abc123… npm run gen:images');
     process.exit(1);
   }
   const model = args.model || 'gpt-image-1';
