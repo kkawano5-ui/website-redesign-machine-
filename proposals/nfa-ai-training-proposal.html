@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>株式会社エヌエフエー 御中｜AI実践研修 ご提案</title>
+<style>
+  :root{
+    --navy:#0f2a4a; --navy2:#1b3e62; --accent:#2563eb; --teal:#0ea5a4;
+    --ink:#1f2733; --sub:#5b6676; --line:#e2e8f0; --bg:#f5f7fa; --soft:#eef3fb;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    font-family:'IPAPGothic','IPAGothic',sans-serif;
+    color:var(--ink); font-size:10.5pt; line-height:1.75; -webkit-print-color-adjust:exact; print-color-adjust:exact;
+  }
+  @page{ size:A4; margin:14mm 14mm 16mm 14mm; }
+  .page{ page-break-after:always; }
+  .page:last-child{ page-break-after:auto; }
+  h1,h2,h3,h4{ margin:0; line-height:1.4; }
+  p{ margin:.4em 0; }
+  small{ color:var(--sub); }
+  .muted{ color:var(--sub); }
+  .accent{ color:var(--accent); }
+
+  /* cover */
+  .cover{
+    position:relative; height:255mm; background:linear-gradient(155deg,#0f2a4a 0%,#16395c 60%,#1f5170 100%);
+    color:#fff; padding:32mm 20mm; page-break-after:always; overflow:hidden;
+  }
+  .cover .kicker{ letter-spacing:.32em; font-size:10pt; color:#9fc3e8; margin-bottom:10mm;}
+  .cover h1{ font-size:30pt; line-height:1.35; font-weight:700; }
+  .cover h1 .em{ color:#7fd1c9; }
+  .cover .lead{ margin-top:8mm; font-size:12pt; color:#d9e6f4; max-width:150mm;}
+  .cover .meta{ position:absolute; left:20mm; bottom:26mm; font-size:11pt; line-height:2; }
+  .cover .meta .to{ font-size:15pt; font-weight:700; border-left:4px solid #7fd1c9; padding-left:5mm; margin-bottom:7mm;}
+  .cover .by{ position:absolute; right:20mm; bottom:26mm; text-align:right; font-size:10.5pt; color:#cfe0f1; line-height:1.9;}
+  .cover .deco{ position:absolute; right:-40mm; top:-40mm; width:140mm; height:140mm; border-radius:50%; background:rgba(127,209,201,.10);}
+  .cover .deco2{ position:absolute; right:10mm; top:60mm; width:80mm; height:80mm; border-radius:50%; background:rgba(127,209,201,.07);}
+
+  /* section */
+  .sec{ padding:2mm 0 4mm; }
+  .sec-h{ display:flex; align-items:baseline; gap:5mm; border-bottom:2.5px solid var(--navy); padding-bottom:2.5mm; margin-bottom:4mm; }
+  .sec-h .no{ font-size:13pt; font-weight:700; color:#fff; background:var(--navy); border-radius:5px; padding:1mm 3.2mm; letter-spacing:.05em;}
+  .sec-h h2{ font-size:15.5pt; color:var(--navy); font-weight:700;}
+  .sec-h .en{ margin-left:auto; font-size:8.5pt; letter-spacing:.25em; color:#9aa6b6;}
+
+  .lead-blk{ background:var(--soft); border-left:4px solid var(--accent); padding:3.5mm 5mm; border-radius:0 6px 6px 0; margin:3mm 0;}
+  .grid2{ display:grid; grid-template-columns:1fr 1fr; gap:4mm; }
+  .grid3{ display:grid; grid-template-columns:1fr 1fr 1fr; gap:4mm; }
+  .card{ border:1px solid var(--line); border-radius:8px; padding:4mm 4.5mm; background:#fff; break-inside:avoid;}
+  .card h4{ font-size:11pt; color:var(--navy); margin-bottom:1.5mm;}
+  .card .tag{ display:inline-block; font-size:8pt; color:#fff; background:var(--teal); border-radius:4px; padding:.5mm 2.2mm; margin-bottom:2mm; letter-spacing:.04em;}
+  .pill{ display:inline-block; font-size:8.5pt; background:var(--soft); color:var(--accent); border:1px solid #cfe0fb; border-radius:20px; padding:.6mm 3mm; margin:.6mm .6mm 0 0;}
+
+  table{ width:100%; border-collapse:collapse; margin:2.5mm 0; font-size:9.3pt; break-inside:avoid;}
+  th,td{ border:1px solid var(--line); padding:2mm 2.6mm; text-align:left; vertical-align:top;}
+  th{ background:var(--navy); color:#fff; font-weight:600; }
+  td.k{ background:var(--soft); font-weight:600; color:var(--navy); white-space:nowrap;}
+  .course-tbl th:first-child{ width:13mm; text-align:center;}
+  .course-tbl td:first-child{ text-align:center; font-weight:700; color:var(--accent); background:#fafcff;}
+
+  .course-head{ display:flex; align-items:center; gap:3mm; margin-top:1mm;}
+  .course-badge{ font-size:12pt; font-weight:700; color:#fff; background:var(--accent); border-radius:6px; width:9mm; height:9mm; display:flex; align-items:center; justify-content:center;}
+  .course-badge.b{background:#0ea5a4;} .course-badge.c{background:#7c3aed;} .course-badge.d{background:#e0701b;}
+  .course-title{ font-size:12.5pt; font-weight:700; color:var(--navy);}
+  .course-sub{ font-size:9pt; color:var(--sub);}
+
+  .flow{ display:flex; align-items:stretch; gap:0; margin:3mm 0; break-inside:avoid;}
+  .flow .step{ flex:1; background:#fff; border:1px solid var(--line); padding:3mm; font-size:8.8pt; position:relative;}
+  .flow .step .n{ font-size:8pt; color:var(--teal); font-weight:700;}
+  .flow .step strong{ color:var(--navy); font-size:9.5pt;}
+  .flow .arrow{ display:flex; align-items:center; color:var(--accent); font-weight:700; padding:0 1.4mm;}
+
+  .kpi{ display:grid; grid-template-columns:repeat(3,1fr); gap:4mm; margin:3mm 0;}
+  .kpi .b{ text-align:center; border:1px solid var(--line); border-radius:8px; padding:3.5mm; background:#fff;}
+  .kpi .num{ font-size:19pt; font-weight:700; color:var(--accent); line-height:1.1;}
+  .kpi .lbl{ font-size:8.6pt; color:var(--sub); margin-top:1mm;}
+
+  .note{ font-size:8.4pt; color:var(--sub); margin-top:2mm;}
+  ul.tight{ margin:1.5mm 0; padding-left:5mm;} ul.tight li{ margin:.8mm 0;}
+  .hl{ background:linear-gradient(transparent 62%,#cdeee9 62%); font-weight:700;}
+  .foot{ text-align:center; color:#aab3c0; font-size:8pt; margin-top:6mm; border-top:1px solid var(--line); padding-top:2mm;}
+</style>
+</head>
+<body>
+
+<!-- ===== COVER ===== -->
+<div class="cover">
+  <div class="deco"></div><div class="deco2"></div>
+  <div class="kicker">AI 実践研修 ご提案書</div>
+  <h1>派遣・PEO業務を<br><span class="em">「実装レベル」</span>で自動化する<br>AI実践研修</h1>
+  <div class="lead">貴社のPEO型人材サービス（失業なき労働移動）を題材に、<br>その場で動く仕組みをつくる、12時間の実践型カリキュラム。</div>
+  <div class="meta">
+    <div class="to">株式会社エヌエフエー 御中</div>
+    <div>ご担当者様各位</div>
+  </div>
+  <div class="by">
+    株式会社AIスキル<br>
+    AIスキルアカデミー / 法人研修事業<br>
+    2026年6月
+  </div>
+</div>
+
+<!-- ===== P1 : 御社理解 ===== -->
+<div class="page">
+  <div class="sec">
+    <div class="sec-h"><span class="no">01</span><h2>はじめに — 御社の取り組みへの理解</h2><span class="en">UNDERSTANDING</span></div>
+    <div class="lead-blk">
+      御社は、<span class="hl">「失業なき労働移動」を掲げる日本版PEO型人材サービス</span>として、継続雇用と自社研修センターを軸に成長を続けておられます。
+      今回お伺いした狙いは「自社の人材サービス業務をAIで徹底的に自動化し、その成果とオペレーションを他社にも展開していく」こと。
+      本提案は、その第一歩としての<strong>実践型AI研修</strong>をご提案するものです。
+    </div>
+    <div class="grid2">
+      <div class="card">
+        <span class="tag">御社の特徴</span>
+        <h4>PEO＝継続雇用が事業の背骨</h4>
+        <p class="muted" style="font-size:9.2pt">一般的な派遣は1回の就業が終わると次まで供給に時間がかかりますが、御社は研修センターを「止まり木」として継続雇用し、<strong>配置転換</strong>で次へつなぐ。だからこそ<strong>稼働率</strong>が利益を大きく左右します。</p>
+      </div>
+      <div class="card">
+        <span class="tag">御社の特徴</span>
+        <h4>多サービス・多職種・拡大フェーズ</h4>
+        <p class="muted" style="font-size:9.2pt">派遣／紹介／業務委託・請負（物流・コールセンター・軽作業等）を多職種で展開。資金調達・資本参画を経て拡大局面にあり、自動化ノウハウは<strong>他社展開・M&Aの武器</strong>になり得ます。</p>
+      </div>
+    </div>
+    <p style="margin-top:3mm">すでに御社では日常的にAIを活用されているため、本研修では<span class="hl">「生成AIとは」といった基礎は扱いません</span>。
+    12時間すべてを、御社の実業務に効く仕組みづくりと、その設計判断に充てます。</p>
+  </div>
+
+  <div class="sec">
+    <div class="sec-h"><span class="no">02</span><h2>なぜ、御社のビジネスでAI自動化が大きく効くのか</h2><span class="en">WHY IT WORKS</span></div>
+    <p>人材サービス業は、料金に対して営業利益が薄い構造です。賃金・社会保険料は法律で決まっていて削れませんが、<strong>事務・営業・人材管理の手間（人件費）は工夫で削れます</strong>。利益の元が薄いぶん、わずかな改善が利益に大きく跳ね返ります。さらにPEOモデルでは「待機させない＝稼働率」が利益を左右します。</p>
+    <div class="grid3" style="margin-top:3mm">
+      <div class="card"><h4 class="accent">① 利益を厚く</h4><p class="muted" style="font-size:9pt">契約・請求・給与・前払いなど、毎月くり返す事務を自動化し、ミスをなくす。薄利だからこそミス撲滅が効く。</p></div>
+      <div class="card"><h4 style="color:#0ea5a4">② 稼働率を上げる</h4><p class="muted" style="font-size:9pt">就業終了予定の人材と次の派遣先ニーズを素早くマッチし、配置転換を最短化。あわせて新規開拓も自動化。</p></div>
+      <div class="card"><h4 style="color:#7c3aed">③ 育成を効率化</h4><p class="muted" style="font-size:9pt">自社研修センターの教育コンテンツ作成・習熟度管理・キャリアアップ教育訓練の運用を自動化。</p></div>
+    </div>
+    <p class="note">※ 一般的に派遣業の営業利益率は数％とされ、賃金が料金の約7割・社会保険料が約1割を占めます（業界統計）。削減余地は事務・営業・管理の部分にあります。</p>
+  </div>
+  <div class="foot">株式会社AIスキル ｜ 株式会社エヌエフエー 御中 AI実践研修ご提案</div>
+</div>
+
+<!-- ===== P2 : 提案概要 ===== -->
+<div class="page">
+  <div class="sec">
+    <div class="sec-h"><span class="no">03</span><h2>ご提案 — 実践型AI研修（全12時間）</h2><span class="en">PROGRAM</span></div>
+    <div class="grid2">
+      <div class="card"><h4>設計思想</h4>
+        <ul class="tight" style="font-size:9.3pt">
+          <li><strong>超基礎は省く</strong>。実装・設計・ベストプラクティスに全振り。</li>
+          <li><strong>題材は御社の実業務</strong>（配置転換・前払い・請求・契約など）。</li>
+          <li><strong>成果物は再現可能なテンプレ</strong>。他社展開・M&Aの資産にする。</li>
+          <li>まず小さく動くものを作り、成功体験から横展開する。</li>
+        </ul>
+      </div>
+      <div class="card"><h4>研修の形式</h4>
+        <table style="margin-top:0">
+          <tr><td class="k">時間</td><td>2時間 × 6回 ＝ 計12時間</td></tr>
+          <tr><td class="k">形式</td><td>対面 または オンライン接続</td></tr>
+          <tr><td class="k">実施</td><td>労働時間内（助成金スキーム準拠）</td></tr>
+          <tr><td class="k">進め方</td><td>事前ヒアリング → ワークショップ中心</td></tr>
+        </table>
+      </div>
+    </div>
+
+    <h3 style="color:var(--navy); margin:5mm 0 1mm; font-size:12pt">4つのコースからお選びいただけます</h3>
+    <p class="muted" style="font-size:9.3pt">違いは「扱う範囲（一点集中⇄横断）」と「攻め（営業・稼働率）⇄守り（事務・コスト）」の2軸です。</p>
+    <table>
+      <tr><th style="width:24mm">コース</th><th>ひとことで</th><th style="width:42mm">こんな御社に</th></tr>
+      <tr><td class="k">A 実践オールラウンド</td><td>営業も事務も、実装レベルで横断的に押さえる</td><td>まず全体で勘所をつかみたい</td></tr>
+      <tr><td class="k">B 営業・稼働率ドリブン</td><td>新規開拓と配置転換マッチングを自動化</td><td>稼働率・取引先を伸ばしたい</td></tr>
+      <tr><td class="k">C バックオフィス自動化</td><td>契約→請求→給与→前払いとコンプラを自動化</td><td>事務のミスと手間を減らしたい</td></tr>
+      <tr><td class="k">D 実践フル／事業化</td><td>全工程をつなぎ、他社展開・M&Aの形に</td><td>自社のやり方を商品にしたい</td></tr>
+    </table>
+    <p class="note">※ いずれも御社の主力職種（物流・コールセンター・事務 等）の実データを題材に進めます。コース内容は事前ヒアリングで調整します。</p>
+  </div>
+
+  <div class="sec">
+    <div class="sec-h"><span class="no">04</span><h2>コース詳細（抜粋）</h2><span class="en">CURRICULUM</span></div>
+    <div class="course-head"><div class="course-badge b">B</div><div><div class="course-title">コースB：営業・稼働率ドリブン</div><div class="course-sub">配置転換マッチングと新規開拓で、PEOの生命線＝稼働率を上げる</div></div></div>
+    <table class="course-tbl">
+      <tr><th>回</th><th>この回でやること</th><th style="width:38mm">持ち帰れるもの</th></tr>
+      <tr><td>1</td><td>営業・マッチング自動化の全体設計とベストプラクティスの棚卸し、ツール選定</td><td>全体設計＋実践例</td></tr>
+      <tr><td>2</td><td>狙う業種・エリアの企業情報を収集・名寄せ・優先度づけ</td><td>開拓リスト＋基準</td></tr>
+      <tr><td>3</td><td><strong>配置転換マッチング</strong>：就業終了予定の人材 × 次の派遣先ニーズを自動でマッチ（新規開拓文の自動生成に切替も可）</td><td>マッチング／営業文の仕組み</td></tr>
+      <tr><td>4</td><td>営業の配信設計と到達性（分割送信・時間制御）、メルマガ運用</td><td>配信ワークフロー</td></tr>
+      <tr><td>5</td><td>反響対応・追客（一次対応・日程調整・ナーチャリング）の自動化</td><td>追客自動化フロー</td></tr>
+      <tr><td>6</td><td>稼働率・送信数・返信率の見える化、横展開パッケージ化</td><td>ダッシュボード＋運用キット</td></tr>
+    </table>
+
+    <div class="course-head" style="margin-top:4mm"><div class="course-badge c">C</div><div><div class="course-title">コースC：バックオフィス自動化</div><div class="course-sub">「契約書＝正本 → 請求・給与が派生」をそのまま自動化ラインにする</div></div></div>
+    <table class="course-tbl">
+      <tr><th>回</th><th>この回でやること</th><th style="width:38mm">持ち帰れるもの</th></tr>
+      <tr><td>1</td><td>派遣特有の帳票の流れ（個別契約書→就業条件明示書→派遣元管理台帳）を整理し、自動化の設計</td><td>自動化アーキテクチャ図</td></tr>
+      <tr><td>2</td><td>契約・派遣先別単価・勤怠＋労使協定方式の賃金テーブルをデータ化（すべての元データ）</td><td>マスタ＆賃金テーブル設計</td></tr>
+      <tr><td>3</td><td>勤怠×契約から<strong>請求書を自動生成＋AIダブルチェック</strong>（単価・割増・締めの整合）</td><td>請求生成＋チェックツール</td></tr>
+      <tr><td>4</td><td>日払い・週払い等サイクル別対応、<strong>前払いメールの自動処理</strong>、社保・雇用保険の控除チェック</td><td>給与・前払い処理の仕組み</td></tr>
+      <tr><td>5</td><td>契約書3種＋管理台帳の自動作成、抵触日・雇用安定措置・賃金水準・二重派遣のコンプラチェック</td><td>法定帳票＋コンプラチェッカー</td></tr>
+      <tr><td>6</td><td>一連を自社フローに統合し、他社にも導入できるテンプレ・手順書化</td><td>業務自動化テンプレ集</td></tr>
+    </table>
+    <p class="note">※ コースA（オールラウンド）／コースD（事業化）の詳細も別途ご用意しています。</p>
+  </div>
+  <div class="foot">株式会社AIスキル ｜ 株式会社エヌエフエー 御中 AI実践研修ご提案</div>
+</div>
+
+<!-- ===== P3 : 実践テーマ例 ===== -->
+<div class="page">
+  <div class="sec">
+    <div class="sec-h"><span class="no">05</span><h2>御社向け 実践ワークの例</h2><span class="en">USE CASES</span></div>
+    <p class="muted" style="font-size:9.4pt">研修では、下記のような御社の実業務を題材に、その場で動く仕組みを作ります（数値は仮の例）。</p>
+
+    <div class="card" style="margin-top:2mm">
+      <span class="tag" style="background:#0ea5a4">PEOの生命線</span>
+      <h4>① 配置転換マッチング（稼働率アップ）</h4>
+      <div class="flow">
+        <div class="step"><div class="n">INPUT</div><strong>終了予定者リスト</strong><br>スキル/エリア/時給/可能曜日/個人抵触日<br>＋ 空き求人リスト</div>
+        <div class="arrow">▶</div>
+        <div class="step"><div class="n">AI</div><strong>適合スコアリング</strong><br>スキル・エリア・時給・開始日で照合。抵触日／雇用安定措置の制約も加味</div>
+        <div class="arrow">▶</div>
+        <div class="step"><div class="n">OUTPUT</div><strong>配置先 候補トップ3</strong><br>（理由つき）＋ 未充足求人 ＋ 待機リスク者アラート</div>
+      </div>
+      <p class="muted" style="font-size:9pt">効果：待機日数の短縮＝稼働率アップ。コーディネーターの突合時間を大幅削減。</p>
+    </div>
+
+    <div class="card" style="margin-top:3mm">
+      <span class="tag">毎朝の定型</span>
+      <h4>② 前払い（日払い）の毎朝処理</h4>
+      <div class="flow">
+        <div class="step"><div class="n">INPUT</div><strong>申請メール</strong><br>氏名/勤務日/申請額（文面バラバラ）＋ 勤怠実績 ＋ 前払い規定</div>
+        <div class="arrow">▶</div>
+        <div class="step"><div class="n">AI</div><strong>解析・突合・規定チェック</strong><br>メールを構造化し勤怠と突合、上限内か判定</div>
+        <div class="arrow">▶</div>
+        <div class="step"><div class="n">OUTPUT</div><strong>振込用CSV</strong><br>＋ 要確認リスト ＋ スタッフ返信文ドラフト</div>
+      </div>
+      <p class="muted" style="font-size:9pt">効果：「朝までに必ず」の処理時間を圧縮、人手の照合ミスを排除。</p>
+    </div>
+
+    <div class="card" style="margin-top:3mm">
+      <span class="tag">利益直結</span>
+      <h4>③ 請求の自動生成＋AIダブルチェック</h4>
+      <div class="flow">
+        <div class="step"><div class="n">INPUT</div><strong>契約マスタ</strong><br>派遣先/単価/時間外割増/締めサイクル ＋ 承認済み勤怠</div>
+        <div class="arrow">▶</div>
+        <div class="step"><div class="n">AI</div><strong>算出＋整合チェック</strong><br>請求額を計算し、契約条件と合わない箇所を検出</div>
+        <div class="arrow">▶</div>
+        <div class="step"><div class="n">OUTPUT</div><strong>派遣先別 請求書</strong><br>（PDF/HTML）＋ 差異レポート</div>
+      </div>
+      <p class="muted" style="font-size:9pt">効果：請求ミスの撲滅（＝利益保全）、発行リードタイムの短縮。</p>
+    </div>
+
+    <div class="grid2" style="margin-top:3mm">
+      <div class="card"><span class="tag" style="background:#7c3aed">許可要件</span><h4>④ 研修センターのAI化＋教育訓練</h4>
+        <p class="muted" style="font-size:8.8pt">職種別の研修教材・テスト生成、年8時間（許可要件）の未受講者抽出、労働局提出計画のドラフト。<strong>AIスキルアカデミーの教材を御社研修に組み込む</strong>ことも可能です。</p></div>
+      <div class="card"><span class="tag">毎年の重作業</span><h4>⑤ 労使協定方式の賃金突合</h4>
+        <p class="muted" style="font-size:8.8pt">毎年8月の局長通達（基準値×指数×地域）から賃金テーブルを自動作成し、全スタッフの賃金が水準を下回らないか突合、是正額を試算。</p></div>
+    </div>
+  </div>
+  <div class="foot">株式会社AIスキル ｜ 株式会社エヌエフエー 御中 AI実践研修ご提案</div>
+</div>
+
+<!-- ===== P4 : 進め方・費用・会社 ===== -->
+<div class="page">
+  <div class="sec">
+    <div class="sec-h"><span class="no">06</span><h2>進め方とスケジュール</h2><span class="en">PROCESS</span></div>
+    <div class="flow">
+      <div class="step"><div class="n">STEP 1</div><strong>ヒアリング</strong><br>御社業務の把握・題材選定（〜1か月）</div>
+      <div class="arrow">▶</div>
+      <div class="step"><div class="n">STEP 2</div><strong>助成金申請</strong><br>カリキュラム確定・申請（余裕をもって）</div>
+      <div class="arrow">▶</div>
+      <div class="step"><div class="n">STEP 3</div><strong>研修実施</strong><br>2時間×6回（労働時間内）</div>
+      <div class="arrow">▶</div>
+      <div class="step"><div class="n">STEP 4</div><strong>横展開</strong><br>成果物をテンプレ化・他社展開へ</div>
+    </div>
+    <p class="note">※ 研修開始前に1〜2か月のヒアリング・申請期間を見込みます。期間中の陳腐化を防ぐため、事前課題（自社データの棚卸し等）をご用意します。</p>
+  </div>
+
+  <div class="sec">
+    <div class="sec-h"><span class="no">07</span><h2>費用・助成金</h2><span class="en">COST</span></div>
+    <p>本研修は <strong>事業展開等リスキリング支援コース（人材開発支援助成金）</strong> に対応したスキームです。</p>
+    <div class="kpi">
+      <div class="b"><div class="num">約75<small style="font-size:11pt">%</small></div><div class="lbl">助成による還付（目安）</div></div>
+      <div class="b"><div class="num">98,000<small style="font-size:11pt">円</small></div><div class="lbl">実質負担／1名（社労士費用込・目安）</div></div>
+      <div class="b"><div class="num">+1名<small style="font-size:11pt">無料</small></div><div class="lbl">5名以上のお申込で経営者1名</div></div>
+    </div>
+    <table>
+      <tr><td class="k">受講料</td><td>1名あたり 300,300円（税込）</td></tr>
+      <tr><td class="k">実質負担</td><td>助成適用後 1名あたり 約98,000円（提携社労士費用 35,600円を含む目安）</td></tr>
+      <tr><td class="k">社労士</td><td>御社の顧問社労士／当社の提携社労士、いずれも対応可</td></tr>
+      <tr><td class="k">対象者</td><td>雇用保険の被保険者（※役員は助成対象外。5名以上のお申込で経営者1名は無料でご参加可）</td></tr>
+      <tr><td class="k">推奨人数</td><td>まずはAI推進チームから。各部署のキーパーソンを含めると展開が早まります</td></tr>
+    </table>
+    <p class="note">※ 助成金の適用可否・金額・割合は、御社の状況および社労士の確認のうえ確定します。上記は目安です。</p>
+  </div>
+
+  <div class="sec">
+    <div class="sec-h"><span class="no">08</span><h2>株式会社AIスキルについて</h2><span class="en">ABOUT US</span></div>
+    <div class="grid2">
+      <div class="card"><h4>会社・体制</h4>
+        <ul class="tight" style="font-size:9.2pt">
+          <li>AIスキルアカデミー（動画見放題）＋ 法人研修の2事業</li>
+          <li>業務委託メンバー含め 約160名体制</li>
+          <li>カリキュラム監修：九州工業大学 鈴木先生</li>
+        </ul>
+      </div>
+      <div class="card"><h4>研修実績</h4>
+        <ul class="tight" style="font-size:9.2pt">
+          <li>法人研修の導入 延べ200社超</li>
+          <li>中小企業を中心に、大手企業の実績も</li>
+          <li>ある人材サービス企業様：文書生成業務でCA1名あたり<strong>月26時間削減</strong></li>
+        </ul>
+      </div>
+    </div>
+    <div class="lead-blk" style="margin-top:4mm">
+      <strong>次のステップ：</strong> まずは御社の業務をお伺いするヒアリングから。配置転換・前払い・請求など、御社で最も重い業務から題材を選び、最適なコースをご一緒に設計します。どうぞお気軽にお声がけください。
+    </div>
+  </div>
+  <div class="foot">株式会社AIスキル ｜ AIスキルアカデミー / 法人研修事業 ｜ 本提案に関するお問い合わせはご担当者まで</div>
+</div>
+
+</body>
+</html>
