@@ -5,21 +5,23 @@
  * ============================================================================
  *
  *  このスクリプトがやること（CRMタブを架電用にしっかり作り替える）:
- *   1. AF〜AJ（place_id / サイト区分 / 既存website / 検出メール / うちのデモURL）を
- *      CRMタブから削除（※削除前に「CRM_バックアップ_削除前」タブを自動作成）
- *   2. 各架電回（1回目/2回目/3回目）に「メモ」列を追加
- *   3. すべての架電列にプルダウン（データ入力規則）を設定
+ *   1. （必要なら）CRMタブを「CRM_バックアップ_削除前」へ自動バックアップ
+ *   2. 過去に誤って削除した place_id / サイト区分 / 既存website / 検出メール /
+ *      うちのデモURL を、バックアップからCRMへ復元（データごと）
+ *   3. CRMから 商談日 / 成約日 / 商品 / 売上 を削除（成約管理は商談CRMへ集約）
+ *      ※ メモ列は残します
+ *   4. 各架電回（1回目/2回目/3回目）に「メモ」列を追加
+ *   5. すべての架電列にプルダウン（データ入力規則）を設定
  *        - 架電担当 : 河野 / 高橋 / 北尾
  *        - ステータス: 後日掛け直し / 資料送付 / お断り / アポ獲得 / 電話アポ / 留守 / 廃業
- *   4. アポ用の列「アポ日 / アポ時間 / アポ形式」を整備
- *        - アポ形式 : オンライン / オフライン / 電話（プルダウン）
- *   5. ステータスに応じた色付け（条件付き書式）
- *   6. 「現在ステータス」列を新ステータス語彙に合わせて自動計算
- *   7. 「担当」列（M列）に、最新の架電担当を自動表示（手動上書き可）
- *   8. ステータスが「アポ獲得」「電話アポ」になった行を、商談CRMタブへ自動転送
+ *   6. アポ用の列「アポ日 / アポ時間 / アポ形式」を整備（アポ形式: オンライン/オフライン/電話）
+ *   7. ステータスに応じた色付け（条件付き書式）
+ *   8. 「現在ステータス」を自動計算（架電/アポまで。商談・成約は商談CRMで管理）
+ *   9. 「担当」列（M列）に、最新の架電担当を自動表示（手動上書き可）
+ *  10. ステータスが「アポ獲得」「電話アポ」になった行を、商談CRMタブへ自動転送
  *      （onEditトリガー＝ほぼ即時）。会社情報・アポ日時・形式を同期し、
- *      サイト区分 / 既存website / 検出メール / うちのデモURL は商談CRMで手入力管理。
- *      place_id はマップURLから自動抽出して商談CRMに保持。
+ *      商談ステータス / 商談日 / 成約日 / 商品 / 売上 / 次アクション日 / 商談メモ は
+ *      商談CRMで手入力管理する。
  *      ※ 一度転送した行は商談が進んでも残り続けます（自動削除しません）。
  *
  *  使い方:
@@ -30,7 +32,7 @@
  *      （初回は Google アカウントの承認ダイアログが出ます → 許可）
  *   5. 完了トーストが出れば構築完了。以降は通常どおり架電入力するだけ。
  *
- *  再実行しても安全（冪等）です。列やプルダウンが既にあれば二重作成しません。
+ *  再実行しても安全（冪等）です。
  * ============================================================================
  */
 
@@ -57,8 +59,11 @@ const CONFIG = {
   // 商談CRM側の商談ステータス
   DEAL_STATUSES: ['訪問予定', '訪問済', '商談中', '成約', '見送り'],
 
-  // CRMタブから削除する列（旧 AF〜AJ）
-  CRM_DELETE_COLUMNS: ['place_id', 'サイト区分', '既存website', '検出メール', 'うちのデモURL'],
+  // CRMタブから削除する列（成約管理は商談CRMへ集約）
+  CRM_DELETE_COLUMNS: ['商談日', '成約日', '商品', '売上'],
+
+  // 過去に誤って削除した場合に、バックアップから復元する列（元の並び順）
+  CRM_RESTORE_COLUMNS: ['place_id', 'サイト区分', '既存website', '検出メール', 'うちのデモURL'],
 };
 
 /**
@@ -67,7 +72,7 @@ const CONFIG = {
  *     'auto'    … 転送のたびにCRMの最新値で上書き（グレー＝触らない）
  *     'managed' … スクリプトは触らない。商談CRMで手入力（白＝編集可）
  *   from: roleが auto のとき、値の取得元
- *         CRM側のヘッダー名、または特殊キー（__ROW__ / __STATUS__ / __CALLER__ / __PLACE_ID__）
+ *         CRM側のヘッダー名、または特殊キー（__ROW__ / __STATUS__ / __CALLER__）
  *   def : managed列の初期値
  *   validation: プルダウンに使う CONFIG キー
  *
@@ -80,17 +85,16 @@ const DEAL_COLUMNS = [
   { name: 'エリア',         role: 'auto', from: 'エリア' },
   { name: '電話',           role: 'auto', from: '電話' },
   { name: 'マップURL',      role: 'auto', from: 'マップURL' },
-  { name: 'place_id',       role: 'auto', from: '__PLACE_ID__' },
   { name: 'アポ種別',       role: 'auto', from: '__STATUS__' },
   { name: '架電担当',       role: 'auto', from: '__CALLER__' },
   { name: 'アポ日',         role: 'auto', from: 'アポ日' },
   { name: 'アポ時間',       role: 'auto', from: 'アポ時間' },
   { name: '形式',           role: 'auto', from: 'アポ形式', validation: 'FORMATS' },
-  { name: 'サイト区分',     role: 'managed' },
-  { name: '既存website',    role: 'managed' },
-  { name: '検出メール',     role: 'managed' },
-  { name: 'うちのデモURL',  role: 'managed' },
   { name: '商談ステータス', role: 'managed', def: '訪問予定', validation: 'DEAL_STATUSES' },
+  { name: '商談日',         role: 'managed' },
+  { name: '成約日',         role: 'managed' },
+  { name: '商品',           role: 'managed' },
+  { name: '売上',           role: 'managed' },
   { name: '次アクション日', role: 'managed' },
   { name: '商談メモ',       role: 'managed' },
 ];
@@ -105,42 +109,95 @@ function setupCallTracking() {
     throw new Error('「' + CONFIG.CRM_SHEET + '」タブが見つかりません。タブ名をご確認ください。');
   }
 
-  deleteCrmOutreachColumns_(ss, crm); // 1) AF〜AJ削除（削除前に自動バックアップ）
-  ensureCrmColumns_(crm);             // 2) メモ列・アポ列を整備
-  applyCrmValidations_(crm);          // 3) プルダウン
-  applyCrmConditionalFormat_(crm);    // 4) 条件付き書式
-  applyCurrentStatusFormula_(crm);    // 5) 現在ステータス自動計算
-  applyOwnerFormula_(crm);            // 6) 担当（M列）に最新架電担当を自動表示
-  tidyCrmLayout_(crm);                // 7) 体裁
-  setupDealSheet_(ss);                // 8) 商談CRM整備
-  installEditTrigger_(ss);            // 9) アポ自動転送トリガー
-  refreshGuideSheet_(ss);             // 10) 運用ガイド更新
+  ensureBackup_(ss, crm);             // 1) バックアップ（無ければ作成）
+  restoreColumnsFromBackup_(ss, crm); // 2) 誤削除した列を復元
+  ensureCrmColumns_(crm);             // 3) メモ列・アポ列を整備
+  deleteCrmColumns_(crm);             // 4) 商談日/成約日/商品/売上 を削除
+  cleanupDealSheetStaleColumns_(ss);  //    商談CRMの誤追加列を除去
+  applyCrmValidations_(crm);          // 5) プルダウン
+  applyCrmConditionalFormat_(crm);    // 6) 条件付き書式
+  applyCurrentStatusFormula_(crm);    // 7) 現在ステータス自動計算
+  applyOwnerFormula_(crm);            // 8) 担当（M列）に最新架電担当を自動表示
+  tidyCrmLayout_(crm);                // 9) 体裁
+  setupDealSheet_(ss);                // 10) 商談CRM整備
+  installEditTrigger_(ss);            // 11) アポ自動転送トリガー
+  refreshGuideSheet_(ss);             // 12) 運用ガイド更新
 
   ss.toast('架電シートのセットアップが完了しました。', '✅ 完了', 6);
 }
 
 // ----------------------------------------------------------------------------
-//  CRM: AF〜AJ（旧アウトリーチ列）の削除（削除前に自動バックアップ）
+//  バックアップ（CRMタブを丸ごと複製。無いときだけ作成）
 // ----------------------------------------------------------------------------
-function deleteCrmOutreachColumns_(ss, crm) {
-  let map = headerMap_(crm);
-  const present = CONFIG.CRM_DELETE_COLUMNS.filter(function (t) { return map[t]; });
-  if (present.length === 0) return; // 既に削除済み
+function ensureBackup_(ss, crm) {
+  if (ss.getSheetByName(CONFIG.BACKUP_SHEET)) return;
+  const bk = crm.copyTo(ss);
+  bk.setName(CONFIG.BACKUP_SHEET);
+  ss.setActiveSheet(bk);
+  ss.moveActiveSheet(ss.getNumSheets()); // 末尾へ
+  ss.setActiveSheet(crm);
+}
 
-  // 念のため CRMタブを丸ごとバックアップ（初回のみ）
-  if (!ss.getSheetByName(CONFIG.BACKUP_SHEET)) {
-    const bk = crm.copyTo(ss);
-    bk.setName(CONFIG.BACKUP_SHEET);
-    ss.setActiveSheet(bk);
-    ss.moveActiveSheet(ss.getNumSheets()); // 末尾へ
-    ss.setActiveSheet(crm);
-  }
+// ----------------------------------------------------------------------------
+//  誤って削除した列を、バックアップからデータごと復元（元の並びに合わせる）
+// ----------------------------------------------------------------------------
+function restoreColumnsFromBackup_(ss, crm) {
+  const backup = ss.getSheetByName(CONFIG.BACKUP_SHEET);
+  if (!backup) return; // 復元元が無ければ何もしない
+
+  const lastRow = crm.getLastRow();
+  let afterName = 'メモ'; // 元の並び（メモの後ろ）に寄せる
+
+  CONFIG.CRM_RESTORE_COLUMNS.forEach(function (name) {
+    const map = headerMap_(crm);
+    if (map[name]) { afterName = name; return; } // 既にある → 次はこの後ろ
+
+    const afterIdx = map[afterName] || crm.getLastColumn();
+    crm.insertColumnAfter(afterIdx);
+    const newCol = afterIdx + 1;
+    crm.getRange(1, newCol).setValue(name);
+
+    const bmap = headerMap_(backup);
+    if (bmap[name] && lastRow >= 2) {
+      const vals = backup.getRange(2, bmap[name], lastRow - 1, 1).getValues();
+      crm.getRange(2, newCol, vals.length, 1).setValues(vals);
+    }
+    afterName = name;
+  });
+}
+
+// ----------------------------------------------------------------------------
+//  CRM: 指定列を削除（商談日/成約日/商品/売上）
+// ----------------------------------------------------------------------------
+function deleteCrmColumns_(sheet) {
+  const map = headerMap_(sheet);
+  const present = CONFIG.CRM_DELETE_COLUMNS.filter(function (t) { return map[t]; });
+  if (present.length === 0) return;
 
   // 右の列から削除（インデックスのずれを防ぐ）
   const indices = present
     .map(function (t) { return map[t]; })
     .sort(function (a, b) { return b - a; });
-  indices.forEach(function (idx) { crm.deleteColumn(idx); });
+  indices.forEach(function (idx) { sheet.deleteColumn(idx); });
+}
+
+// ----------------------------------------------------------------------------
+//  商談CRM: 過去に誤って追加した列を除去
+// ----------------------------------------------------------------------------
+function cleanupDealSheetStaleColumns_(ss) {
+  const deal = ss.getSheetByName(CONFIG.DEAL_SHEET);
+  if (!deal || deal.getLastColumn() === 0) return;
+
+  const valid = {};
+  DEAL_COLUMNS.forEach(function (c) { valid[c.name] = true; });
+
+  let map = headerMap_(deal);
+  // 正規の列名に無いヘッダーを削除（右から）
+  const stale = Object.keys(map)
+    .filter(function (name) { return !valid[name]; })
+    .map(function (name) { return map[name]; })
+    .sort(function (a, b) { return b - a; });
+  stale.forEach(function (idx) { deal.deleteColumn(idx); });
 }
 
 // ----------------------------------------------------------------------------
@@ -233,8 +290,6 @@ function applyCrmConditionalFormat_(sheet) {
     const curRange = [sheet.getRange(2, cur, maxRows - 1, 1)];
     const curColors = {
       'アポ': '#b7e1cd',
-      '商談': '#a4c2f4',
-      '成約': '#6aa84f',
       'お断り': '#f4cccc',
       '廃業': '#d9d9d9',
       '未着手': '#f3f3f3',
@@ -272,7 +327,8 @@ function applyCrmConditionalFormat_(sheet) {
 }
 
 // ----------------------------------------------------------------------------
-//  CRM: 現在ステータス 自動計算（行ごとの数式・手動上書き可）
+//  CRM: 現在ステータス 自動計算（架電/アポまで。手動上書き可）
+//  ※ 商談・成約は商談CRMで管理するため、ここでは参照しない
 // ----------------------------------------------------------------------------
 function applyCurrentStatusFormula_(sheet) {
   const map = headerMap_(sheet);
@@ -282,8 +338,6 @@ function applyCurrentStatusFormula_(sheet) {
   const s1 = colLetter_(map['1回目_ステータス']);
   const s2 = colLetter_(map['2回目_ステータス']);
   const s3 = colLetter_(map['3回目_ステータス']);
-  const dDeal = map['商談日'] ? colLetter_(map['商談日']) : null;
-  const dClose = map['成約日'] ? colLetter_(map['成約日']) : null;
 
   const lastRow = sheet.getLastRow();
   if (lastRow < 2) return;
@@ -292,10 +346,8 @@ function applyCurrentStatusFormula_(sheet) {
   for (let r = 2; r <= lastRow; r++) {
     const latest =
       'IF(' + s3 + r + '<>"",' + s3 + r + ',IF(' + s2 + r + '<>"",' + s2 + r + ',' + s1 + r + '))';
-    let f = 'LET(s,' + latest + ',' +
-      'IF(OR(s="アポ獲得",s="電話アポ"),"アポ",IF(s="","未着手",IF(s="お断り","お断り",IF(s="廃業","廃業",s)))))';
-    if (dClose) f = 'IF(' + dClose + r + '<>"","成約",' + f + ')';
-    if (dDeal) f = 'IF(' + dDeal + r + '<>"","商談",' + f + ')';
+    const f = 'LET(s,' + latest + ',' +
+      'IF(OR(s="アポ獲得",s="電話アポ"),"アポ",IF(s="","未着手",s)))';
     formulas.push(['=' + f]);
   }
   sheet.getRange(2, cur, formulas.length, 1).setFormulas(formulas);
@@ -367,7 +419,6 @@ function setupDealSheet_(ss) {
     }
   });
 
-  // 役割に応じた色分け
   paintDealRoles_(sheet, 2, numRows, map);
 }
 
@@ -453,12 +504,6 @@ function dealValueFor_(col, crmRow, get, appt) {
     case '__ROW__': return crmRow;
     case '__STATUS__': return appt.status;
     case '__CALLER__': return appt.caller;
-    case '__PLACE_ID__': {
-      // place_id はマップURL（…place_id:ChIJ…）から抽出
-      const url = get('マップURL');
-      const m = url ? String(url).match(/place_id:([^&\s]+)/) : null;
-      return m ? m[1] : '';
-    }
     default: return col.from ? get(col.from) : '';
   }
 }
@@ -512,12 +557,12 @@ function refreshGuideSheet_(ss) {
   sheet.clearContents();
 
   const lines = [
-    ['■ シート構成（4タブ）'],
-    ['CRM: ISの架電CRM（架電履歴3セット・各回メモ付き・現在ステータス/担当 自動）'],
-    ['商談CRM: アポ獲得/電話アポを取った行を自動転送。FSが商談を管理'],
+    ['■ シート構成'],
+    ['CRM: ISの架電CRM（リード情報＋架電履歴3セット・各回メモ・現在ステータス/担当 自動）'],
+    ['商談CRM: アポ獲得/電話アポを取った行を自動転送。FSが商談〜成約まで管理'],
     ['集計: 月次/日次/担当者別/エリア別/業種別'],
     ['運用ガイド: このページ'],
-    ['CRM_バックアップ_削除前: AF〜AJ削除前のCRMバックアップ（復元用）'],
+    ['CRM_バックアップ_削除前: 列変更前のCRMバックアップ（復元用）'],
     [''],
     ['■ 架電列（各回 5列）'],
     ['N回目_架電担当（河野/高橋/北尾） / N回目_日付 / N回目_時間 / N回目_ステータス / N回目_メモ'],
@@ -529,8 +574,8 @@ function refreshGuideSheet_(ss) {
     ['最新の架電回（3回目→2回目→1回目）で入っている架電担当を自動表示。手動上書き可。'],
     [''],
     ['■ 現在ステータス（自動・手動上書き可）'],
-    ['アポ獲得 or 電話アポ → 「アポ」。商談日入力 → 「商談」。成約日入力 → 「成約」。'],
-    ['お断り/廃業/留守 等は最新回の結果を表示。未架電は「未着手」。'],
+    ['アポ獲得 or 電話アポ → 「アポ」。それ以外は最新回の結果。未架電は「未着手」。'],
+    ['※ 商談・成約の進捗は商談CRMタブで管理します。'],
     [''],
     ['■ ISの動き（架電）'],
     ['1. 該当行の N回目_架電担当（プルダウン）'],
@@ -539,25 +584,23 @@ function refreshGuideSheet_(ss) {
     ['4. アポ獲得/電話アポ → アポ日・アポ時間・アポ形式（オンライン/オフライン/電話）を入力'],
     ['5. 自動で商談CRMタブへ転送される（ほぼ即時）'],
     [''],
-    ['■ FSの動き（商談・商談CRMタブ）'],
+    ['■ FSの動き（商談・成約 = 商談CRMタブ）'],
     ['1. 商談CRMで当日のアポを確認（会社名・業種・エリア・電話・マップURL）'],
-    ['2. サイト区分/既存website/検出メール/うちのデモURL を入力（商談準備）'],
-    ['3. 商談ステータス（訪問予定→訪問済→商談中→成約/見送り）を更新'],
+    ['2. 商談ステータス（訪問予定→訪問済→商談中→成約/見送り）を更新'],
+    ['3. 商談日・成約日・商品・売上 を入力（成約管理は商談CRMに集約）'],
     ['4. 次アクション日・商談メモを記入'],
-    ['5. 成約時はCRMタブの 商談日/成約日/商品/売上 も入力（現在ステータスが自動更新）'],
     [''],
     ['■ 商談CRMの列の色（役割）'],
     ['グレー = 自動同期（CRMの最新値で上書き・触らない）'],
-    ['  └ place_id はマップURLから自動抽出'],
-    ['白 = 手入力: サイト区分/既存website/検出メール/うちのデモURL/商談ステータス/次アクション日/商談メモ'],
+    ['白 = 手入力: 商談ステータス/商談日/成約日/商品/売上/次アクション日/商談メモ'],
     [''],
     ['■ 通電の定義（集計用）'],
     ['通電 = ステータスが「後日掛け直し/資料送付/お断り/アポ獲得/電話アポ」のいずれか'],
     ['（留守・廃業は通電に含めない）'],
     [''],
     ['■ 注意'],
-    ['AF〜AJ（place_id/サイト区分/既存website/検出メール/うちのデモURL）はCRMから削除済み。'],
-    ['元データは「CRM_バックアップ_削除前」タブに保管。'],
+    ['商談日/成約日/商品/売上 はCRMから商談CRMへ移動しました。'],
+    ['place_id/サイト区分/既存website/検出メール/うちのデモURL はCRMに保持。'],
     ['一度転送した行は自動削除されません。'],
   ];
   sheet.getRange(1, 1, lines.length, 1).setValues(lines);
@@ -603,6 +646,7 @@ function getSheet_(ss, name) {
 
 function headerMap_(sheet) {
   const lastCol = sheet.getLastColumn();
+  if (lastCol < 1) return {};
   const header = sheet.getRange(1, 1, 1, lastCol).getValues()[0];
   const map = {};
   for (let i = 0; i < header.length; i++) {
