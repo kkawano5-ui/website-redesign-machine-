@@ -19,7 +19,7 @@ def _ssl_ctx():
     except Exception:
         return ssl.create_default_context()
 
-PLACES_ENDPOINT = "https://places.googleapis.com/v1/places/{pid}"
+PLACES_ENDPOINT = "https://places.googleapis.com/v1/places/{pid}?languageCode=ja&regionCode=JP"
 FIELD_MASK = ",".join([
     "id", "displayName", "formattedAddress", "addressComponents",
     "primaryType", "types", "rating", "userRatingCount",
