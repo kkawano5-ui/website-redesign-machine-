@@ -34,6 +34,26 @@ const FOOD_KEYWORDS = [
   'クレープ', 'タピオカ', 'ジェラート', 'チョコ', '飲料',
 ];
 
+// data/overrides/<place_id>.json があれば、その会社のデモに実データ（実メニュー・料金・
+// 営業時間・口コミ・スタッフ等）を流し込む。無ければ従来どおり汎用テンプレのまま。
+// アポ獲得先はこのJSONを1つ置くだけで“その店専用サイト”になる。
+async function loadOverrides() {
+  const dir = path.resolve('data/overrides');
+  const map = new Map();
+  try {
+    const files = await fs.readdir(dir);
+    for (const f of files) {
+      if (!f.endsWith('.json')) continue;
+      try {
+        map.set(f.replace(/\.json$/, ''), JSON.parse(await fs.readFile(path.join(dir, f), 'utf8')));
+      } catch (e) {
+        console.warn(`  ⚠ 上書きJSON読込失敗: ${f} (${e.message})`);
+      }
+    }
+  } catch { /* overrides ディレクトリ無し = 従来どおり */ }
+  return map;
+}
+
 function parseArgs(argv) {
   const args = { _: [] };
   for (let i = 0; i < argv.length; i += 1) {
@@ -154,6 +174,8 @@ async function main() {
   const skipped = [];
   let excluded = 0;
   let foodExcluded = 0;
+  const overrides = await loadOverrides();
+  let overrideApplied = 0;
 
   for (const raw of rawCompanies) {
     if (!isTargetRow(raw, args.all)) {
@@ -189,6 +211,8 @@ async function main() {
       website: pick(raw, FIELD.website),
       placeId: pick(raw, FIELD.placeId),
     };
+    const ov = overrides.get(company.placeId);
+    if (ov) { company.override = ov; overrideApplied += 1; }
 
     const html = renderSite(company);
     await writeFileEnsured(path.join(outDir, 'demo', id, 'index.html'), html);
@@ -224,6 +248,7 @@ async function main() {
   Object.entries(byVertical).forEach(([n, ct]) => console.log(`  - ${n}: ${ct}件`));
   if (excluded) console.log(`  対象外(is_target≠1)を除外: ${excluded}件（全件出すなら --all）`);
   if (foodExcluded) console.log(`  飲食を除外: ${foodExcluded}件（--exclude-food）`);
+  if (overrideApplied) console.log(`  実データ上書き適用: ${overrideApplied}件（data/overrides/*.json）`);
   const fallbackCount = generated.filter((g) => g.resolvedBy === 'fallback').length;
   if (fallbackCount) console.log(`  うち汎用テンプレ(general)に着地: ${fallbackCount}件（業種名のエイリアスを足せば専用テーマに割当可）`);
   console.log(`  ギャラリー : ${rel(path.join(outDir, 'index.html'))}`);
