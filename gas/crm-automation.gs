@@ -59,7 +59,8 @@ const CONFIG = {
   dealHeaders: ['CRM行', '会社名', '業種', 'エリア', '電話', 'マップURL', 'アポ種別', '架電担当', 'アポ日', 'アポ時間', '形式'],
 };
 
-const METRICS = ['架電数', '通電率', '通電数', 'アポ数', '設定率'];
+// 指標: 架電数 / 通電率(通電÷架電) / 通電数 / アポ数 / アポ率(アポ÷架電) / 設定率(アポ÷通電)
+const METRICS = ['架電数', '通電率', '通電数', 'アポ数', 'アポ率', '設定率'];
 
 function onOpen() {
   SpreadsheetApp.getUi().createMenu('営業CRM')
@@ -104,30 +105,29 @@ function loadCrm() {
   const ss = SpreadsheetApp.getActiveSpreadsheet();
   const sh = ss.getSheetByName(CONFIG.crmSheet);
   if (!sh) throw new Error('CRMタブが見つかりません: ' + CONFIG.crmSheet);
-  const data = sh.getDataRange().getValues();
+  const rng = sh.getDataRange();
+  const data = rng.getValues();
+  const disp = rng.getDisplayValues(); // 画面表示どおりの文字列（TZ/書式反映済み＝時刻ズレを回避）
   const header = data[0].map(String);
   const idx = (name) => idxOf(header, name);
-  const fmtDate = (v) => { if (v instanceof Date && !isNaN(v.getTime())) return v.getFullYear() + '/' + p2(v.getMonth() + 1) + '/' + p2(v.getDate()); return norm(v); };
-  const fmtTime = (v) => { if (v instanceof Date && !isNaN(v.getTime())) return v.getHours() + ':' + p2(v.getMinutes()); return norm(v); };
   const dateKey = (v) => {
-    if (v instanceof Date) return isNaN(v.getTime()) ? '' : (v.getFullYear() + '-' + p2(v.getMonth() + 1) + '-' + p2(v.getDate()));
     let s = norm(v); if (!s) return '';
     if (/^\d{1,2}\/\d{1,2}$/.test(s)) s = (new Date().getFullYear()) + '/' + s;
     const d = new Date(s);
     return isNaN(d.getTime()) ? s : (d.getFullYear() + '-' + p2(d.getMonth() + 1) + '-' + p2(d.getDate()));
   };
-  return { ss, sh, data, header, idx, dateKey, fmtDate, fmtTime };
+  return { ss, sh, data, disp, header, idx, dateKey };
 }
 
 function extractRows(crm) {
-  const { data, idx, dateKey, fmtDate, fmtTime } = crm;
+  const { disp, idx, dateKey } = crm; // 表示値ベースで抽出（アポ日/時刻のズレを回避）
   const C = CONFIG.cols;
   const iName = idx(C.name), iGenre = idx(C.genre), iArea = idx(C.area), iTel = idx(C.tel),
     iMap = idx(C.mapUrl), iApoD = idx(C.apoDate), iApoT = idx(C.apoTime), iApoType = idx(C.apoType),
     iOwner = idx(C.rowOwner), iNo = idx(C.rowNo);
   const calls = [], repsFound = {}, dealRows = [];
-  for (let r = 1; r < data.length; r++) {
-    const row = data[r];
+  for (let r = 1; r < disp.length; r++) {
+    const row = disp[r];
     if (iName >= 0 && !norm(row[iName])) continue;
     const owner = iOwner >= 0 ? norm(row[iOwner]) : '';
     let apoStatus = '', apoRep = '';
@@ -141,7 +141,7 @@ function extractRows(crm) {
       repsFound[rep] = true;
       if (isApo && !apoStatus) { apoStatus = status; apoRep = rep; }
     }
-    const apoDate = iApoD >= 0 ? fmtDate(row[iApoD]) : '';
+    const apoDate = iApoD >= 0 ? norm(row[iApoD]) : '';
     if (apoStatus || apoDate) {
       dealRows.push({
         'CRM行': iNo >= 0 ? norm(row[iNo]) : String(r + 1),
@@ -153,7 +153,7 @@ function extractRows(crm) {
         'アポ種別': apoStatus || 'アポ',
         '架電担当': apoRep || owner || '',
         'アポ日': apoDate,
-        'アポ時間': iApoT >= 0 ? fmtTime(row[iApoT]) : '',
+        'アポ時間': iApoT >= 0 ? norm(row[iApoT]) : '',
         '形式': iApoType >= 0 ? norm(row[iApoType]) : '',
       });
     }
@@ -185,7 +185,7 @@ function aggregate(calls, keyFn) {
 
 function sectionMatrix(agg, groups, keyLabel) {
   const rate = (a, b) => (b ? a / b : 0);
-  const lineFor = (label, pick) => { const line = [label]; for (const g of groups) { const c = pick(g) || { call: 0, conn: 0, apo: 0 }; line.push(c.call, rate(c.conn, c.call), c.conn, c.apo, rate(c.apo, c.conn)); } return line; };
+  const lineFor = (label, pick) => { const line = [label]; for (const g of groups) { const c = pick(g) || { call: 0, conn: 0, apo: 0 }; line.push(c.call, rate(c.conn, c.call), c.conn, c.apo, rate(c.apo, c.call), rate(c.apo, c.conn)); } return line; };
   const h1 = [''], h2 = [keyLabel];
   for (const g of groups) { h1.push(g); for (let i = 1; i < METRICS.length; i++) h1.push(''); for (const m of METRICS) h2.push(m); }
   const rows = [h1, h2];
@@ -227,7 +227,7 @@ function buildAllKpi() {
     formatBlock(o, dHead, groups, nCols, '日付', dRows.length - 2);
     o.setFrozenColumns(1);
     o.setColumnWidth(1, 92);                              // 日付/年月列
-    if (nCols > 1) o.setColumnWidths(2, nCols - 1, 75);   // 指標列は固定75pxで視認性UP
+    if (nCols > 1) o.setColumnWidths(2, nCols - 1, 65);   // 指標列は固定65px
     toast('集計更新: 架電' + calls.length + '件 / 担当' + (groups.length - 1) + '名');
   } finally { lock.releaseLock(); }
 }
@@ -241,7 +241,7 @@ function formatBlock(o, headRow, groups, nCols, keyLabel, dataRows) {
     const base = 2 + gi * METRICS.length;
     o.getRange(headRow, base, 1, METRICS.length).merge().setBackground(palette[gi % palette.length]).setFontColor('#ffffff');
     o.getRange(headRow + 1, base, 1, METRICS.length).setBackground('#f1f3f4');
-    if (dataRows > 0) [base + 1, base + 4].forEach((col) => o.getRange(dataStart, col, dataRows, 1).setNumberFormat('0.0%'));
+    if (dataRows > 0) [base + 1, base + 4, base + 5].forEach((col) => o.getRange(dataStart, col, dataRows, 1).setNumberFormat('0.0%'));
   }
   if (dataRows > 0) o.getRange(dataStart + dataRows - 1, 1, 1, nCols).setFontWeight('bold').setBackground('#fff8e1');
   o.getRange(headRow, 1, 2 + Math.max(dataRows, 0), nCols).setBorder(true, true, true, true, true, true, '#dadce0', SpreadsheetApp.BorderStyle.SOLID);
