@@ -84,21 +84,23 @@ function hit(s, list) { return list.some((k) => s.indexOf(k) >= 0); }
 
 function loadCrm() {
   const ss = SpreadsheetApp.getActiveSpreadsheet();
-  const tz = ss.getSpreadsheetTimeZone();
   const sh = ss.getSheetByName(CONFIG.crmSheet);
   if (!sh) throw new Error('CRMタブが見つかりません: ' + CONFIG.crmSheet);
   const data = sh.getDataRange().getValues();
   const header = data[0].map(String);
   const idx = (name) => header.indexOf(name);
+  // タイムゾーン依存の Utilities.formatDate は使わず手動整形（TZエラー回避）
+  const p2 = (n) => (n < 10 ? '0' + n : '' + n);
+  const fmt = (d) => d.getFullYear() + '-' + p2(d.getMonth() + 1) + '-' + p2(d.getDate());
   const dateKey = (v) => {
-    if (v instanceof Date) return Utilities.formatDate(v, tz, 'yyyy-MM-dd');
+    if (v instanceof Date) return isNaN(v.getTime()) ? '' : fmt(v);
     let s = norm(v);
     if (!s) return '';
-    if (/^\d{1,2}\/\d{1,2}$/.test(s)) s = new Date().getFullYear() + '/' + s;
+    if (/^\d{1,2}\/\d{1,2}$/.test(s)) s = (new Date().getFullYear()) + '/' + s;
     const d = new Date(s);
-    return isNaN(d.getTime()) ? s : Utilities.formatDate(d, tz, 'yyyy-MM-dd');
+    return isNaN(d.getTime()) ? s : fmt(d);
   };
-  return { ss, sh, tz, data, header, idx, dateKey };
+  return { ss, sh, data, header, idx, dateKey };
 }
 
 // 各行→架電レコード（集計用）＋アポ判定・会社情報（商談CRM用）
