@@ -4,6 +4,10 @@ data/outputs/call_list*.csv
 data/outputs/emails*.csv
 data/outputs/*-import.csv
 
+# ホットペッパー生HTMLダンプ（デバッグ用・大きいので除外）と自動生成の下書き
+data/overrides/_raw/
+data/overrides/_draft_*.json
+
 # 生成物・依存・OS
 node_modules/
 .DS_Store
