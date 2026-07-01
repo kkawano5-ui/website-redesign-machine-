@@ -13,7 +13,10 @@
  *   --out  path.csv        出力先（既定 data/outputs/phones.csv）
  *   --concurrency 10       同時リクエスト数（既定10）
  *   --language ja          表示言語（既定 ja）
- *   --limit 50             先頭N件だけ（動作確認用）
+ *   --limit 50             入力の先頭N件だけ読む（動作確認用）
+ *   --daily 300            「未取得のうち今回はN件だけ」取得して終了（毎日ドリップ用）
+ *                          無料枠(10,000/月/SKU ≒ 1日333件)内に自動で収めるための件数制限。
+ *                          取得済みは自動スキップなので、毎日実行すれば少しずつ全社を埋められます。
  *
  * 出力 CSV 列: place_id, 電話, 電話_国際, 店名, エリア, 業種, 既存website, status
  *   → 「電話」は B列。CRMの電話列(J)に VLOOKUP で流し込めます（手順は別途）。
@@ -25,12 +28,17 @@ import { dirname } from 'node:path';
 // ---------- 引数 ----------
 const argv = process.argv.slice(2);
 const opt = (k, d) => { const i = argv.indexOf(k); return i >= 0 ? argv[i + 1] : d; };
-const INPUT = argv.find((a) => !a.startsWith('--') && !/^AIza/.test(a)) || 'data/companies/crm-source.csv';
+// 値を取るフラグ（--out の次の "path" などを入力CSVと誤認しないため、その位置を除外）
+const VALUE_FLAGS = new Set(['--key', '--out', '--concurrency', '--language', '--limit', '--daily']);
+const consumed = new Set();
+for (let i = 0; i < argv.length; i++) if (VALUE_FLAGS.has(argv[i])) consumed.add(i + 1);
+const INPUT = argv.find((a, i) => !a.startsWith('--') && !consumed.has(i) && !/^AIza/.test(a)) || 'data/companies/crm-source.csv';
 const KEY = process.env.GOOGLE_MAPS_API_KEY || process.env.GOOGLE_PLACES_API_KEY || opt('--key', argv.find((a) => /^AIza/.test(a)));
 const OUT = opt('--out', 'data/outputs/phones.csv');
 const CONCURRENCY = Math.max(1, Number(opt('--concurrency', '10')));
 const LANG = opt('--language', 'ja');
 const LIMIT = opt('--limit') ? Number(opt('--limit')) : Infinity;
+const DAILY = opt('--daily') ? Math.max(0, Number(opt('--daily'))) : Infinity;
 
 if (!KEY || !/^AIza/.test(KEY)) {
   console.error('❌ Google Places APIキーが必要です。');
@@ -109,8 +117,16 @@ if (existsSync(OUT)) {
     }
   }
 }
-const todo = companies.filter((c) => !done.has(c.place_id));
-console.log(`対象 ${companies.length}社 / 取得済み ${done.size}社 / 今回取得 ${todo.length}社  (同時${CONCURRENCY})`);
+const remaining = companies.filter((c) => !done.has(c.place_id));
+// --daily 指定時は「未取得のうち先頭N件」だけを今回の対象にする（毎日ドリップ）。
+const todo = Number.isFinite(DAILY) ? remaining.slice(0, DAILY) : remaining;
+if (Number.isFinite(DAILY)) {
+  console.log(`対象 ${companies.length}社 / 取得済み ${done.size}社 / 未取得 ${remaining.length}社 → 今回は ${todo.length}社だけ取得 (1日${DAILY}件・同時${CONCURRENCY})`);
+  if (remaining.length === 0) console.log('🎉 未取得なし。全社ぶん揃っています。');
+  else if (todo.length < remaining.length) console.log(`   残り ${remaining.length - todo.length}社は次回以降に自動で続きから取得します。`);
+} else {
+  console.log(`対象 ${companies.length}社 / 取得済み ${done.size}社 / 今回取得 ${todo.length}社  (同時${CONCURRENCY})`);
+}
 
 // ---------- 取得本体 ----------
 const sleep = (ms) => new Promise((res) => setTimeout(res, ms));

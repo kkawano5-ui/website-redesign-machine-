@@ -7,6 +7,7 @@
     "generate:sites": "node scripts/generate-demo-sites.js",
     "gen:images": "node scripts/gen-images.mjs",
     "fetch:phones": "node scripts/fetch-phones.mjs",
+    "fetch:phones:daily": "bash scripts/fetch-phones-daily.sh",
     "fetch:emails": "node scripts/fetch-emails.mjs",
     "fetch:hotpepper": "node scripts/fetch-hotpepper.mjs"
   },

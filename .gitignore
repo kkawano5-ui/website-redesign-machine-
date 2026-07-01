@@ -8,6 +8,9 @@ data/outputs/*-import.csv
 data/overrides/_raw/
 data/overrides/_draft_*.json
 
+# 自動ドリップ取得のログ（毎日の実行記録・端末ローカル）
+data/logs/
+
 # 生成物・依存・OS
 node_modules/
 .DS_Store
