@@ -22,12 +22,15 @@ export GOOGLE_MAPS_API_KEY="$KEY"
 
 # ---- 1日あたりの件数（無料枠に合わせて調整可。DAILY環境変数で上書きできる）----
 DAILY="${DAILY:-300}"
+# ---- 実測エンリッチ（website/★/口コミ実数/営業状態を同時取得）。既定ON。REENRICH=0で無効化 ----
+# 追加課金ゼロ（電話と同じEnterprise SKU）。優先度順なので、まず既存の勝ち筋業種から実測が埋まる。
+REENRICH_FLAG="--reenrich"; [ "${REENRICH:-1}" = "0" ] && REENRICH_FLAG=""
 
 mkdir -p data/logs
 LOG=data/logs/fetch-phones.log
 {
-  echo "===== $(date '+%Y-%m-%d %H:%M:%S') 開始 (1日${DAILY}件) ====="
-  node scripts/fetch-phones.mjs --daily "$DAILY"
+  echo "===== $(date '+%Y-%m-%d %H:%M:%S') 開始 (1日${DAILY}件・優先度順${REENRICH_FLAG:+・実測エンリッチ}) ====="
+  node scripts/fetch-phones.mjs --daily "$DAILY" $REENRICH_FLAG
   echo "===== $(date '+%Y-%m-%d %H:%M:%S') 終了 ====="
   echo ""
 } >> "$LOG" 2>&1
