@@ -40,8 +40,14 @@ const CONFIG = {
 
   connectedKeywords: ['後日掛け直し', '資料送付', 'お断り', 'アポ獲得', '電話アポ', '担当不在', '本社管理'],
   apoKeywords: ['アポ獲得', '電話アポ'],
-  // 「通電」のうち決裁者(担当者)に繋がっていない語＝担当者通電から除外
-  decisionAbsentKeywords: ['担当不在', '本社管理'],
+  // 担当者通電は各回ステータス列の左隣「決裁者フラグ」列で判定（＝決裁者に繋がった件）
+  decisionFlagCol: '決裁者フラグ',
+  // 決裁者フラグにこれらが入っている＝決裁者に繋がっていない → 担当者通電に数えない
+  decisionExcludes: ['担当不在', '本社管理', '受付', '留守', '廃業', '不在', '未着手', '未対応'],
+  // 決裁者フラグ列のプルダウン選択肢
+  decisionOptions: ['アポ獲得', '電話アポ', 'お断り（担当）', '後日掛け直し', '資料送付', '担当不在・本社管理', 'お断り（受付）'],
+  // プルダウンを付けない（誤って付いていたら除去する）日付列
+  dateCols: ['1回目_日付', '2回目_日付', '3回目_日付'],
 
   // ③-a ステータスのプルダウン選択肢（運用に合わせて編集可）
   statusCols: ['現在ステータス', '1回目_ステータス', '2回目_ステータス', '3回目_ステータス'],
@@ -74,7 +80,7 @@ function onOpen() {
     .addSeparator()
     .addItem('CRM: 次回アクション列を配置', 'setupCrmActionColumns')
     .addItem('CRM: メモ列を削除', 'removeMemoColumn')
-    .addItem('CRM: ステータスDDを更新', 'setupStatusDropdown')
+    .addItem('CRM: プルダウンを整備', 'setupDropdowns')
     .addSeparator()
     .addItem('自動更新をON（トリガー設置）', 'setupTriggers')
     .addItem('自動更新をOFF', 'removeTriggers')
@@ -84,7 +90,7 @@ function onOpen() {
 function setupAll() {
   removeMemoColumn();
   setupCrmActionColumns();
-  setupStatusDropdown();
+  setupDropdowns();
   buildAllKpi();
   syncDeals();
   setupTriggers();
@@ -123,7 +129,7 @@ function loadCrm() {
 }
 
 function extractRows(crm) {
-  const { disp, idx, dateKey } = crm; // 表示値ベースで抽出（アポ日/時刻のズレを回避）
+  const { disp, idx, dateKey, header } = crm; // 表示値ベースで抽出（アポ日/時刻のズレを回避）
   const C = CONFIG.cols;
   const iName = idx(C.name), iGenre = idx(C.genre), iArea = idx(C.area), iTel = idx(C.tel),
     iMap = idx(C.mapUrl), iApoD = idx(C.apoDate), iApoT = idx(C.apoTime), iApoType = idx(C.apoType),
@@ -138,9 +144,15 @@ function extractRows(crm) {
       const di = idx(a.date); if (di < 0) continue;
       const dk = dateKey(row[di]); if (!dk) continue;
       const rep = (idx(a.rep) >= 0 && norm(row[idx(a.rep)])) || owner || '不明';
-      const status = idx(a.status) >= 0 ? norm(row[idx(a.status)]) : '';
+      const si = idx(a.status);
+      const status = si >= 0 ? norm(row[si]) : '';
       const isConn = hit(status, CONFIG.connectedKeywords);
-      const isDm = isConn && !hit(status, CONFIG.decisionAbsentKeywords); // 担当者(決裁者)通電
+      // 担当者通電: ステータス列の左隣「決裁者フラグ」で判定（決裁者に繋がった件のみ）
+      let isDm = false;
+      if (si >= 1 && header[si - 1] === CONFIG.decisionFlagCol) {
+        const dmv = norm(row[si - 1]);
+        isDm = dmv !== '' && !hit(dmv, CONFIG.decisionExcludes);
+      }
       const isApo = hit(status, CONFIG.apoKeywords);
       calls.push({ dk, rep, isConn, isDm, isApo });
       repsFound[rep] = true;
@@ -318,14 +330,23 @@ function setupCrmActionColumns() {
 }
 
 // ============ ③-a ステータスDD更新 ============
-function setupStatusDropdown() {
+function setupDropdowns() {
   const crm = loadCrm();
   const sh = crm.sh, header = crm.header, last = sh.getLastRow();
   if (last < 2) { toast('CRMにデータ行がありません'); return; }
-  const rule = SpreadsheetApp.newDataValidation().requireValueInList(CONFIG.statusOptions, true).setAllowInvalid(true).build();
+  const mk = (list) => SpreadsheetApp.newDataValidation().requireValueInList(list, true).setAllowInvalid(true).build();
+  // ① ステータス列（現在ステータス＋各回_ステータス）
+  const statusRule = mk(CONFIG.statusOptions);
   let n = 0;
-  for (const name of CONFIG.statusCols) { const ci = header.indexOf(name); if (ci < 0) continue; sh.getRange(2, ci + 1, last - 1, 1).setDataValidation(rule); n++; }
-  toast('ステータスDD更新: ' + n + '列 / ' + CONFIG.statusOptions.length + '択');
+  for (const name of CONFIG.statusCols) { const ci = header.indexOf(name); if (ci < 0) continue; sh.getRange(2, ci + 1, last - 1, 1).setDataValidation(statusRule); n++; }
+  // ② 決裁者フラグ列（各回ステータスの左隣。重複名なので位置で特定）
+  const dmRule = mk(CONFIG.decisionOptions);
+  let dmN = 0;
+  for (const a of CONFIG.cols.attempts) { const si = header.indexOf(a.status); if (si >= 1 && header[si - 1] === CONFIG.decisionFlagCol) { sh.getRange(2, si, last - 1, 1).setDataValidation(dmRule); dmN++; } }
+  // ③ 日付列に誤って付いたプルダウンを除去
+  let dz = 0;
+  for (const name of CONFIG.dateCols) { const ci = header.indexOf(name); if (ci < 0) continue; sh.getRange(2, ci + 1, last - 1, 1).setDataValidation(null); dz++; }
+  toast('DD更新: ステータス' + n + '列 / 決裁者フラグ' + dmN + '列 / 日付DD除去' + dz + '列');
 }
 
 // ============ 自動更新トリガー ============
