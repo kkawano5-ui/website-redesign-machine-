@@ -190,7 +190,8 @@ function aggregate(calls, keyFn) {
 
 function sectionMatrix(agg, groups, keyLabel) {
   const rate = (a, b) => (b ? a / b : 0);
-  const lineFor = (label, pick) => { const line = [label]; for (const g of groups) { const c = pick(g) || { call: 0, conn: 0, dm: 0, apo: 0 }; line.push(c.call, rate(c.conn, c.call), c.conn, rate(c.dm, c.call), c.dm, c.apo, rate(c.apo, c.conn), rate(c.apo, c.dm)); } return line; };
+  // 担当者通電率 = 担当者通電数 ÷ 通電数
+  const lineFor = (label, pick) => { const line = [label]; for (const g of groups) { const c = pick(g) || { call: 0, conn: 0, dm: 0, apo: 0 }; line.push(c.call, rate(c.conn, c.call), c.conn, rate(c.dm, c.conn), c.dm, c.apo, rate(c.apo, c.conn), rate(c.apo, c.dm)); } return line; };
   const h1 = [''], h2 = [keyLabel];
   for (const g of groups) { h1.push(g); for (let i = 1; i < METRICS.length; i++) h1.push(''); for (const m of METRICS) h2.push(m); }
   const rows = [h1, h2];
@@ -225,8 +226,9 @@ function buildAllKpi() {
 
     let o = crm.ss.getSheetByName(CONFIG.outSheet);
     if (!o) o = crm.ss.insertSheet(CONFIG.outSheet);
-    o.clear(); o.setFrozenRows(0); o.setFrozenColumns(0);
+    o.clear(); o.clearFormats(); o.setFrozenRows(0); o.setFrozenColumns(0);
     o.getRange(1, 1, matrix.length, nCols).setValues(matrix);
+    o.getRange(1, 1, matrix.length, nCols).setNumberFormat('General'); // 旧%書式の残留を一掃→この後で率列だけ%に
     [1, dHead - 1].forEach((tr) => o.getRange(tr, 1, 1, nCols).setFontWeight('bold').setBackground('#e8eaed').setHorizontalAlignment('left'));
     formatBlock(o, mHead, groups, nCols, '年月', mRows.length - 2);
     formatBlock(o, dHead, groups, nCols, '日付', dRows.length - 2);
