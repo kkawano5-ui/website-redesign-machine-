@@ -40,6 +40,8 @@ const CONFIG = {
 
   connectedKeywords: ['後日掛け直し', '資料送付', 'お断り', 'アポ獲得', '電話アポ', '担当不在', '本社管理'],
   apoKeywords: ['アポ獲得', '電話アポ'],
+  // 「通電」のうち決裁者(担当者)に繋がっていない語＝担当者通電から除外
+  decisionAbsentKeywords: ['担当不在', '本社管理'],
 
   // ③-a ステータスのプルダウン選択肢（運用に合わせて編集可）
   statusCols: ['現在ステータス', '1回目_ステータス', '2回目_ステータス', '3回目_ステータス'],
@@ -59,8 +61,9 @@ const CONFIG = {
   dealHeaders: ['CRM行', '会社名', '業種', 'エリア', '電話', 'マップURL', 'アポ種別', '架電担当', 'アポ日', 'アポ時間', '形式'],
 };
 
-// 指標: 架電数 / 通電率(通電÷架電) / 通電数 / アポ数 / アポ率(アポ÷架電) / 設定率(アポ÷通電)
-const METRICS = ['架電数', '通電率', '通電数', 'アポ数', 'アポ率', '設定率'];
+// 指標: 架電数/通電率(通電÷架電)/通電数/担当者通電率(担当者通電÷架電)/担当者通電数/
+//       アポ数/設定率(通電数)(アポ÷通電)/設定率(担当者)(アポ÷担当者通電)
+const METRICS = ['架電数', '通電率', '通電数', '担当者通電率', '担当者通電数', 'アポ数', '設定率(通電数)', '設定率(担当者)'];
 
 function onOpen() {
   SpreadsheetApp.getUi().createMenu('営業CRM')
@@ -136,8 +139,10 @@ function extractRows(crm) {
       const dk = dateKey(row[di]); if (!dk) continue;
       const rep = (idx(a.rep) >= 0 && norm(row[idx(a.rep)])) || owner || '不明';
       const status = idx(a.status) >= 0 ? norm(row[idx(a.status)]) : '';
+      const isConn = hit(status, CONFIG.connectedKeywords);
+      const isDm = isConn && !hit(status, CONFIG.decisionAbsentKeywords); // 担当者(決裁者)通電
       const isApo = hit(status, CONFIG.apoKeywords);
-      calls.push({ dk, rep, isConn: hit(status, CONFIG.connectedKeywords), isApo });
+      calls.push({ dk, rep, isConn, isDm, isApo });
       repsFound[rep] = true;
       if (isApo && !apoStatus) { apoStatus = status; apoRep = rep; }
     }
@@ -178,21 +183,21 @@ function loadReps(ss) {
 
 function aggregate(calls, keyFn) {
   const agg = {};
-  const cell = (k, g) => { agg[k] = agg[k] || {}; agg[k][g] = agg[k][g] || { call: 0, conn: 0, apo: 0 }; return agg[k][g]; };
-  for (const c of calls) { const k = keyFn(c.dk); if (!k) continue; for (const g of ['全体', c.rep]) { const x = cell(k, g); x.call += 1; if (c.isConn) x.conn += 1; if (c.isApo) x.apo += 1; } }
+  const cell = (k, g) => { agg[k] = agg[k] || {}; agg[k][g] = agg[k][g] || { call: 0, conn: 0, dm: 0, apo: 0 }; return agg[k][g]; };
+  for (const c of calls) { const k = keyFn(c.dk); if (!k) continue; for (const g of ['全体', c.rep]) { const x = cell(k, g); x.call += 1; if (c.isConn) x.conn += 1; if (c.isDm) x.dm += 1; if (c.isApo) x.apo += 1; } }
   return agg;
 }
 
 function sectionMatrix(agg, groups, keyLabel) {
   const rate = (a, b) => (b ? a / b : 0);
-  const lineFor = (label, pick) => { const line = [label]; for (const g of groups) { const c = pick(g) || { call: 0, conn: 0, apo: 0 }; line.push(c.call, rate(c.conn, c.call), c.conn, c.apo, rate(c.apo, c.call), rate(c.apo, c.conn)); } return line; };
+  const lineFor = (label, pick) => { const line = [label]; for (const g of groups) { const c = pick(g) || { call: 0, conn: 0, dm: 0, apo: 0 }; line.push(c.call, rate(c.conn, c.call), c.conn, rate(c.dm, c.call), c.dm, c.apo, rate(c.apo, c.conn), rate(c.apo, c.dm)); } return line; };
   const h1 = [''], h2 = [keyLabel];
   for (const g of groups) { h1.push(g); for (let i = 1; i < METRICS.length; i++) h1.push(''); for (const m of METRICS) h2.push(m); }
   const rows = [h1, h2];
   const keys = Object.keys(agg).sort();
   for (const k of keys) rows.push(lineFor(k, (g) => agg[k][g]));
   const totals = {};
-  for (const k of keys) for (const g of groups) { const s = totals[g] || (totals[g] = { call: 0, conn: 0, apo: 0 }); const c = agg[k][g] || {}; s.call += c.call || 0; s.conn += c.conn || 0; s.apo += c.apo || 0; }
+  for (const k of keys) for (const g of groups) { const s = totals[g] || (totals[g] = { call: 0, conn: 0, dm: 0, apo: 0 }); const c = agg[k][g] || {}; s.call += c.call || 0; s.conn += c.conn || 0; s.dm += c.dm || 0; s.apo += c.apo || 0; }
   if (keys.length) rows.push(lineFor('合計', (g) => totals[g]));
   return rows;
 }
@@ -241,7 +246,7 @@ function formatBlock(o, headRow, groups, nCols, keyLabel, dataRows) {
     const base = 2 + gi * METRICS.length;
     o.getRange(headRow, base, 1, METRICS.length).merge().setBackground(palette[gi % palette.length]).setFontColor('#ffffff');
     o.getRange(headRow + 1, base, 1, METRICS.length).setBackground('#f1f3f4');
-    if (dataRows > 0) [base + 1, base + 4, base + 5].forEach((col) => o.getRange(dataStart, col, dataRows, 1).setNumberFormat('0.0%'));
+    if (dataRows > 0) [base + 1, base + 3, base + 6, base + 7].forEach((col) => o.getRange(dataStart, col, dataRows, 1).setNumberFormat('0.0%'));
   }
   if (dataRows > 0) o.getRange(dataStart + dataRows - 1, 1, 1, nCols).setFontWeight('bold').setBackground('#fff8e1');
   o.getRange(headRow, 1, 2 + Math.max(dataRows, 0), nCols).setBorder(true, true, true, true, true, true, '#dadce0', SpreadsheetApp.BorderStyle.SOLID);
