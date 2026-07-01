@@ -6,8 +6,18 @@ Places API (New) を使用。APIキーは .env の PLACES_API_KEY から。
 import os
 import re
 import json
+import ssl
 import urllib.request
 import urllib.parse
+
+
+def _ssl_ctx():
+    """macOS(python.org)のSSL証明書エラー対策：certifiのCAバンドルを使う。"""
+    try:
+        import certifi
+        return ssl.create_default_context(cafile=certifi.where())
+    except Exception:
+        return ssl.create_default_context()
 
 PLACES_ENDPOINT = "https://places.googleapis.com/v1/places/{pid}"
 FIELD_MASK = ",".join([
@@ -35,7 +45,7 @@ def extract_place_id(url_or_id):
     if s.startswith("http"):
         try:
             req = urllib.request.Request(s, headers={"User-Agent": "Mozilla/5.0"})
-            with urllib.request.urlopen(req, timeout=15) as r:
+            with urllib.request.urlopen(req, timeout=15, context=_ssl_ctx()) as r:
                 final = r.geturl()
                 body = r.read(200000).decode("utf-8", "ignore")
             m = re.search(r"place_id:([A-Za-z0-9_\-]+)", final + body)
@@ -81,7 +91,7 @@ def fetch_place(url_or_id, api_key=None):
         "Accept": "application/json",
     })
     try:
-        with urllib.request.urlopen(req, timeout=20) as r:
+        with urllib.request.urlopen(req, timeout=20, context=_ssl_ctx()) as r:
             data = json.loads(r.read().decode("utf-8"))
     except Exception as e:
         raise SystemExit(f"[Places API 失敗] {e}\n→ キーの有効化(Places API New)・課金・"
