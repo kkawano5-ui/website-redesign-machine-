@@ -1,6 +1,6 @@
 # Fable5 ゼロベース総点検 state
 
-- 最終更新: 2026-07-02 (iteration 2)
+- 最終更新: 2026-07-02 (iteration 3)
 - 手順書: `.loop/fable5-zero-base-review.md`
 
 ## 領域ステータス
@@ -10,9 +10,9 @@
 | 1 | scripts/ + package.json | done (iter 1) |
 | 2 | lp/index.html | done (iter 2) |
 | 3 | concierge/index.html | done (iter 2) |
-| 4 | wedding/ | pending |
-| 5 | mirai-edit/index.html | pending |
-| 6 | vercel.json 群 | pending |
+| 4 | wedding/ | done (iter 3) |
+| 5 | mirai-edit/index.html | done (iter 3) |
+| 6 | vercel.json 群 | done (iter 3) |
 | 7 | data/ + prompts/ | pending |
 | 8 | docs/ + validation/ + README | pending |
 | 9 | 総括 | pending |
@@ -73,6 +73,42 @@
 - 星5表示 + プレースホルダーレビューは「placeholder」明記済みで、ローンチ時に
   実レビューへ差し替える設計。掲載したまま公開すると誤認リスクがあるため、
   公開前チェックリストに含めるのを推奨。
+
+### iteration 3: wedding/ + mirai-edit/ + vercel.json 群（2026-07-02）
+
+**修正済み**
+- なし（機能的なバグは検出されず）
+
+**wedding/（index.html + ads/index.html）**
+- 参照画像10枚すべて実在。アンカー・フォーム・UTM計測JSは整合。広告LPは
+  noindex 設定済みで `lead_source=ad-lp` も付与されており設計は適切。
+- コンバージョン計測は意図的にUTM+Formspree方式（validation/ の各計画に明記）。
+  gtag等がないのは設計通りで問題なし。
+- 要判断: concierge・wedding本体・wedding/ads の3フォームが同一Formspree ID
+  `xdavjzjk` を共有。`_subject`/`lead_source` で区別可能だが、無料枠の送信数上限
+  （月50件）を3LPで共有する点とブランド分離の観点で分割を検討。
+- 要判断: 「50+ celebrations」「過去3年」等の実績クレームと
+  「(testimonial to be confirmed)」のプレースホルダー推薦文が広告LPにも掲載。
+  HTMLコメントで「実データに差し替え」と明記済みだが、広告出稿前の事実確認は必須
+  （広告審査・誤認リスク）。
+- 軽微: ナビに #investment へのリンクなし（セクションは存在）。og:image 未設定。
+
+**mirai-edit/index.html**
+- アンカー・tel/mailto（PR #16で更新済みの kawano@mirai-edit.com）すべて整合。
+  reveal/canvas アニメーションJSも健全。機能バグなし。
+- 軽微: canvas背景アニメは prefers-reduced-motion を尊重せず常時
+  requestAnimationFrame（.reveal はreduce対応済み）。バッテリー/アクセシビリティ
+  観点で将来改善候補。
+- 要判断: メトリクス帯の「13,000社+ 採用支援サービス導入」はFREE JOB（提供元）の
+  導入実績を自社実績と誤読されうる文脈。デッキ準拠とのことなので現状維持でも、
+  出典注記の追加を検討。
+
+**vercel.json 群**
+- ルート: outputDirectory=lp（sake-whisky LPをルート配信）、
+  concierge / mirai-edit / wedding: outputDirectory=.（各ディレクトリを
+  個別Vercelプロジェクトとして配信）。構成は一貫しており問題なし。
+- wedding/ads/ は wedding プロジェクト配下の /ads/ として配信され、
+  `../hero.jpg` 等の相対参照も正しく解決される。
 
 ## 総括レポート
 
