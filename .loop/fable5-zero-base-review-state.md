@@ -1,6 +1,6 @@
 # Fable5 ゼロベース総点検 state
 
-- 最終更新: 2026-07-02 (iteration 1)
+- 最終更新: 2026-07-02 (iteration 2)
 - 手順書: `.loop/fable5-zero-base-review.md`
 
 ## 領域ステータス
@@ -8,8 +8,8 @@
 | # | 領域 | 状態 |
 |---|------|------|
 | 1 | scripts/ + package.json | done (iter 1) |
-| 2 | lp/index.html | pending |
-| 3 | concierge/index.html | pending |
+| 2 | lp/index.html | done (iter 2) |
+| 3 | concierge/index.html | done (iter 2) |
 | 4 | wedding/ | pending |
 | 5 | mirai-edit/index.html | pending |
 | 6 | vercel.json 群 | pending |
@@ -48,6 +48,31 @@
 **観察メモ**
 - `createSafeSlug` の `-{2,}` 圧縮は `[^a-z0-9]+` の時点で連続ハイフンが発生しない
   ため実質デッドコード（無害）。
+
+### iteration 2: lp/index.html + concierge/index.html（2026-07-02）
+
+**修正済み**
+- なし（機能的なバグは検出されず。アンカーリンク・ローカル画像参照・vercel.json は
+  すべて整合。concierge の Formspree ID は設定済みで送信JSも正常な作り）
+
+**要判断（未修正・記録のみ）**
+- lp: 予約CTAの宛先が `hello@tokyoinsider.example`（実在しないプレースホルダー
+  ドメイン）。本番導線としては機能しない。origin に `email-update` ブランチが
+  存在するため、そちらで更新済みの可能性あり → 取り込み要否を判断。
+- lp: OTAリンク（Viator / GetYourGuide / Klook）が `href="#"` のプレースホルダー。
+- lp: 画像PNGが各1.8〜2.2MB。CSSの多層背景は全レイヤーをダウンロードするため、
+  ローカルPNG + Pexelsフォールバックの両方が読み込まれる（ヒーローだけで約4MB超）。
+  WebP化・Pexelsフォールバック削除で大幅改善可能。
+- lp/concierge 共通: `og:image` 未設定（SNSシェア時にサムネイルなし）。
+- concierge: `https://tokyo-sake-whisky-lp.vercel.app/` へのリンクは本環境の
+  ネットワークポリシーで到達確認できず（未検証）。
+- concierge: フォームコメントに「replace YOUR_FORM_ID」と残っているが実IDは設定済み。
+  送信JS内の `YOUR_FORM_ID` チェックは実質デッドコード（無害）。
+
+**観察メモ**
+- 星5表示 + プレースホルダーレビューは「placeholder」明記済みで、ローンチ時に
+  実レビューへ差し替える設計。掲載したまま公開すると誤認リスクがあるため、
+  公開前チェックリストに含めるのを推奨。
 
 ## 総括レポート
 
