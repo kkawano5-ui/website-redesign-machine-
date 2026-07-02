@@ -1,6 +1,6 @@
 # Fable5 ゼロベース総点検 state
 
-- 最終更新: 2026-07-02 (iteration 3)
+- 最終更新: 2026-07-02 (iteration 4)
 - 手順書: `.loop/fable5-zero-base-review.md`
 
 ## 領域ステータス
@@ -13,8 +13,8 @@
 | 4 | wedding/ | done (iter 3) |
 | 5 | mirai-edit/index.html | done (iter 3) |
 | 6 | vercel.json 群 | done (iter 3) |
-| 7 | data/ + prompts/ | pending |
-| 8 | docs/ + validation/ + README | pending |
+| 7 | data/ + prompts/ | done (iter 4) |
+| 8 | docs/ + validation/ + README | done (iter 4) |
 | 9 | 総括 | pending |
 
 ## Findings
@@ -109,6 +109,33 @@
   個別Vercelプロジェクトとして配信）。構成は一貫しており問題なし。
 - wedding/ads/ は wedding プロジェクト配下の /ads/ として配信され、
   `../hero.jpg` 等の相対参照も正しく解決される。
+
+### iteration 4: data/ + prompts/ + docs/ + validation/ + README（2026-07-02）
+
+**修正済み（コミット済み）**
+1. `prompts/manus-research.md`: 出力JSONスキーマが snake_case の独自項目
+   （company_name, business_summary, recommended_sections 等）で、README が定義し
+   `run-one.js` が必須検証する camelCase スキーマと完全に不一致だった。
+   Manusプロンプトの出力をそのまま `data/inputs/` に置くと必須項目エラーで
+   全件失敗する状態 → READMEの「ManusリサーチJSON仕様」に完全準拠した
+   スキーマ＋項目説明に書き換え（事実/推測の分離などの注意書きは維持）。
+
+**要判断（未修正・記録のみ）**
+- README・`prompts/claude-generate-site.md` は公開先を「Cloudflare Pages」と
+  記載しているが、実リポジトリは Vercel 構成（vercel.json×4、validation/ も
+  vercel.app URL を参照）。実態に合わせて README の更新を推奨（事業方針の
+  記述のため記録のみ）。
+- `data/inputs/sake-whisky-lp.json` の `targetLanguages` はスクリプト未使用
+  （buildInstruction 内で言及されており実害なし）。
+
+**確認済み・問題なし**
+- README の必須項目リストは `run-one.js` の requiredFields と一致。
+  slug の説明も iter1 修正後の挙動と一致。
+- data/inputs 3件 ⇔ data/outputs 3件の対応関係に欠落なし。
+- docs/・validation/ 内の内部ファイル参照に欠落なし（grep検証、検出1件は
+  外部URLの誤検知）。
+- `validation/leads-tracker.csv` のヘッダは各validation計画（UTM紐づけ・
+  stage管理・CPQL計測）と整合。
 
 ## 総括レポート
 
