@@ -45,8 +45,14 @@ async function main() {
   const manusJson = await readJsonFile(absInputPath);
   validateInputJson(manusJson);
 
-  const slugBase = manusJson.companySlug || manusJson.companyName || fileNameWithoutExt(inputPath);
-  const slug = createSafeSlug(slugBase, 'site');
+  // 日本語社名はslug化すると空になるため、空でないslugが得られる候補まで順に落とす
+  const slugCandidates = [
+    manusJson.companySlug,
+    manusJson.companyName,
+    fileNameWithoutExt(inputPath)
+  ];
+  const slug =
+    slugCandidates.map((base) => createSafeSlug(base, '')).find(Boolean) || 'site';
 
   const markdown = createSiteSpecMarkdown(manusJson, { inputPath });
   const outputPath = path.resolve('data/outputs', `${slug}-site-spec.md`);

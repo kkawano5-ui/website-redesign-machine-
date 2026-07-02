@@ -14,14 +14,14 @@ function indentBullets(text, indent = '  ') {
 }
 
 function detectIndustry(manusJson) {
-  const explicit = pickFirstValue(manusJson, ['industry', 'businessType'], '').toLowerCase();
+  const explicit = pickFirstValue(manusJson, ['industry', 'businessType'], '');
   const seed = [
     explicit,
     pickFirstValue(manusJson, ['companyName', 'company', 'name'], ''),
     ...normalizeArray(manusJson.siteConcept),
     ...normalizeArray(manusJson.companyOverview),
     ...normalizeArray(manusJson.recommendedPages)
-  ].join(' ');
+  ].join(' ').toLowerCase();
 
   if (/墓|霊園|供養|葬祭/.test(seed)) return 'memorial';
   if (/病院|クリニック|医療|診療/.test(seed)) return 'medical';
@@ -96,7 +96,7 @@ function renderPagePlan(pages, ctas) {
   return pages
     .map((page, index) => {
       const cta = ctas[index % Math.max(ctas.length, 1)] ?? '無料相談・見積依頼';
-      return `### ${index + 1}. ${page}\n- 目的: ${pagePurpose(page)}\n- 掲載要素:\n${indentBullets(toBulletList(genericElements))}\n- CTA: - ${cta}`;
+      return `### ${index + 1}. ${page}\n- 目的: ${pagePurpose(page)}\n- 掲載要素:\n${indentBullets(toBulletList(genericElements))}\n- CTA: ${cta}`;
     })
     .join('\n\n');
 }
