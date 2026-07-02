@@ -1,6 +1,6 @@
 # Fable5 ゼロベース総点検 state
 
-- 最終更新: 2026-07-02 (iteration 4)
+- 最終更新: 2026-07-02 (iteration 5・完了)
 - 手順書: `.loop/fable5-zero-base-review.md`
 
 ## 領域ステータス
@@ -15,7 +15,7 @@
 | 6 | vercel.json 群 | done (iter 3) |
 | 7 | data/ + prompts/ | done (iter 4) |
 | 8 | docs/ + validation/ + README | done (iter 4) |
-| 9 | 総括 | pending |
+| 9 | 総括 | done (iter 5) |
 
 ## Findings
 
@@ -137,6 +137,43 @@
 - `validation/leads-tracker.csv` のヘッダは各validation計画（UTM紐づけ・
   stage管理・CPQL計測）と整合。
 
-## 総括レポート
+## 総括レポート（2026-07-02 完了）
 
-（全領域完了後に記載）
+全9領域の点検が完了。5イテレーション・コミット5件。
+
+### 修正したバグ（4件・全て検証済み）
+
+| # | 対象 | 内容 | 影響度 |
+|---|------|------|--------|
+| 1 | scripts/run-one.js | 日本語社名でslugが空になり全社の仕様書が `site-site-spec.md` に上書き衝突 | 高（データ喪失） |
+| 2 | scripts/create-site-spec.js | 全ページ計画の `CTA: - ` 二重ハイフンで出力Markdown崩れ | 中（出力品質） |
+| 3 | scripts/create-site-spec.js | 業種判定が大文字（B2B等）にヒットしない | 低 |
+| 4 | prompts/manus-research.md | 出力スキーマが run-one.js の必須検証と全項目不一致で、README記載のフローが動作不能 | 高（パイプライン断絶） |
+
+### 要判断リスト（オーナー判断待ち・影響度順）
+
+1. **実績クレームの事実確認**（wedding系LP）: 「50+ celebrations」等の数値と
+   確認待ちのプレースホルダー推薦文が広告LPにも掲載。出稿・公開前に実データ
+   への差し替えが必須（広告審査・誤認リスク）。
+2. **Formspree ID の共有**: concierge / wedding / wedding/ads の3フォームが
+   同一ID。無料枠の月間送信数上限を共有するため、リード増加時に取りこぼしリスク。
+3. **lp のプレースホルダー導線**: mailto が `.example` ドメイン、OTAリンクが
+   `#`。origin の `email-update` ブランチに更新がある可能性 → 取り込み判断。
+4. **README の公開先記載**: 「Cloudflare Pages」→ 実態は Vercel。README更新推奨。
+5. **sake-whisky 出力の手動追記混在**: 再生成すると画像配置プランが消える。
+   別ファイルへの分離を推奨。
+6. **LP画像の軽量化**: lp/ のPNGが各約2MB＋Pexelsフォールバックの二重読込。
+   WebP化で初期表示を大幅改善可能。
+7. 軽微: og:image 未設定（全LP共通）／mirai-edit のcanvasアニメが
+   prefers-reduced-motion 非対応／「13,000社+」の出典注記。
+
+### 総評
+
+- 静的LP群（lp / concierge / wedding / mirai-edit）は構造・リンク・計測設計とも
+  健全で、機能バグはゼロ。残る課題は「公開前に差し替えるべきプレースホルダー」の管理。
+- Nodeパイプラインは入口（Manusプロンプト）と出力（slug・Markdown整形）の両端に
+  実害のあるバグがあったが、本点検で解消。`npm run run:one` は3サンプル全件で
+  動作確認済み。
+- generate-site.js（Claude API連携）は未実装スタブのまま。package.json の
+  依存3つ（@anthropic-ai/sdk / openai / dotenv）はこの実装まで未使用。
+
