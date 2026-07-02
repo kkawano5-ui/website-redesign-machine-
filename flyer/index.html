@@ -1,0 +1,577 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>株式会社AIスキル｜大企業のための生成AI活用研修（A4両面チラシ）</title>
+<style>
+  :root{
+    --navy-900:#0B1F3F;
+    --navy-800:#102A52;
+    --navy-700:#16386B;
+    --navy-600:#1E4A8C;
+    --blue-500:#2563AE;
+    --blue-100:#E8F0F9;
+    --blue-50:#F3F7FC;
+    --gold-600:#A8842C;
+    --gold-500:#B9974B;
+    --ink:#1A2433;
+    --muted:#5A6B80;
+    --line:#D8E0EA;
+    --red:#B4372F;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html,body{background:#9AA6B5;}
+  body{font-family:'Noto Sans CJK JP','Noto Sans JP',sans-serif;color:var(--ink);
+       -webkit-print-color-adjust:exact;print-color-adjust:exact;}
+  @page{size:A4;margin:0;}
+  .page{width:210mm;height:297mm;background:#fff;position:relative;overflow:hidden;
+        display:flex;flex-direction:column;page-break-after:always;margin:0 auto;}
+  .page > *{flex-shrink:0;}
+  @media screen{.page{margin:8mm auto;box-shadow:0 2mm 6mm rgba(0,0,0,.25);}}
+
+  /* ===== 共通パーツ ===== */
+  .sec-title{display:flex;align-items:center;gap:2.6mm;font-size:13.5pt;font-weight:900;color:var(--navy-800);letter-spacing:.06em;}
+  .sec-title .ic{width:6.5mm;height:6.5mm;flex:none;display:flex;}
+  .sec-title .ic svg{width:100%;height:100%;}
+  .rule{flex:1;height:.45mm;background:linear-gradient(to right,var(--navy-700) 0 18mm,var(--line) 18mm);margin-left:2mm;border-radius:1mm;}
+
+  /* ===== トップバー ===== */
+  .topbar{height:10mm;background:#fff;border-bottom:.5mm solid var(--navy-800);
+          display:flex;align-items:center;justify-content:space-between;padding:0 10mm;}
+  .brand{display:flex;align-items:center;gap:2.4mm;}
+  .brand .mark{width:6.2mm;height:6.2mm;}
+  .brand .name{font-size:10.5pt;font-weight:900;color:var(--navy-800);letter-spacing:.05em;}
+  .brand .div{font-size:7pt;color:var(--muted);font-weight:500;letter-spacing:.08em;margin-left:1mm;padding-left:2.4mm;border-left:.3mm solid var(--line);}
+  .topbar .aud{font-size:8pt;font-weight:700;color:var(--navy-700);letter-spacing:.1em;}
+  .topbar .aud b{color:var(--gold-600);}
+
+  /* ===== ヒーロー ===== */
+  .hero{position:relative;background:linear-gradient(135deg,#0B1F3F 0%,#123059 55%,#1A4173 100%);
+        color:#fff;padding:6.5mm 10mm 6mm;overflow:hidden;}
+  .hero .bgnet{position:absolute;inset:0;opacity:.5;}
+  .hero-in{position:relative;display:flex;gap:7mm;align-items:stretch;}
+  .hero-copy{flex:1.12;display:flex;flex-direction:column;justify-content:center;}
+  .badges{display:flex;gap:2.2mm;margin-bottom:3mm;flex-wrap:wrap;}
+  .badge{font-size:8pt;font-weight:700;letter-spacing:.06em;padding:1.3mm 3.4mm;border-radius:6mm;}
+  .badge.gold{background:var(--gold-500);color:#fff;}
+  .badge.frame{border:.35mm solid rgba(255,255,255,.85);color:#fff;}
+  .kicker{font-size:10pt;font-weight:700;letter-spacing:.22em;color:#CBDCF2;margin-bottom:2.2mm;}
+  h1.title{font-size:25pt;line-height:1.26;font-weight:900;letter-spacing:.045em;}
+  h1.title .sm{font-size:17.5pt;}
+  h1.title .em{color:#FFD98A;}
+  .hero-sub{margin-top:3.2mm;font-size:9pt;line-height:1.68;color:#E6EEF8;font-weight:500;}
+  .hero-sub b{color:#fff;border-bottom:.5mm solid var(--gold-500);padding-bottom:.4mm;}
+  .hero-visual{flex:1;display:flex;align-items:center;}
+  .hero-visual .frame{width:100%;border-radius:2.5mm;overflow:hidden;box-shadow:0 1.5mm 4mm rgba(0,0,0,.35);
+                      border:.6mm solid rgba(255,255,255,.25);background:#fff;}
+  .hero-visual svg{display:block;width:100%;height:auto;}
+
+  /* ===== お悩み ===== */
+  .issues{padding:4.2mm 10mm 0;}
+  .issues-row{display:flex;gap:3mm;margin-top:3.2mm;}
+  .issue{flex:1;background:var(--blue-50);border:.35mm solid var(--line);border-radius:2mm;
+         padding:2.6mm 3.2mm;display:flex;gap:2.2mm;align-items:flex-start;}
+  .issue .chk{width:4.6mm;height:4.6mm;flex:none;margin-top:.4mm;}
+  .issue p{font-size:8.6pt;line-height:1.55;font-weight:500;color:var(--ink);}
+  .issue p b{color:var(--navy-700);}
+
+  /* ===== ご提案内容 ===== */
+  .offer{padding:4.2mm 10mm 0;}
+  .offer-lead{font-size:9.5pt;font-weight:700;color:var(--ink);margin-top:2.6mm;line-height:1.6;}
+  .offer-lead .em{color:var(--red);font-weight:900;}
+  .offer-grid{display:flex;gap:3mm;margin-top:3.2mm;}
+  .offer-card{flex:1;border:.4mm solid var(--navy-600);border-radius:2.2mm;padding:3mm 3mm 2.8mm;
+              text-align:center;background:#fff;}
+  .offer-card .oc-ic{width:10mm;height:10mm;margin:0 auto 2mm;background:var(--blue-100);border-radius:50%;
+                     display:flex;align-items:center;justify-content:center;}
+  .offer-card .oc-ic svg{width:6mm;height:6mm;}
+  .offer-card h3{font-size:10pt;font-weight:900;color:var(--navy-800);letter-spacing:.02em;margin-bottom:1.6mm;}
+  .offer-card p{font-size:7.6pt;line-height:1.55;color:var(--muted);font-weight:500;}
+
+  /* ===== 実績 ===== */
+  .stats{padding:4.5mm 10mm 0;}
+  .stats-band{margin-top:3mm;background:var(--blue-50);border-top:.6mm solid var(--navy-800);
+              border-bottom:.35mm solid var(--line);padding:3.6mm 1.5mm 3.2mm;display:flex;}
+  .stat{flex:1;text-align:center;padding:0 1mm;position:relative;}
+  .stat + .stat{border-left:.3mm solid var(--line);}
+  .stat .num{font-size:16.5pt;font-weight:900;color:var(--navy-800);letter-spacing:-.02em;line-height:1;white-space:nowrap;}
+  .stat .num .unit{font-size:8.5pt;color:var(--blue-500);margin-left:.4mm;}
+  .stat .lbl{margin-top:1.7mm;font-size:7.4pt;line-height:1.45;color:var(--ink);font-weight:700;}
+  .stats-note{margin-top:2.2mm;font-size:8pt;color:var(--muted);font-weight:500;text-align:center;letter-spacing:.03em;}
+  .stats-note b{color:var(--navy-800);}
+
+  /* ===== メリット ===== */
+  .merits{padding:3.8mm 10mm 3.6mm;}
+  .merit-row{display:flex;gap:3mm;margin-top:3.2mm;}
+  .merit{flex:1;display:flex;gap:2.6mm;align-items:flex-start;background:#fff;border:.35mm solid var(--line);
+         border-left:1mm solid var(--gold-500);border-radius:1.5mm;padding:2.8mm 3mm;}
+  .merit .m-ic{width:6mm;height:6mm;flex:none;margin-top:.4mm;}
+  .merit h4{font-size:8.8pt;font-weight:900;color:var(--navy-800);margin-bottom:1mm;}
+  .merit p{font-size:7.4pt;line-height:1.5;color:var(--muted);font-weight:500;}
+
+  /* ===== フッターCTA ===== */
+  .cta{margin-top:auto;background:var(--navy-900);color:#fff;padding:4.2mm 10mm 4mm;position:relative;overflow:hidden;}
+  .cta-in{position:relative;display:flex;align-items:center;gap:6mm;}
+  .cta .mail-ic{width:11mm;height:11mm;flex:none;border:.45mm solid rgba(255,255,255,.8);border-radius:50%;
+                display:flex;align-items:center;justify-content:center;}
+  .cta .mail-ic svg{width:5.6mm;height:5.6mm;}
+  .cta-txt{flex:1;}
+  .cta-txt h2{font-size:15pt;font-weight:900;letter-spacing:.08em;margin-bottom:1.4mm;}
+  .cta-txt p{font-size:8.4pt;color:#C9D7E8;font-weight:500;letter-spacing:.04em;}
+  .cta-nation{flex:none;border:.45mm solid #fff;border-radius:1.5mm;padding:2.2mm 4.5mm;
+              font-size:10pt;font-weight:900;letter-spacing:.12em;background:rgba(255,255,255,.08);}
+  .cta-contact{position:relative;margin-top:2.8mm;padding-top:2.4mm;border-top:.3mm solid rgba(255,255,255,.25);
+               display:flex;align-items:baseline;gap:5mm;flex-wrap:wrap;}
+  .cta-contact .co{font-size:8.6pt;font-weight:700;letter-spacing:.05em;}
+  .cta-contact .co small{display:block;font-size:6.8pt;color:#9FB3CC;font-weight:500;margin-top:.6mm;letter-spacing:.08em;}
+  .cta-contact .li{font-size:9.5pt;font-weight:700;letter-spacing:.03em;}
+  .cta-contact .li span{font-size:7.4pt;color:#9FB3CC;margin-right:1.6mm;font-weight:500;}
+
+  /* ============================================================
+     裏面
+  ============================================================ */
+  .back .topbar{border-bottom-color:var(--line);}
+  .back-head{background:var(--navy-800);color:#fff;padding:3.4mm 10mm;display:flex;align-items:baseline;gap:4mm;}
+  .back-head h2{font-size:14pt;font-weight:900;letter-spacing:.1em;}
+  .back-head p{font-size:8pt;color:#C9D7E8;font-weight:500;letter-spacing:.05em;}
+
+  .grant{padding:4mm 10mm 0;}
+  .grant-box{margin-top:2.8mm;background:var(--blue-50);border:.35mm solid var(--line);border-radius:2mm;
+             padding:3mm 4.5mm;display:flex;gap:5mm;align-items:center;}
+  .grant-box .g-lead{flex:1.25;}
+  .grant-box .g-lead p{font-size:8.4pt;line-height:1.65;color:var(--ink);font-weight:500;}
+  .grant-box .g-lead p b{color:var(--navy-700);}
+  .grant-box .g-points{flex:1;display:flex;flex-direction:column;gap:1.8mm;}
+  .g-point{display:flex;gap:2mm;align-items:flex-start;font-size:8pt;font-weight:700;color:var(--navy-800);line-height:1.45;}
+  .g-point .chk{width:3.8mm;height:3.8mm;flex:none;margin-top:.2mm;}
+
+  /* 料金表 */
+  .price{padding:4.2mm 10mm 0;}
+  .price table{width:100%;border-collapse:separate;border-spacing:1.2mm 1.2mm;margin-top:2.2mm;table-layout:fixed;}
+  .price col.c-h{width:34mm;}
+  .price th,.price td{vertical-align:middle;}
+  .price thead th{font-size:10.5pt;font-weight:900;letter-spacing:.1em;padding:2.2mm 0;color:#fff;border-radius:1.2mm;}
+  .price thead th.sme{background:var(--navy-600);}
+  .price thead th.ent{background:var(--navy-900);position:relative;}
+  .price thead th.ent .tag{position:absolute;top:-2.6mm;right:2.5mm;background:var(--gold-600);color:#fff;
+        font-size:6.4pt;font-weight:900;letter-spacing:.1em;padding:.8mm 2.6mm;border-radius:5mm;}
+  .price tbody th{background:var(--navy-800);color:#fff;font-size:9.5pt;font-weight:900;letter-spacing:.06em;
+        padding:2.4mm 2mm;border-radius:1.2mm;line-height:1.4;}
+  .price tbody th small{display:block;font-size:6.4pt;font-weight:500;color:#B9C9DD;margin-top:.8mm;letter-spacing:.02em;}
+  .price td{background:var(--blue-50);border:.3mm solid var(--line);border-radius:1.2mm;text-align:center;padding:2mm 1mm;}
+  .price td .cap{font-size:7pt;color:var(--muted);font-weight:500;display:block;margin-bottom:.7mm;letter-spacing:.02em;}
+  .price td .val{font-size:17pt;font-weight:900;letter-spacing:-.01em;line-height:1;}
+  .price td .val .u{font-size:8.5pt;margin-left:.6mm;font-weight:700;}
+  .price td.red .val{color:var(--red);}
+  .price td.blue .val{color:var(--blue-500);}
+  .price td.ent{border:.55mm solid var(--gold-600);background:#FDF9F0;}
+  .price .notes{margin-top:1.8mm;font-size:6.8pt;color:var(--muted);line-height:1.55;font-weight:500;}
+
+  /* 導入の流れ */
+  .flow{padding:4.2mm 10mm 0;}
+  .flow-row{display:flex;gap:0;margin-top:2.8mm;align-items:stretch;}
+  .step{flex:1;background:var(--blue-50);border:.35mm solid var(--line);border-radius:1.8mm;
+        padding:2.8mm 2mm 2.6mm;text-align:center;position:relative;}
+  .step .no{font-size:6.6pt;font-weight:900;color:var(--gold-600);letter-spacing:.14em;margin-bottom:1.2mm;}
+  .step h4{font-size:8.6pt;font-weight:900;color:var(--navy-800);line-height:1.35;margin-bottom:1.2mm;}
+  .step p{font-size:6.6pt;line-height:1.5;color:var(--muted);font-weight:500;}
+  .arrow{flex:none;width:5.5mm;display:flex;align-items:center;justify-content:center;}
+  .arrow svg{width:3.2mm;height:3.2mm;}
+
+  /* 会社概要 */
+  .company{padding:4.2mm 10mm 4mm;}
+  .company-in{display:flex;gap:5mm;margin-top:2.8mm;}
+  .co-left{flex:1.15;}
+  .mission{background:var(--navy-800);color:#fff;border-radius:2mm;padding:3.6mm 4.5mm;margin-bottom:3mm;position:relative;overflow:hidden;}
+  .mission .q{font-size:11.5pt;font-weight:900;letter-spacing:.06em;line-height:1.5;position:relative;}
+  .mission .q .em{color:#FFD98A;}
+  .mission .ql{font-size:6.8pt;color:#9FB3CC;letter-spacing:.18em;font-weight:700;margin-bottom:1.6mm;position:relative;}
+  .co-desc{font-size:8.2pt;line-height:1.75;color:var(--ink);font-weight:500;}
+  .co-desc b{color:var(--navy-700);}
+  .chips{display:flex;gap:2mm;margin-top:2.8mm;flex-wrap:wrap;}
+  .chip{font-size:7.4pt;font-weight:700;color:var(--navy-700);background:var(--blue-100);
+        border-radius:5mm;padding:1.4mm 3.4mm;letter-spacing:.04em;}
+  .co-right{flex:1;background:#fff;border:.4mm solid var(--line);border-radius:2mm;padding:3.6mm 4.2mm;}
+  .co-right h3{font-size:9pt;font-weight:900;color:var(--navy-800);letter-spacing:.14em;
+               border-bottom:.45mm solid var(--navy-800);padding-bottom:1.8mm;margin-bottom:1mm;}
+  .co-table{width:100%;border-collapse:collapse;}
+  .co-table th,.co-table td{font-size:8pt;padding:1.9mm 0;border-bottom:.25mm solid var(--line);vertical-align:top;text-align:left;}
+  .co-table tr:last-child th,.co-table tr:last-child td{border-bottom:none;}
+  .co-table th{width:17mm;color:var(--muted);font-weight:500;letter-spacing:.1em;}
+  .co-table td{font-weight:700;color:var(--ink);line-height:1.5;}
+
+  .back .cta{padding:3.8mm 10mm 3.6mm;}
+  .back .cta-txt h2{font-size:13pt;}
+  .foot-note{background:var(--navy-900);color:#7E93AF;font-size:6.4pt;text-align:center;padding:0 10mm 2.6mm;letter-spacing:.06em;}
+</style>
+</head>
+<body>
+
+<!-- ================= 表面 ================= -->
+<div class="page front">
+
+  <div class="topbar">
+    <div class="brand">
+      <svg class="mark" viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="4" fill="#102A52"/><circle cx="8.5" cy="15.5" r="2.1" fill="#B9974B"/><circle cx="12" cy="8" r="2.1" fill="#fff"/><circle cx="16" cy="15.5" r="2.1" fill="#fff"/><path d="M8.5 15.5 12 8l3.5 7.5" stroke="#fff" stroke-width="1.1" fill="none"/></svg>
+      <span class="name">株式会社AIスキル</span>
+      <span class="div">法人研修事業部</span>
+    </div>
+    <div class="aud">人事・総務部門のご担当者様へ ｜ <b>大企業向け</b></div>
+  </div>
+
+  <div class="hero">
+    <svg class="bgnet" viewBox="0 0 210 90" preserveAspectRatio="xMidYMid slice">
+      <g stroke="#3D6296" stroke-width=".25" opacity=".55">
+        <path d="M-5 70 L30 40 L70 58 L110 30 L150 52 L190 24 L215 40"/>
+        <path d="M20 95 L55 72 L95 84 L140 66 L180 80 L215 68"/>
+        <path d="M30 40 L55 72 M110 30 L95 84 M150 52 L140 66"/>
+      </g>
+      <g fill="#4A709F">
+        <circle cx="30" cy="40" r="1.1"/><circle cx="70" cy="58" r="1.4"/><circle cx="110" cy="30" r="1.1"/>
+        <circle cx="150" cy="52" r="1.4"/><circle cx="190" cy="24" r="1.1"/><circle cx="55" cy="72" r="1.1"/>
+        <circle cx="95" cy="84" r="1.4"/><circle cx="140" cy="66" r="1.1"/><circle cx="180" cy="80" r="1.1"/>
+      </g>
+    </svg>
+    <div class="hero-in">
+      <div class="hero-copy">
+        <div class="badges">
+          <span class="badge gold">人材開発支援助成金 活用対象研修</span>
+          <span class="badge frame">大企業向けプログラム</span>
+        </div>
+        <div class="kicker">社員の未来を、AIスキルでつくる。</div>
+        <h1 class="title"><span class="sm">大企業のための</span><br>生成<span class="em">AI</span>活用研修</h1>
+        <div class="hero-sub">
+          全社のAIリテラシー向上から部門別の実践研修まで。<br>
+          AIの「導入」から「運用・定着」までを<b>一貫して支援</b>し、<br>
+          <b>“使いこなせる人材”</b>を育てる法人研修プログラムです。
+        </div>
+      </div>
+      <div class="hero-visual">
+        <div class="frame">
+        <svg viewBox="0 30 340 240" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0" stop-color="#DCEAF8"/><stop offset="1" stop-color="#F6FAFE"/>
+            </linearGradient>
+            <linearGradient id="glass" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0" stop-color="#2E5C96"/><stop offset="1" stop-color="#1B3A66"/>
+            </linearGradient>
+          </defs>
+          <rect width="340" height="300" fill="url(#sky)"/>
+          <!-- ネットワークモチーフ -->
+          <g stroke="#9FBEE0" stroke-width="1" opacity=".8" fill="none">
+            <path d="M225 44 L262 62 L300 40 M262 62 L305 84 M262 62 L228 88"/>
+          </g>
+          <g fill="#5B87BC">
+            <circle cx="225" cy="44" r="4"/><circle cx="300" cy="40" r="3"/>
+            <circle cx="305" cy="84" r="3.5"/><circle cx="228" cy="88" r="3"/>
+          </g>
+          <circle cx="262" cy="62" r="7" fill="#B9974B"/>
+          <circle cx="262" cy="62" r="3" fill="#fff"/>
+          <!-- 遠景スカイライン -->
+          <g fill="#C4D8EC">
+            <rect x="0" y="150" width="34" height="90"/><rect x="40" y="128" width="30" height="112"/>
+            <rect x="76" y="158" width="26" height="82"/><rect x="290" y="140" width="26" height="100"/>
+            <rect x="320" y="160" width="20" height="80"/>
+          </g>
+          <!-- 中景オフィスビル -->
+          <g>
+            <rect x="108" y="92" width="52" height="150" fill="url(#glass)"/>
+            <g fill="#7FA6CF">
+              <rect x="114" y="100" width="9" height="12"/><rect x="129" y="100" width="9" height="12"/><rect x="144" y="100" width="9" height="12"/>
+              <rect x="114" y="120" width="9" height="12"/><rect x="129" y="120" width="9" height="12"/><rect x="144" y="120" width="9" height="12"/>
+              <rect x="114" y="140" width="9" height="12"/><rect x="129" y="140" width="9" height="12"/><rect x="144" y="140" width="9" height="12"/>
+              <rect x="114" y="160" width="9" height="12"/><rect x="129" y="160" width="9" height="12"/><rect x="144" y="160" width="9" height="12"/>
+            </g>
+            <rect x="108" y="92" width="52" height="5" fill="#B9974B"/>
+            <rect x="170" y="120" width="44" height="122" fill="#2E5C96"/>
+            <g fill="#A9C6E4">
+              <rect x="176" y="130" width="8" height="10"/><rect x="189" y="130" width="8" height="10"/><rect x="202" y="130" width="8" height="10"/>
+              <rect x="176" y="148" width="8" height="10"/><rect x="189" y="148" width="8" height="10"/><rect x="202" y="148" width="8" height="10"/>
+              <rect x="176" y="166" width="8" height="10"/><rect x="189" y="166" width="8" height="10"/><rect x="202" y="166" width="8" height="10"/>
+            </g>
+            <rect x="224" y="150" width="60" height="92" fill="#8FB2D8"/>
+            <g fill="#DCEAF8">
+              <rect x="231" y="160" width="10" height="9"/><rect x="248" y="160" width="10" height="9"/><rect x="265" y="160" width="10" height="9"/>
+              <rect x="231" y="176" width="10" height="9"/><rect x="248" y="176" width="10" height="9"/><rect x="265" y="176" width="10" height="9"/>
+            </g>
+          </g>
+          <!-- 地面 -->
+          <rect x="0" y="238" width="340" height="62" fill="#EAF1F8"/>
+          <rect x="0" y="238" width="340" height="3" fill="#C4D8EC"/>
+          <!-- 人物1（左・女性） -->
+          <g>
+            <circle cx="64" cy="200" r="13" fill="#F2C9A3"/>
+            <path d="M50 198 a14 14 0 0 1 28 0 l-3.5 -9 a13 13 0 0 0 -21 0 z" fill="#3A4A5E"/>
+            <path d="M64 215 c-14 0-22 9-23 27 l0 40 h46 l0-40 c-1-18-9-27-23-27z" fill="#41598F"/>
+            <path d="M64 215 l-6 5 6 8 6-8z" fill="#fff"/>
+            <circle cx="64" cy="234" r="2" fill="#B9974B"/>
+          </g>
+          <!-- 人物2（中央・男性／タブレット） -->
+          <g>
+            <circle cx="130" cy="193" r="14" fill="#F2C9A3"/>
+            <path d="M115 191 a15 15 0 0 1 30 0 l-3 -9 a14 14 0 0 0 -24 0 z" fill="#2A3648"/>
+            <path d="M130 209 c-16 0-25 10-26 30 l0 43 h52 l0-43 c-1-20-10-30-26-30z" fill="#22406E"/>
+            <path d="M130 209 l-7 6 7 9 7-9z" fill="#fff"/>
+            <path d="M128.4 222 l1.6 5 1.6-5 -1.6-4z" fill="#B9974B"/>
+            <path d="M108 232 c-3 8-1 14 5 19" stroke="#22406E" stroke-width="9" fill="none" stroke-linecap="round"/>
+            <path d="M152 232 c3 8 1 14-5 19" stroke="#22406E" stroke-width="9" fill="none" stroke-linecap="round"/>
+            <rect x="112" y="246" width="36" height="24" rx="3" fill="#0E2440" stroke="#B9974B" stroke-width="1.8"/>
+            <circle cx="113" cy="253" r="4" fill="#F2C9A3"/>
+            <circle cx="147" cy="253" r="4" fill="#F2C9A3"/>
+            <path d="M119 264 l7-7 5 3 9-9" stroke="#5B87BC" stroke-width="1.8" fill="none"/>
+          </g>
+          <!-- 人物3（右・男性） -->
+          <g>
+            <circle cx="197" cy="200" r="13" fill="#E8B58B"/>
+            <path d="M183 198 a14 14 0 0 1 28 0 l-3 -9 a13 13 0 0 0 -22 0 z" fill="#4A3A2E"/>
+            <path d="M197 215 c-14 0-22 9-23 27 l0 40 h46 l0-40 c-1-18-9-27-23-27z" fill="#5B6B7E"/>
+            <path d="M197 215 l-6 5 6 8 6-8z" fill="#fff"/>
+            <path d="M195.5 228 l1.5 4 1.5-4 -1.5-3z" fill="#8898AA"/>
+          </g>
+          <!-- 吹き出し（AI） -->
+          <g>
+            <rect x="240" y="185" width="52" height="30" rx="7" fill="#fff" stroke="#2E5C96" stroke-width="1.6"/>
+            <path d="M252 215 l-4 9 12-9z" fill="#fff" stroke="#2E5C96" stroke-width="1.6"/>
+            <text x="266" y="206" text-anchor="middle" font-family="'Noto Sans CJK JP',sans-serif" font-size="14" font-weight="900" fill="#1B3A66">AI</text>
+          </g>
+        </svg>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="issues">
+    <div class="sec-title">
+      <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="#102A52" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M12 7.5v5.5"/><circle cx="12" cy="16.6" r=".4" fill="#102A52"/></svg></span>
+      こんなお悩みはありませんか？<span class="rule"></span>
+    </div>
+    <div class="issues-row">
+      <div class="issue">
+        <svg class="chk" viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="4" fill="#1E4A8C"/><path d="M7 12.5l3.5 3.5L17 9" stroke="#fff" stroke-width="2.4" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <p>全社向けの<b>AI研修の企画</b>を任されたが、何から始めればよいか分からない</p>
+      </div>
+      <div class="issue">
+        <svg class="chk" viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="4" fill="#1E4A8C"/><path d="M7 12.5l3.5 3.5L17 9" stroke="#fff" stroke-width="2.4" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <p>部門・世代によって<b>AI活用レベルの差</b>が大きく、全社展開が進まない</p>
+      </div>
+      <div class="issue">
+        <svg class="chk" viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="4" fill="#1E4A8C"/><path d="M7 12.5l3.5 3.5L17 9" stroke="#fff" stroke-width="2.4" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <p><b>助成金を活用</b>して、研修コストを抑えながら人材育成に投資したい</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="offer">
+    <div class="sec-title">
+      <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="#102A52" stroke-width="1.8"><path d="M4 21V8l6-4v17M10 21V10l6 3v8M16 21v-8l4 2v6M2 21h20"/></svg></span>
+      ご提案内容<span class="rule"></span>
+    </div>
+    <p class="offer-lead">貴社の課題・部門構成に合わせて設計する、<span class="em">人材開発支援助成金 活用対象</span>の生成AI研修プログラムです。</p>
+    <div class="offer-grid">
+      <div class="offer-card">
+        <div class="oc-ic"><svg viewBox="0 0 24 24" fill="none" stroke="#1E4A8C" stroke-width="1.8"><path d="M4 5h16v11H9l-5 4z" stroke-linejoin="round"/><circle cx="9" cy="10.5" r=".6" fill="#1E4A8C"/><circle cx="12" cy="10.5" r=".6" fill="#1E4A8C"/><circle cx="15" cy="10.5" r=".6" fill="#1E4A8C"/></svg></div>
+        <h3>生成AI<br>リテラシー研修</h3>
+        <p>ChatGPT等の基礎から、全社員向けにわかりやすく解説</p>
+      </div>
+      <div class="offer-card">
+        <div class="oc-ic"><svg viewBox="0 0 24 24" fill="none" stroke="#1E4A8C" stroke-width="1.8"><circle cx="12" cy="12" r="3.2"/><path d="M12 3v3M12 18v3M3 12h3M18 12h3M5.6 5.6l2.1 2.1M16.3 16.3l2.1 2.1M18.4 5.6l-2.1 2.1M7.7 16.3l-2.1 2.1"/></svg></div>
+        <h3>部門別・実践<br>ワークショップ</h3>
+        <p>実際の業務を題材に、日常業務の効率化を実践形式で習得</p>
+      </div>
+      <div class="offer-card">
+        <div class="oc-ic"><svg viewBox="0 0 24 24" fill="none" stroke="#1E4A8C" stroke-width="1.8"><path d="M4 20V10M10 20V4M16 20v-8M20 20H2"/><path d="M14 8l6-5" stroke-linecap="round"/><path d="M17.5 3H20v2.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <h3>DX推進人材<br>の育成</h3>
+        <p>社内でAI活用を牽引する推進リーダーを体系的に育成</p>
+      </div>
+      <div class="offer-card">
+        <div class="oc-ic"><svg viewBox="0 0 24 24" fill="none" stroke="#1E4A8C" stroke-width="1.8"><rect x="3" y="4" width="18" height="13" rx="2"/><path d="M10 8l5 2.5L10 13z" fill="#1E4A8C" stroke="none"/><path d="M8 21h8"/></svg></div>
+        <h3>動画教材<br>e-learning</h3>
+        <p>自社制作800本超のAI動画教材で、学びを全社に展開</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="stats">
+    <div class="sec-title">
+      <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="#102A52" stroke-width="1.8"><path d="M8 21h8M12 17v4M4 4h16v9a4 4 0 01-4 4H8a4 4 0 01-4-4z"/><path d="M4 6H2v2a3 3 0 003 3M20 6h2v2a3 3 0 01-3 3"/></svg></span>
+      AIスキルの研修実績<span class="rule"></span>
+    </div>
+    <div class="stats-band">
+      <div class="stat"><div class="num">200<span class="unit">社超</span></div><div class="lbl">研修・セミナー<br>導入企業</div></div>
+      <div class="stat"><div class="num">150,000<span class="unit">名超</span></div><div class="lbl">のべセミナー<br>参加者数</div></div>
+      <div class="stat"><div class="num">20,000<span class="unit">名超</span></div><div class="lbl">AI学習コミュニティ<br>参加者数</div></div>
+      <div class="stat"><div class="num">3,000<span class="unit">名超</span></div><div class="lbl">経営者が<br>研修・セミナー受講</div></div>
+      <div class="stat"><div class="num">800<span class="unit">本超</span></div><div class="lbl">自社制作の<br>AI動画教材</div></div>
+    </div>
+    <p class="stats-note"><b>中小企業から上場企業まで、全国・全業種で導入。</b>　“教える”だけでなく“成果を出す”研修をお届けしています。</p>
+  </div>
+
+  <div class="merits">
+    <div class="sec-title">
+      <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="#102A52" stroke-width="1.8"><path d="M12 3l2.5 5 5.5.8-4 3.9.9 5.5-4.9-2.6-4.9 2.6.9-5.5-4-3.9 5.5-.8z" stroke-linejoin="round"/></svg></span>
+      AIスキルが選ばれる理由<span class="rule"></span>
+    </div>
+    <div class="merit-row">
+      <div class="merit">
+        <svg class="m-ic" viewBox="0 0 24 24" fill="none" stroke="#A8842C" stroke-width="1.8"><path d="M3 12h4l2-6 4 12 2-6h6"/></svg>
+        <div><h4>導入から定着まで一貫支援</h4><p>研修して終わりではなく、運用・定着までを伴走支援します。</p></div>
+      </div>
+      <div class="merit">
+        <svg class="m-ic" viewBox="0 0 24 24" fill="none" stroke="#A8842C" stroke-width="1.8"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 8h8M8 12h8M8 16h5"/></svg>
+        <div><h4>助成金活用をサポート</h4><p>人材開発支援助成金の活用を前提とした研修設計。社労士のご紹介も可能です。</p></div>
+      </div>
+      <div class="merit">
+        <svg class="m-ic" viewBox="0 0 24 24" fill="none" stroke="#A8842C" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.5 3.8 5.6 3.8 9S14.5 18.5 12 21c-2.5-2.5-3.8-5.6-3.8-9S9.5 5.5 12 3z"/></svg>
+        <div><h4>全国対応・柔軟な実施形式</h4><p>対面・オンライン・e-learningを組み合わせ、全国どこでも実施できます。</p></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="cta">
+    <div class="cta-in">
+      <div class="mail-ic"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.8"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg></div>
+      <div class="cta-txt">
+        <h2>まずはお気軽にご相談ください</h2>
+        <p>研修プラン・お見積り・助成金活用のご相談を承ります。料金・会社概要は裏面へ。</p>
+      </div>
+      <div class="cta-nation">全国対応可能</div>
+    </div>
+    <div class="cta-contact">
+      <div class="co">株式会社AIスキル 法人研修事業部<small>〒150-0041 東京都渋谷区神南1-11-4</small></div>
+      <div class="li"><span>MAIL</span>kunihiko.kawano@ai-skill.jp</div>
+      <div class="li"><span>TEL</span>070-8311-7053</div>
+    </div>
+  </div>
+</div>
+
+<!-- ================= 裏面 ================= -->
+<div class="page back">
+
+  <div class="back-head">
+    <h2>料金体系・助成金のご案内</h2>
+    <p>人材開発支援助成金を活用し、実質負担を抑えて研修を実施いただけます。</p>
+  </div>
+
+  <div class="grant">
+    <div class="sec-title">
+      <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="#102A52" stroke-width="1.8"><path d="M12 3L3 8l9 5 9-5z" stroke-linejoin="round"/><path d="M6 10.5V16c0 1.5 2.7 3 6 3s6-1.5 6-3v-5.5M21 9v6"/></svg></span>
+      人材開発支援助成金（人開金）とは<span class="rule"></span>
+    </div>
+    <div class="grant-box">
+      <div class="g-lead">
+        <p>厚生労働省による、<b>従業員の職業訓練を支援する助成金制度</b>です。計画的な職務関連訓練を実施した企業に対し、<b>研修経費や訓練期間中の賃金の一部が助成</b>されます。当社の生成AI研修は本助成金の活用を前提に設計しています。</p>
+      </div>
+      <div class="g-points">
+        <div class="g-point"><svg class="chk" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" fill="#A8842C"/><path d="M7.5 12.5l3 3L16.5 9.5" stroke="#fff" stroke-width="2.4" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>研修経費の一部が助成対象に</div>
+        <div class="g-point"><svg class="chk" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" fill="#A8842C"/><path d="M7.5 12.5l3 3L16.5 9.5" stroke="#fff" stroke-width="2.4" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>受講時間分の賃金助成も受給可能</div>
+        <div class="g-point"><svg class="chk" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" fill="#A8842C"/><path d="M7.5 12.5l3 3L16.5 9.5" stroke="#fff" stroke-width="2.4" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>申請手続きは社労士のご紹介で支援</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="price">
+    <div class="sec-title">
+      <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="#102A52" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 9v12"/></svg></span>
+      サービス料金体系<span class="rule"></span>
+    </div>
+    <table>
+      <colgroup><col class="c-h"><col><col></colgroup>
+      <thead>
+        <tr>
+          <th></th>
+          <th class="sme">中小企業</th>
+          <th class="ent">大企業<span class="tag">貴社向け</span></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <th>料金体系</th>
+          <td class="red"><span class="cap">人材開発支援助成金 還付後</span><span class="val">75,000<span class="u">円/人</span></span></td>
+          <td class="red ent"><span class="cap">人材開発支援助成金 還付後</span><span class="val">120,000<span class="u">円/人</span></span></td>
+        </tr>
+        <tr>
+          <th>賃金助成<small>※e-learningは対象外</small></th>
+          <td class="blue"><span class="cap">研修受講における賃金助成額</span><span class="val">12,000<span class="u">円/人</span></span></td>
+          <td class="blue ent"><span class="cap">研修受講における賃金助成額</span><span class="val">6,000<span class="u">円/人</span></span></td>
+        </tr>
+        <tr>
+          <th>実質負担額<small>※e-learningは対象外</small></th>
+          <td class="red"><span class="cap">賃金助成 適用後</span><span class="val">63,000<span class="u">円/人</span></span></td>
+          <td class="red ent"><span class="cap">賃金助成 適用後</span><span class="val">114,000<span class="u">円/人</span></span></td>
+        </tr>
+      </tbody>
+    </table>
+    <p class="notes">※動画教材を使用した研修は賃金助成の対象外です。　※申請は自社で行うことも可能です（弊社紹介の社労士をご利用の場合、別途申請手数料が必要となります）。<br>※助成金の支給要件・支給額は、企業規模・訓練内容・実施形態により異なります。詳細はお問い合わせください。</p>
+  </div>
+
+  <div class="flow">
+    <div class="sec-title">
+      <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="#102A52" stroke-width="1.8"><path d="M4 4h6v6H4zM14 14h6v6h-6z"/><path d="M10 7h7v4M14 17H7v-4" stroke-linecap="round"/></svg></span>
+      導入までの流れ<span class="rule"></span>
+    </div>
+    <div class="flow-row">
+      <div class="step"><div class="no">STEP 01</div><h4>お問い合わせ</h4><p>メール・お電話にてお気軽にご連絡ください</p></div>
+      <div class="arrow"><svg viewBox="0 0 24 24" fill="none" stroke="#A8842C" stroke-width="3"><path d="M8 4l8 8-8 8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      <div class="step"><div class="no">STEP 02</div><h4>ヒアリング・設計</h4><p>課題・対象者に合わせてプログラムを設計</p></div>
+      <div class="arrow"><svg viewBox="0 0 24 24" fill="none" stroke="#A8842C" stroke-width="3"><path d="M8 4l8 8-8 8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      <div class="step"><div class="no">STEP 03</div><h4>助成金申請サポート</h4><p>計画届の作成・申請を社労士紹介で支援</p></div>
+      <div class="arrow"><svg viewBox="0 0 24 24" fill="none" stroke="#A8842C" stroke-width="3"><path d="M8 4l8 8-8 8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      <div class="step"><div class="no">STEP 04</div><h4>研修実施</h4><p>対面・オンライン・動画教材を柔軟に組み合わせ</p></div>
+      <div class="arrow"><svg viewBox="0 0 24 24" fill="none" stroke="#A8842C" stroke-width="3"><path d="M8 4l8 8-8 8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      <div class="step"><div class="no">STEP 05</div><h4>定着支援・効果測定</h4><p>受講後の活用状況を確認し、定着まで伴走</p></div>
+    </div>
+  </div>
+
+  <div class="company">
+    <div class="sec-title">
+      <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="#102A52" stroke-width="1.8"><path d="M4 21V5a1 1 0 011-1h9a1 1 0 011 1v16M15 9h4a1 1 0 011 1v11M2 21h20"/><path d="M7 8h2M11 8h2M7 12h2M11 12h2M7 16h2M11 16h2"/></svg></span>
+      会社概要<span class="rule"></span>
+    </div>
+    <div class="company-in">
+      <div class="co-left">
+        <div class="mission">
+          <div class="ql">OUR MISSION</div>
+          <div class="q">「<span class="em">AI</span>で、人を、社会を、未来を変える。」</div>
+        </div>
+        <p class="co-desc">株式会社AIスキルは、最先端のAIスキルを<b>体系的・実践的に学べる教育環境</b>を提供する会社です。AIの「導入」から「運用・定着」までを一貫して支援し、<b>“使いこなせる人材”を育てる</b>ことを大切にしています。</p>
+        <div class="chips">
+          <span class="chip">AI活用サポート事業</span>
+          <span class="chip">教育事業</span>
+          <span class="chip">コミュニティ事業</span>
+          <span class="chip">SNS事業</span>
+        </div>
+      </div>
+      <div class="co-right">
+        <h3>COMPANY PROFILE</h3>
+        <table class="co-table">
+          <tr><th>会社名</th><td>株式会社AIスキル</td></tr>
+          <tr><th>代表者</th><td>立石 亮介</td></tr>
+          <tr><th>設立</th><td>2024年12月</td></tr>
+          <tr><th>所在地</th><td>東京都渋谷区神南1-11-4</td></tr>
+          <tr><th>事業内容</th><td>法人向けAI研修・セミナー、AI活用支援、教育コンテンツ制作</td></tr>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div class="cta">
+    <div class="cta-in">
+      <div class="mail-ic"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.8"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg></div>
+      <div class="cta-txt">
+        <h2>お問い合わせ</h2>
+        <p>研修内容・お見積り・助成金活用について、お気軽にご相談ください。</p>
+      </div>
+      <div class="cta-nation">全国対応可能</div>
+    </div>
+    <div class="cta-contact">
+      <div class="co">株式会社AIスキル 法人研修事業部<small>〒150-0041 東京都渋谷区神南1-11-4</small></div>
+      <div class="li"><span>MAIL</span>kunihiko.kawano@ai-skill.jp</div>
+      <div class="li"><span>TEL</span>070-8311-7053</div>
+    </div>
+  </div>
+  <div class="foot-note">記載の実績数値は当社調べによるものです。助成金の支給可否・支給額は所轄労働局の審査によります。</div>
+</div>
+
+</body>
+</html>
