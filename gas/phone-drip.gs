@@ -108,7 +108,10 @@ function dripRun_(limit) {
     }
     targets.sort(function (a, b) { return b.score - a.score; });
     const todo = targets.slice(0, Math.max(0, limit));
-    const today = Utilities.formatDate(new Date(), ss.getSpreadsheetTimeZone(), 'yyyy-MM-dd');
+    // Utilities.formatDate はこの環境で "Invalid argument: timeZone" で落ちるため手組み（crm-automationと同じ対処）
+    const now = new Date();
+    const z2 = function (n) { return (n < 10 ? '0' : '') + n; };
+    const today = now.getFullYear() + '-' + z2(now.getMonth() + 1) + '-' + z2(now.getDate());
 
     // ② 10件ずつまとめて取得（電話と同じ1回のAPIで実測も取得＝追加課金ゼロ）
     const FIELD_MASK = 'id,displayName,nationalPhoneNumber,internationalPhoneNumber,websiteUri,rating,userRatingCount,businessStatus';
